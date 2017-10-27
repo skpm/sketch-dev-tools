@@ -3,15 +3,31 @@
   "bundleVersion": 1,
   "commands": [
     {
-      "name": "my-command",
-      "identifier": "my-command-identifier",
-      "script": "./my-command.js"
+      "name": "Show debugger",
+      "identifier": "skpm.debugger.show-debugger",
+      "script": "./show-debugger.js",
+      "shortcut": "cmd ctrl i"
+    },
+    {
+      "name": "Catch all actions",
+      "identifier": "skpm.debugger.catch-all-actions",
+      "script": "./catch-all-actions.js",
+      "handlers": {
+        "actions": {
+          "*": "onAction"
+        }
+      }
+    },
+    {
+      "name": "test log",
+      "identifier": "skpm.debugger.test-log",
+      "script": "./test-log.js"
     }
   ],
   "menu": {
-    "title": "sketch-debugger",
+    "title": "⚙️ Debugger",
     "items": [
-      "my-command-identifier"
+      "skpm.debugger.show-debugger"
     ]
   }
 }
