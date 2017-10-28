@@ -24,8 +24,14 @@ export default function(context) {
     height: 700,
     blurredBackground: true,
     onlyShowCloseButton: true,
-    hideTitleBar: true,
+    hideTitleBar: false,
     shouldKeepAround: true,
+    resizable: true,
+    onPanelClose() {
+      AppController.sharedInstance()
+        .pluginManager()
+        .setWilcardsEnabled(false)
+    },
     handlers: {
       getSketchState() {
         const state = getSketchState()

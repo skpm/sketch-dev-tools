@@ -18,6 +18,7 @@
   },
   "scripts": {
     "build": "skpm-build",
+    "prepublish": "NODE_ENV=production skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "link": "npm run build && skpm-link",
@@ -52,7 +53,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "sketch-module-web-view": "^0.2.0"
+    "sketch-module-web-view": "^0.2.1"
   },
   "resources": [
     "resources/webview.js"

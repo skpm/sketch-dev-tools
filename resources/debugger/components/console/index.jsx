@@ -19,9 +19,10 @@ const mapStateToProps = state => ({
 const SearchInput = styled.input`
   margin-top: 5px;
   width: 20rem;
-  border: 0 none;
-  padding: 0 4rem 0 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2px 4rem 2px 1rem;
   background: none #fff;
+  border-radius: 2px;
 `
 
 const LogTypesFilter = styled(Filter)`
@@ -48,9 +49,10 @@ const Type = styled.p`
 const SearchIcon = styled.span`
   position: relative;
   color: rgba(0, 0, 0, 0.2);
-  left: 11px;
+  left: 14px;
+  display: inline-block;
   z-index: 1;
-  transform: rotateZ(20deg);
+  transform: rotateZ(-30deg);
 `
 
 const Console = (props) => (
