@@ -23,6 +23,7 @@ const SearchInput = styled.input`
   padding: 2px 4rem 2px 1rem;
   background: none #fff;
   border-radius: 2px;
+  user-select: auto;
 `
 
 const LogTypesFilter = styled(Filter)`

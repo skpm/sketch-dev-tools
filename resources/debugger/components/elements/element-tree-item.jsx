@@ -131,8 +131,8 @@ export default class ElementTreeItem extends Component {
           {this.state.expanded ? (
             <span>
               <WrapElement>&lt;{this.renderElementName()}&gt; {this.renderQuickLook()}</WrapElement>
-              {element.children.map((e, i) => (
-                <ElementTreeItem key={i} element={e} />
+              {element.children.map((e) => (
+                <ElementTreeItem key={element.id} element={e} />
               ))}
               <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
             </span>
