@@ -3,6 +3,11 @@ import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { fetchTree } from '../../redux/ducks/elements'
 import ElementTreeItem from './element-tree-item'
+import {
+  Wrapper,
+  TopBar,
+  ButtonFilter
+} from '../list-element'
 
 const mapStateToProps = state => ({
   tree: state.elements.tree,
@@ -29,16 +34,12 @@ const Empty = styled.p`
   color: #aaa;
 `
 
-const Wrapper = styled.div`
-  flex: 1;
-  display: flex;
-`
-
 const ElementTree = styled.div`
   flex: 1;
   padding: 1.5rem;
   overflow: auto;
   font-family: Consolas, Menlo, Monaco, 'Lucida Console', monospace;
+  height: 100%;
 `
 
 class Elements extends Component {
@@ -49,6 +50,7 @@ class Elements extends Component {
   render() {
     return (
       <Wrapper>
+        <TopBar />
         {this.props.loading && <Loading>Loading...</Loading>}
         {this.props.tree.length > 0 ? (
           <ElementTree>

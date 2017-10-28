@@ -15,16 +15,23 @@ const Container = styled.div`
 `
 
 const TabBar = styled.div`
-  width: 80px;
-  padding-top: 20px;
+  position: fixed ;
+  z-index: 1;
+  ul {
+    /* margin-left: 20px; */ /* bring back this if titlebar is hidden */
+    display: flex;
+    list-style: none;
+  }
 `
 
 const Tab = styled(NavLink)`
-  height: 80px;
+  height: 30px;
+  margin-left: 20px;
+  padding-bottom: 4px;
   text-align: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
   color: black;
   text-decoration: none;
   font-size: 1.5rem;
@@ -32,6 +39,7 @@ const Tab = styled(NavLink)`
   transition: all 0.2s;
   font-weight: 900;
   letter-spacing: -0.45px;
+  border-bottom: 1px solid transparent;
 
   &:hover {
     opacity: 1;
@@ -49,27 +57,19 @@ const TabContent = styled.div`
   background: white;
   overflow: auto;
   display: flex;
+  flex-direction: row;
 `
 
 const Label = styled.span`
-  font-size: 12px;
-  text-transform: uppercase;
+  font-size: 13px;
+  text-transform: capitalize;
+  font-weight: normal;
   padding-top: 3px;
 `
 
 const selectedTab = css`
   opacity: 1 !important;
-
-  &:after {
-    content: ' ';
-    position: absolute;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-right: 15px solid white;
-    z-index: 1;
-    right: 0;
-    top: 20px;
-  }
+  border-bottom: 1px solid #3d85ee !important;
 `
 
 class App extends Component {
@@ -85,25 +85,25 @@ class App extends Component {
           <ul>
             <li>
               <Tab to="/console" activeClassName={selectedTab}>
-                <span>🗄</span>
+                {/* <span>🗄</span> */}
                 <Label>Console</Label>
               </Tab>
             </li>
             <li>
               <Tab to="/elements" activeClassName={selectedTab}>
-                <span>💎</span>
+                {/* <span>💎</span> */}
                 <Label>State</Label>
               </Tab>
             </li>
             <li>
               <Tab to="/network" activeClassName={selectedTab}>
-                <span>🌐</span>
+                {/* <span>🌐</span> */}
                 <Label>Network</Label>
               </Tab>
             </li>
             <li>
               <Tab to="/actions" activeClassName={selectedTab}>
-                <span>🛎</span>
+                {/* <span>🛎</span> */}
                 <Label>Actions</Label>
               </Tab>
             </li>
