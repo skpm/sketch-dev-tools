@@ -1,6 +1,13 @@
 import WebUI from 'sketch-module-web-view'
-import getSketchState, {getPageMetadata, getLayerMetadata} from './get-sketch-state'
-import { SET_TREE, SET_PAGE_METADATA, SET_LAYER_METADATA } from '../shared-actions'
+import getSketchState, {
+  getPageMetadata,
+  getLayerMetadata,
+} from './get-sketch-state'
+import {
+  SET_TREE,
+  SET_PAGE_METADATA,
+  SET_LAYER_METADATA,
+} from '../shared-actions'
 import { identifier } from '../debugger'
 
 export default function(context) {
@@ -32,7 +39,10 @@ export default function(context) {
         const state = getPageMetadata(pageId)
 
         webUI.eval(
-          `sketchBridge(${JSON.stringify({ name: SET_PAGE_METADATA, payload: {pageId, state} })})`
+          `sketchBridge(${JSON.stringify({
+            name: SET_PAGE_METADATA,
+            payload: { pageId, state },
+          })})`
         )
       },
 
@@ -40,7 +50,10 @@ export default function(context) {
         const state = getLayerMetadata(layerId, pageId)
 
         webUI.eval(
-          `sketchBridge(${JSON.stringify({ name: SET_LAYER_METADATA, payload: {layerId, pageId, state} })})`
+          `sketchBridge(${JSON.stringify({
+            name: SET_LAYER_METADATA,
+            payload: { layerId, pageId, state },
+          })})`
         )
       },
     },

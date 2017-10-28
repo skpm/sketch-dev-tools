@@ -1,4 +1,4 @@
-import {prepareObjectDeep} from '../debugger'
+import { prepareObjectDeep } from '../debugger'
 
 function toArray(object) {
   if (Array.isArray(object)) {
@@ -116,7 +116,10 @@ export function getLayerMetadata(layerId, pageId) {
     return undefined
   }
 
-  const predicate = NSPredicate.predicateWithFormat("objectID CONTAINS[c] %@", layerId)
+  const predicate = NSPredicate.predicateWithFormat(
+    'objectID CONTAINS[c] %@',
+    layerId
+  )
   const result = toArray(page.children().filteredArrayUsingPredicate(predicate))
 
   if (!result || !result.length) {

@@ -1,4 +1,8 @@
-import { SET_TREE, SET_PAGE_METADATA, SET_LAYER_METADATA } from '../../../../shared-actions'
+import {
+  SET_TREE,
+  SET_PAGE_METADATA,
+  SET_LAYER_METADATA,
+} from '../../../../shared-actions'
 
 const FETCH_TREE = 'elements/FETCH_TREE'
 const FETCH_PAGE_METADATA = 'elements/FETCH_PAGE_METADATA'
@@ -36,7 +40,7 @@ handlers[SET_TREE] = (state, { payload }) => ({
   loading: false,
 })
 
-export const fetchPageMetadata = (pageId) => ({
+export const fetchPageMetadata = pageId => ({
   type: FETCH_PAGE_METADATA,
   meta: {
     sketch: ['getPageMetadata', pageId],
@@ -50,39 +54,39 @@ export const fetchLayerMetadata = (layerId, pageId) => ({
   },
 })
 
-export const setPageMetadata = ({state, pageId}) => ({
+export const setPageMetadata = ({ state, pageId }) => ({
   type: SET_PAGE_METADATA,
   payload: {
     state,
-    pageId
+    pageId,
   },
 })
 
 handlers[SET_PAGE_METADATA] = (state, { payload }) => ({
   ...state,
   tree: state.tree.map(d => ({
-      ...d,
-      children: d.children.map(c => ({
-        ...c,
-        children: c.children.map(page => {
-          if (page.id === payload.pageId) {
-            return {
-              ...page,
-              meta: payload.state
-            }
+    ...d,
+    children: d.children.map(c => ({
+      ...c,
+      children: c.children.map(page => {
+        if (page.id === payload.pageId) {
+          return {
+            ...page,
+            meta: payload.state,
           }
-          return page
-        })
-      }))
+        }
+        return page
+      }),
     })),
+  })),
 })
 
-export const setLayerMetadata = ({state, pageId, layerId}) => ({
+export const setLayerMetadata = ({ state, pageId, layerId }) => ({
   type: SET_LAYER_METADATA,
   payload: {
     state,
     pageId,
-    layerId
+    layerId,
   },
 })
 
@@ -95,30 +99,32 @@ function findLayerWithId(layerId, fn, layer) {
   }
   return {
     ...layer,
-    children: layer.children.map(findLayerWithId.bind(this, layerId, fn))
+    children: layer.children.map(findLayerWithId.bind(this, layerId, fn)),
   }
 }
 
 handlers[SET_LAYER_METADATA] = (state, { payload }) => ({
   ...state,
   tree: state.tree.map(d => ({
-      ...d,
-      children: d.children.map(c => ({
-        ...c,
-        children: c.children.map(page => {
-          if (page.id === payload.pageId) {
-            return {
-              ...page,
-              children: page.children.map(findLayerWithId.bind(this, payload.layerId, (layer) => ({
+    ...d,
+    children: d.children.map(c => ({
+      ...c,
+      children: c.children.map(page => {
+        if (page.id === payload.pageId) {
+          return {
+            ...page,
+            children: page.children.map(
+              findLayerWithId.bind(this, payload.layerId, layer => ({
                 ...layer,
-                meta: payload.state
-              })))
-            }
+                meta: payload.state,
+              }))
+            ),
           }
-          return page
-        })
-      }))
+        }
+        return page
+      }),
     })),
+  })),
 })
 
 export default function(state = initialState, action) {
