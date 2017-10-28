@@ -4,6 +4,7 @@ import moment from 'moment'
 import { css } from 'emotion'
 import styled from 'react-emotion'
 import LogValue from '../value/value'
+import filterLogs from './search'
 import {
   ScrollingList,
   ListInner,
@@ -76,26 +77,6 @@ const Value = styled.li`
   }
 `
 
-function filterLogs({ types, search }) {
-  return l => {
-    if (!types[l.type]) {
-      return false
-    }
-    if (
-      search &&
-      l.values.findIndex(
-        v =>
-          String(v)
-            .toLowerCase()
-            .indexOf(search.toLowerCase()) > -1
-      ) === -1
-    ) {
-      return false
-    }
-    return true
-  }
-}
-
 const LogList = props => (
   <ScrollingList items={props.logs}>
     <ListInner>
@@ -114,7 +95,7 @@ const LogList = props => (
                 key={`${i}-${k}`}
                 onClick={() => props.dispatch(selectValue(`${i}-${k}`, value))}
               >
-                <LogValue value={value} />
+                <LogValue value={value} search={props.search} />
               </Value>
             ))}
           </Values>

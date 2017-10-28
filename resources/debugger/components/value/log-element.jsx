@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'react-emotion'
 
 export const LogKey = styled.span`
@@ -59,3 +60,30 @@ export const ButtonToggle = styled.button`
     transform: rotate(90deg);
   }
 `
+
+const HighLight = styled.span`
+  background: yellow;
+  color: black;
+`
+
+export function HighLighted({value, search}) {
+  if (!search) {
+    return value
+  }
+
+  const index = value.toLowerCase().indexOf(search.toLowerCase())
+
+  if (index === -1) {
+    return value
+  }
+
+  const firstPart = value.slice(0, index)
+  const secondPart = value.slice(index, index + search.length)
+  const thirdPart = value.slice(index + search.length, value.length)
+
+  return (
+    <span>
+      {firstPart}<HighLight>{secondPart}</HighLight>{thirdPart}
+    </span>
+  )
+}

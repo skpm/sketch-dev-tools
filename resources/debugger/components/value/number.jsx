@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { LogKey, LogColon } from './log-element'
+import { LogKey, LogColon, HighLighted } from './log-element'
 
 const LogValue = styled.span`
   user-select: auto;
 `
 
-export default function LogNumber({ logKey, number }) {
+export default function LogNumber({ logKey, number, search }) {
   return (
     <span>
       {logKey && (
@@ -15,7 +15,7 @@ export default function LogNumber({ logKey, number }) {
           <LogColon>: </LogColon>
         </span>
       )}
-      <LogValue>{Number(number)}</LogValue>
+      <LogValue><HighLighted search={search} value={String(number)} /></LogValue>
     </span>
   )
 }

@@ -40,7 +40,7 @@ export default class LogArray extends Component {
                 <LogKey>{key}</LogKey>
                 <LogColon>: </LogColon>
                 <span>
-                  <LogValue value={value} />
+                  <LogValue value={value} search={this.props.search} />
                 </span>
               </li>
             ))}

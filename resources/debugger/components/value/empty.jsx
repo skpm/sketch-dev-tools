@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { LogKey, LogColon } from './log-element'
+import { LogKey, LogColon, HighLighted } from './log-element'
 
 const LogValue = styled.span`
   opacity: 0.5;
@@ -9,7 +9,13 @@ const LogValue = styled.span`
   user-select: auto;
 `
 
-export default function LogEmpty({ logKey, value }) {
+export function emptyAsString(value) {
+  return value === undefined
+  ? 'undefined'
+  : Number.isNan(value) ? 'NaN' : 'null'
+}
+
+export default function LogEmpty({ logKey, value, search }) {
   return (
     <span>
       {logKey && (
@@ -19,9 +25,7 @@ export default function LogEmpty({ logKey, value }) {
         </span>
       )}
       <LogValue>
-        {value === undefined
-          ? 'undefined'
-          : Number.isNan(value) ? 'NaN' : 'null'}
+        <HighLighted search={search} value={emptyAsString(value)} />
       </LogValue>
     </span>
   )
