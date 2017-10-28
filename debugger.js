@@ -82,7 +82,7 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
   } else if (Array.isArray(value)) {
     type = 'Array'
     primitive = 'Array'
-    value = prepareArrayDeep(value)
+    value = prepareArrayDeep(value, skipMocha)
   } else if (typeOf === 'object') {
     if (value.isKindOfClass && typeof value.class === 'function') {
       type = String(value.class())
@@ -90,21 +90,24 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
       if (
         type === 'NSDictionary' ||
         type === '__NSDictionaryM' ||
-        type === '__NSSingleEntryDictionaryI'
+        type === '__NSSingleEntryDictionaryI' ||
+        type === '__NSDictionaryI' ||
+        type === '__NSCFDictionary'
       ) {
         primitive = 'Object'
-        value = module.exports.prepareObjectDeep(Object(value))
+        value = module.exports.prepareObjectDeep(Object(value), skipMocha)
       } else if (
         type === 'NSArray' ||
         type === 'NSMutableArray' ||
         type === '__NSArrayM'
       ) {
         primitive = 'Array'
-        value = prepareArrayDeep(toArray(value))
+        value = prepareArrayDeep(toArray(value), skipMocha)
       } else if (
         type === 'NSString' ||
         type === '__NSCFString' ||
-        type === 'NSTaggedPointerString'
+        type === 'NSTaggedPointerString' ||
+        type === '__NSCFConstantString'
       ) {
         primitive = 'String'
         value = String(value)
@@ -115,7 +118,7 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
         type = String(value.name())
         primitive = 'Object'
         value = value.memberNames().reduce(function(prev, k) {
-          prev[k] = module.exports.prepareValue(value[k])
+          prev[k] = module.exports.prepareValue(value[k], skipMocha)
           return prev
         }, {})
       } else if (value.class().mocha && !skipMocha) {
@@ -128,7 +131,7 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
     } else {
       type = 'Object'
       primitive = 'Object'
-      value = module.exports.prepareObjectDeep(value)
+      value = module.exports.prepareObjectDeep(value, skipMocha)
     }
   } else if (typeOf === 'function') {
     type = 'Function'

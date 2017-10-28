@@ -27,7 +27,8 @@
   "menu": {
     "title": "⚙️ Debugger",
     "items": [
-      "skpm.debugger.show-debugger"
+      "skpm.debugger.show-debugger",
+      "skpm.debugger.test-log"
     ]
   }
 }

@@ -1,4 +1,6 @@
 module.exports.SET_TREE = 'elements/SET_TREE'
+module.exports.SET_PAGE_METADATA = 'elements/SET_PAGE_METADATA'
+module.exports.SET_LAYER_METADATA = 'elements/SET_LAYER_METADATA'
 module.exports.ADD_LOG = 'logs/ADD_LOG'
 module.exports.CLEAR_LOGS = 'logs/CLEAR_LOGS'
 module.exports.ADD_REQUEST = 'network/ADD_REQUEST'

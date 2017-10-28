@@ -2,13 +2,14 @@ import {
   ADD_LOG,
   CLEAR_LOGS,
   SET_TREE,
+  SET_PAGE_METADATA, SET_LAYER_METADATA,
   ADD_REQUEST,
   SET_RESPONSE,
   ADD_ACTION,
 } from '../../shared-actions'
 import { addAction } from './redux/ducks/actions'
 import { addLog, clearLogs } from './redux/ducks/logs'
-import { setTree } from './redux/ducks/elements'
+import { setTree, setLayerMetadata, setPageMetadata } from './redux/ducks/elements'
 import { addRequest, setResponse } from './redux/ducks/network'
 
 export default function(dispatch) {
@@ -25,6 +26,10 @@ export default function(dispatch) {
         return dispatch(clearLogs(jsonData.payload))
       case SET_TREE:
         return dispatch(setTree(jsonData.payload))
+      case SET_PAGE_METADATA:
+        return dispatch(setPageMetadata(jsonData.payload))
+        case SET_LAYER_METADATA:
+        return dispatch(setLayerMetadata(jsonData.payload))
       case ADD_REQUEST:
         return dispatch(addRequest(jsonData.payload))
       case SET_RESPONSE:

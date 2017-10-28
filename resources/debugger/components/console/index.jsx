@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import LogList from './log-list'
@@ -53,80 +53,71 @@ const SearchIcon = styled.span`
   transform: rotateZ(20deg);
 `
 
-class Console extends Component {
-  constructor() {
-    super()
-    this._refs = {}
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <TopBar>
-          <Filter>
-            <SearchIcon>⚲</SearchIcon>
-
-            <SearchInput
-              innerRef={c => {
-                this._refs.searchInput = c
-              }}
-              type="search"
-              placeholder="Filter Console Log"
-              onChange={e => this.props.dispatch(setSearch(e.target.value))}
-              value={this.props.search}
-            />
-          </Filter>
-          <LogTypesFilter>
-            {['log', 'info', 'warn', 'error'].map(type => (
-              <Type
-                key={type}
-                onClick={() => {
-                  this.props.dispatch(
-                    setTypes({
-                      ...this.props.types,
-                      [type]: !this.props.types[type],
-                    })
-                  )
-                }}
-                style={
-                  this.props.types[type]
-                    ? { background: '#3D85EE', color: 'white', opacity: 1 }
-                    : {}
-                }
-              >
-                {type}
-              </Type>
-            ))}
-          </LogTypesFilter>
-          <ButtonFilter
+const Console = (props) => (
+  <Wrapper>
+    <TopBar>
+      <Filter>
+        <SearchIcon>⚲</SearchIcon>
+        <SearchInput
+          placeholder="Filter Console Logs"
+          onChange={e => props.dispatch(setSearch(e.target.value))}
+          value={props.search}
+        />
+      </Filter>
+      <LogTypesFilter>
+        {Object.keys(props.types).map(type => (
+          <Type
+            key={type}
+            onClick={() => {
+              props.dispatch(
+                setTypes({
+                  ...props.types,
+                  [type]: !props.types[type],
+                })
+              )
+            }}
             style={
-              this.props.showLogTimes
-                ? {
-                    opacity: 1,
-                  }
-                : { opacity: 0.5 }
+              props.types[type]
+                ? { background: '#3D85EE', color: 'white', opacity: 1 }
+                : {}
             }
-            onClick={() =>
-              this.props.dispatch(setShowLogTimes(!this.props.showLogTimes))}
             title={
-              this.props.showLogTimes
-                ? 'Hide log timestamp'
-                : 'Show log timestamp'
+              props.types[type]
+                ? `Hide ${type} logs`
+                : `Show ${type} logs`
             }
           >
-            🕙
-          </ButtonFilter>
-          <ButtonFilter
-            onClick={() => this.props.dispatch(clearLogs())}
-            title="Clear console"
-          >
-            🗑
-          </ButtonFilter>
-        </TopBar>
-        <LogList />
-      </Wrapper>
-    )
-  }
-}
+            {type}
+          </Type>
+        ))}
+      </LogTypesFilter>
+      <ButtonFilter
+        style={
+          props.showLogTimes
+            ? {
+                opacity: 1,
+              }
+            : { opacity: 0.5 }
+        }
+        onClick={() =>
+          props.dispatch(setShowLogTimes(!props.showLogTimes))}
+        title={
+          props.showLogTimes
+            ? 'Hide log timestamp'
+            : 'Show log timestamp'
+        }
+      >
+        🕙
+      </ButtonFilter>
+      <ButtonFilter
+        onClick={() => props.dispatch(clearLogs())}
+        title="Clear console"
+      >
+        🗑
+      </ButtonFilter>
+    </TopBar>
+    <LogList />
+  </Wrapper>
+)
 
 export default connect(mapStateToProps)(Console)

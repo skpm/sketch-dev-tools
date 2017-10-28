@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { css } from 'emotion'
+import QuickLook from './quick-look'
 
 const Element = styled.ul`
   padding: 0 0 0 2rem;
@@ -70,11 +71,24 @@ const ToggleButton = styled.button`
   }
 `
 
+const Info = styled.span`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: #aaa;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+  position: relative;
+`
+
 export default class ElementTreeItem extends Component {
   constructor() {
     super()
     this.state = {
       expanded: false,
+      quickLook: false
     }
   }
 
@@ -84,10 +98,22 @@ export default class ElementTreeItem extends Component {
       <span>
         <ElementClass>{element.class}</ElementClass>
         {!close &&
-          element.meta &&
-          element.meta.name && <ElementName> {element.meta.name}</ElementName>}
+          element.name && <ElementName> {element.name}</ElementName>}
       </span>
     )
+  }
+
+  renderQuickLook() {
+    return this.props.element.id !== '?' && (<Info onClick={(e) =>{
+      if (e.isDefaultPrevented()) {
+        return
+      }
+      this.setState({
+        quickLook: !this.state.quickLook
+      })
+    }}>?{this.state.quickLook && (
+      <QuickLook element={this.props.element} />
+    )}</Info>)
   }
 
   renderElement() {
@@ -104,14 +130,14 @@ export default class ElementTreeItem extends Component {
           </ToggleButton>
           {this.state.expanded ? (
             <span>
-              <WrapElement>&lt;{this.renderElementName()}&gt;</WrapElement>
+              <WrapElement>&lt;{this.renderElementName()}&gt; {this.renderQuickLook()}</WrapElement>
               {element.children.map((e, i) => (
                 <ElementTreeItem key={i} element={e} />
               ))}
               <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
             </span>
           ) : (
-            <WrapElement>&lt;{this.renderElementName()} /&gt;</WrapElement>
+            <WrapElement>&lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}</WrapElement>
           )}
         </TreeElement>
       )
@@ -119,7 +145,7 @@ export default class ElementTreeItem extends Component {
 
     return (
       <TreeElement>
-        <WrapElement>&lt;{this.renderElementName()} /&gt;</WrapElement>
+        <WrapElement>&lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}</WrapElement>
       </TreeElement>
     )
   }

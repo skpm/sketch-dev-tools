@@ -19,7 +19,7 @@ export default class LogObject extends Component {
 
   render() {
     return (
-      <span className={`log-object ${!this.state.collapsed ? 'expanded' : ''}`}>
+      <span>
         <ButtonToggle
           onClick={() => this.setState({ collapsed: !this.state.collapsed })}
           className={!this.state.collapsed && 'expanded'}

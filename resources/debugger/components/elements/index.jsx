@@ -47,7 +47,6 @@ class Elements extends Component {
   }
 
   render() {
-    console.log(this.props.tree)
     return (
       <Wrapper>
         {this.props.loading && <Loading>Loading...</Loading>}
