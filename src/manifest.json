@@ -6,7 +6,7 @@
       "name": "Show debugger",
       "identifier": "skpm.debugger.show-debugger",
       "script": "./show-debugger.js",
-      "shortcut": "cmd ctrl i"
+      "shortcut": "cmd alt i"
     },
     {
       "name": "Catch all actions",
