@@ -17,11 +17,13 @@ const Loading = styled.div`
 `
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
+  right: 0;
+  top: 30px;
   background: white;
-  border: 1px solid black;
-  width: 300px;
-  height: 400px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: calc(100% - 30px);
   overflow: auto;
   color: black;
   text-align: left;
