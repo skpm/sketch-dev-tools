@@ -11,7 +11,7 @@
   "skpm": {
     "name": "sketch-debugger",
     "manifest": "src/manifest.json",
-    "main": "plugin.sketchplugin"
+    "main": "sketch-debugger.sketchplugin"
   },
   "repository": {
     "url": "https://github.com/skpm/sketch-debugger"
