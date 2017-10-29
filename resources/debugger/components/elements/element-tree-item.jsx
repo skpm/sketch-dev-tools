@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'react-emotion'
 import { css } from 'emotion'
 import QuickLook from './quick-look'
@@ -30,8 +31,8 @@ const expandedTree = css`
     top: 2rem;
     bottom: 1rem;
     left: -1rem;
-    width: 0.1rem;
-    background: #bbb;
+    width: 2px;
+    background: #e6e6e6;
   }
 `
 
@@ -71,7 +72,7 @@ const ToggleButton = styled.button`
   }
 `
 
-const Info = styled.span`
+const Info = styled.Button`
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -81,6 +82,8 @@ const Info = styled.span`
   cursor: pointer;
   border-radius: 50%;
   position: relative;
+  border: none;
+  pointer-events: all;
 `
 
 export default class ElementTreeItem extends Component {
@@ -116,12 +119,32 @@ export default class ElementTreeItem extends Component {
     )}</Info>)
   }
 
+  propagateClick(e) {
+    var target = ReactDOM.findDOMNode(e.target);
+    if (target.tagName == 'LI') {
+      var toggleButton = target.getElementsByTagName('button')[0];
+      if (toggleButton) {
+        toggleButton.click()
+      }
+    }
+    else if (target.tagName == 'SPAN') {
+      target = target.closest('li');
+      var toggleButton = target.getElementsByTagName('button')[0];
+      if (toggleButton) {
+        toggleButton.click()
+      }
+    }
+  }
+
   renderElement() {
     const { element } = this.props
 
     if (element.children.length > 0) {
       return (
-        <TreeElement className={this.state.expanded && expandedTree}>
+        <TreeElement
+          className={this.state.expanded && expandedTree}
+          onClick={(e) => this.propagateClick(e)}
+        >
           <ToggleButton
             style={this.state.expanded ? { transform: 'rotate(90deg)' } : {}}
             onClick={() => this.setState({ expanded: !this.state.expanded })}

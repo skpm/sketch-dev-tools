@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { fetchLayerMetadata, fetchPageMetadata } from '../../redux/ducks/elements'
@@ -20,25 +21,28 @@ const Wrapper = styled.div`
   position: fixed;
   right: 0;
   top: 30px;
-  background: white;
+  padding: 8px 8px 40px 8px;
+  background: #f8f8f8;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 30%;
+  max-width: 95%;
   height: calc(100% - 30px);
   overflow: auto;
   color: black;
   text-align: left;
+  font-size: 13px;
   cursor: auto;
   z-index: 10;
-`
+  resize: horizontal;
+  direction: rtl;
+  > * {
+    direction: ltr;
+  }
 
-const Overlay = styled.div`
-  position: fixed;
-  width: calc(100vw - 80px);
-  height: 100vh;
-  cursor: auto;
-  top: 0;
-  left: 80px;
-  z-index: 8;
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 `
 
 class QuickLook extends Component {
@@ -50,13 +54,21 @@ class QuickLook extends Component {
         this.props.dispatch(fetchPageMetadata(this.props.element.id))
       }
     }
+    // TODO: Opening a QuickLook view should dismiss other previously open views.
+    // TODO: 👇 Open by default the first toggle of the QuickLook view.
+    var quickLook = ReactDOM.findDOMNode(this);
+    setTimeout(function () {
+      var firstToggle = quickLook.getElementsByTagName('button')[0];
+      firstToggle.click();
+    }, 10);
   }
+
 
   render() {
     return (
       <div>
-        <Overlay />
         <Wrapper onClick={e => e.preventDefault()}>
+          <h4>{this.props.element.id}</h4>
           {!this.props.element.meta ? <Loading>Loading...</Loading> : <LogObject object={this.props.element.meta} />}
         </Wrapper>
       </div>

@@ -16,7 +16,7 @@ export const Filter = styled.div`
 export const ButtonFilter = styled(Filter)`
   margin: 5px 0;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 12px;
+  font-size: 13px;
   padding: 3px 5px;
   cursor: pointer;
 `
@@ -33,8 +33,13 @@ export const ListInner = styled.ul`
 export const ClearLabel = styled.li`
   color: #aaa;
   text-align: center;
-  font-size: 12px;
-  margin-bottom: 5px;
+  font-size: 13px;
+  margin-bottom: -100px;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  margin-top: -70px;
 `
 
 export const Timestamp = styled.span`
@@ -43,7 +48,7 @@ export const Timestamp = styled.span`
 `
 
 const List = styled.div`
-  height: calc(100% - 54px);
+  height: 100vh;
   padding: 0;
   overflow-y: scroll;
   display: flex;
