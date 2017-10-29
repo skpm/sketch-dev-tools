@@ -9,13 +9,13 @@
       "identifier": "skpm.debugger.show-debugger",
       "icon": "icon.png",
       "description": "Open Sketch debugger window.",
-      "script": "./show-debugger.js",
+      "script": "show-debugger.js",
       "shortcut": "cmd ctrl i"
     },
     {
       "name": "Catch all actions",
       "identifier": "skpm.debugger.catch-all-actions",
-      "script": "./catch-all-actions.js",
+      "script": "catch-all-actions.js",
       "handlers": {
         "actions": {
           "*": "onAction"
@@ -27,7 +27,7 @@
       "identifier": "skpm.debugger.test-log",
       "icon": "icon.png",
       "description": "Creates a test log in the debugger.",
-      "script": "./test-log.js"
+      "script": "test-log.js"
     }
   ],
   "menu": {
@@ -36,5 +36,9 @@
       "skpm.debugger.show-debugger",
       "skpm.debugger.test-log"
     ]
-  }
+  },
+  "version": "0.1.6",
+  "name": "sketch-debugger",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com/skpm/sketch-debugger/master/.appcast.xml"
 }
