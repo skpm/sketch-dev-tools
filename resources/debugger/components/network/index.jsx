@@ -19,7 +19,7 @@ const Network = ({ requests }) => (
     <ScrollingList>
       <ListInner>
         <ClearLabel>Coming soon</ClearLabel>
-        {requests.length && <pre>{JSON.stringify(requests, null, 2)}</pre>}
+        {requests.length > 0 && <pre>{JSON.stringify(requests, null, 2)}</pre>}
       </ListInner>
     </ScrollingList>
   </Wrapper>
