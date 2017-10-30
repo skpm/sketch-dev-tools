@@ -1,4 +1,6 @@
-/* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign, no-var, vars-on-top, prefer-template */
+/* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign, no-var, vars-on-top, prefer-template, prefer-arrow-callback, func-names */
+var remoteWebview = require('sketch-module-web-view/remote')
+
 module.exports.identifier = 'skpm.debugger'
 
 function toArray(object) {
@@ -150,23 +152,14 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
   return { value, type, primitive }
 }
 
-var threadDictionary = NSThread.mainThread().threadDictionary()
-
-module.exports.isDebuggerPresent = function isDebuggerPresent() {
-  return !!threadDictionary[module.exports.identifier]
-}
+module.exports.isDebuggerPresent = remoteWebview.isWebviewPresent.bind(
+  this,
+  module.exports.identifier
+)
 
 module.exports.sendToDebugger = function sendToDebugger(name, payload) {
-  if (!module.exports.isDebuggerPresent()) {
-    return false
-  }
-
-  var webview = threadDictionary[module.exports.identifier]
-    .contentView()
-    .subviews()
-  webview = webview[webview.length - 1]
-
-  return webview.stringByEvaluatingJavaScriptFromString(
+  return remoteWebview.sendToWebview(
+    module.exports.identifier,
     'sketchBridge(' + JSON.stringify({ name, payload }) + ');'
   )
 }
