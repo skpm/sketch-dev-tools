@@ -48,6 +48,16 @@ const Wrapper = styled.div`
   }
 `
 
+const Overlay = styled.div`
+  position: fixed;
+  width: calc(100vw - 80px);
+  height: 100vh;
+  cursor: auto;
+  top: 0;
+  left: 80px;
+  z-index: 8;
+`
+
 class QuickLook extends Component {
   componentDidMount() {
     if (!this.props.element.meta) {
