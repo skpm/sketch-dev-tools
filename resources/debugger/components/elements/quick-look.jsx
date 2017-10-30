@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import {
@@ -65,12 +66,24 @@ class QuickLook extends Component {
           {!this.props.element.meta ? (
             <Loading>Loading...</Loading>
           ) : (
-            <LogObject object={this.props.element.meta} />
+            <LogObject object={this.props.element.meta} opened />
           )}
         </Wrapper>
       </div>
     )
   }
+}
+
+QuickLook.propTypes = {
+  element: PropTypes.shape({
+    id: PropTypes.string,
+    children: PropTypes.array,
+    class: PropTypes.string,
+    name: PropTypes.string,
+    meta: PropTypes.objectOf(PropTypes.any),
+    fromPage: PropTypes.string,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(QuickLook)

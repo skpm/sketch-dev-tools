@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { NavLink } from 'react-router-dom'
@@ -113,6 +114,11 @@ class App extends Component {
       </Container>
     )
   }
+}
+
+App.propTypes = {
+  children: PropTypes.node.isRequired,
+  dispatch: PropTypes.func,
 }
 
 export default withRouter(connect()(App))

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import { css } from 'emotion'
 import QuickLook from './quick-look'
@@ -164,4 +165,13 @@ export default class ElementTreeItem extends Component {
   render() {
     return <Element>{this.renderElement()}</Element>
   }
+}
+
+ElementTreeItem.propTypes = {
+  element: PropTypes.shape({
+    id: PropTypes.string,
+    children: PropTypes.array,
+    class: PropTypes.string,
+    name: PropTypes.string,
+  }).isRequired,
 }

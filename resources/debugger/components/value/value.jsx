@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import LogObject from './object'
 import LogArray from './array'
@@ -6,7 +7,7 @@ import LogString from './string'
 import LogNumber from './number'
 import LogEmpty from './empty'
 
-export default ({ value, logKey, search }) => {
+export default function Value({ value, logKey, search }) {
   switch (value.primitive) {
     case 'Array':
       return (
@@ -22,7 +23,7 @@ export default ({ value, logKey, search }) => {
       return <LogNumber number={value.value} logKey={logKey} search={search} />
 
     case 'Empty':
-      return <LogEmpty number={value.value} logKey={logKey} search={search} />
+      return <LogEmpty value={value.value} logKey={logKey} search={search} />
 
     case 'String':
       return (
@@ -46,7 +47,7 @@ export default ({ value, logKey, search }) => {
 
     case 'Unknown':
     default:
-      console.log(value.primitive || value)
+      console.log('unknown value: ', value)
       return (
         <LogString
           string={String(value.value)}
@@ -55,4 +56,14 @@ export default ({ value, logKey, search }) => {
         />
       )
   }
+}
+
+Value.propTypes = {
+  search: PropTypes.string,
+  logKey: PropTypes.string,
+  value: PropTypes.shape({
+    primitive: PropTypes.string,
+    type: PropTypes.string,
+    value: PropTypes.any,
+  }).isRequired,
 }

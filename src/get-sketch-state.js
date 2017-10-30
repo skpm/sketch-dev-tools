@@ -1,3 +1,4 @@
+/* globals NSApp MSDocumentWindow NSPredicate */
 import { prepareObjectDeep } from '../debugger'
 
 function toArray(object) {
@@ -24,6 +25,7 @@ function getLayerChildren(layer, pageId) {
   const children = toArray(layer.children()).filter(
     child => child.objectID() !== layer.objectID()
   )
+  // eslint-disable-next-line
   return children.map(inspectLayer.bind(this, pageId))
 }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import LogList from './log-list'
@@ -115,5 +116,12 @@ const Console = props => (
     <LogList />
   </Wrapper>
 )
+
+Console.propTypes = {
+  search: PropTypes.string.isRequired,
+  showLogTimes: PropTypes.bool.isRequired,
+  types: PropTypes.objectOf(PropTypes.bool).isRequired,
+  dispatch: PropTypes.func.isRequired,
+}
 
 export default connect(mapStateToProps)(Console)

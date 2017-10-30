@@ -1,3 +1,5 @@
+/* globals AppController */
+/* eslint-disable global-require */
 import WebUI from 'sketch-module-web-view'
 import getSketchState, {
   getPageMetadata,

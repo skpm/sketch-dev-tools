@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 
 export const TopBar = styled.div`
@@ -101,4 +102,8 @@ export class ScrollingList extends Component {
       />
     )
   }
+}
+
+ScrollingList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.any).isRequired,
 }

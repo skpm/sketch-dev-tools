@@ -1,3 +1,4 @@
+/* globals document */
 import './debugger'
 
 // Disable the context menu to have a more native feel

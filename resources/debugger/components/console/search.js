@@ -1,5 +1,3 @@
-import { emptyAsString } from '../value/empty'
-
 function checkStringValue(search, value) {
   return value.toLowerCase().indexOf(search.toLowerCase()) !== -1
 }
@@ -13,8 +11,6 @@ function filterValue(search, value) {
       return checkStringValue(search, String(value.value))
 
     case 'Empty':
-      return checkStringValue(search, emptyAsString(value))
-
     case 'String':
       return checkStringValue(search, value.value)
 

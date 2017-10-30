@@ -4,6 +4,9 @@ export default function(context) {
   console.warn('test warn')
   console.error('test error')
   console.log('test multiple arguments', 'second argument')
+  console.log(undefined)
+  console.log(null)
+  console.log(NaN)
   console.log({
     test: 'object',
   })

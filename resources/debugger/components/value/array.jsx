@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import LogValue from './value'
 import {
   LogKey,
@@ -51,4 +52,11 @@ export default class LogArray extends Component {
       </span>
     )
   }
+}
+
+LogArray.propTypes = {
+  search: PropTypes.string,
+  logKey: PropTypes.string,
+  prefix: PropTypes.string,
+  array: PropTypes.arrayOf(PropTypes.any).isRequired,
 }

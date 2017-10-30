@@ -1,3 +1,4 @@
+/* globals window */
 import {
   ADD_LOG,
   CLEAR_LOGS,
