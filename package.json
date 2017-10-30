@@ -24,6 +24,7 @@
     "start": "skpm-build --watch --run",
     "link": "npm run build && skpm-link",
     "lint-staged": "lint-staged",
+    "lint": "eslint --quiet --ignore-path=.gitignore .",
     "prettier:base": "prettier --single-quote --trailing-comma es5 --no-semi --write",
     "prettify": "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
   },
@@ -54,7 +55,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "sketch-module-web-view": "^0.2.3"
+    "redux-logger": "^3.0.6",
+    "sketch-module-web-view": "^0.2.6"
   },
   "resources": [
     "resources/webview.js"
