@@ -1,5 +1,5 @@
 /* globals AppController */
-/* eslint-disable global-require */
+/* eslint-disable global-require, no-undef */
 import WebUI from 'sketch-module-web-view'
 import getSketchState, {
   getPageMetadata,
@@ -66,4 +66,11 @@ export default function(context) {
       },
     },
   })
+  // Setting some minSizes until we make it all responsive
+  const minSize = { width: 700, height: 300 }
+  webUI.panel.setContentMinSize(minSize)
+  // Keep the window on top only for development
+  if (process.env.NODE_ENV === 'production') {
+    webUI.panel.setLevel(NSNormalWindowLevel)
+  }
 }
