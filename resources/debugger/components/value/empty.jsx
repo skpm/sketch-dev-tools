@@ -11,8 +11,8 @@ const LogValue = styled.span`
 
 export function emptyAsString(value) {
   return value === undefined
-  ? 'undefined'
-  : Number.isNan(value) ? 'NaN' : 'null'
+    ? 'undefined'
+    : Number.isNan(value) ? 'NaN' : 'null'
 }
 
 export default function LogEmpty({ logKey, value, search }) {

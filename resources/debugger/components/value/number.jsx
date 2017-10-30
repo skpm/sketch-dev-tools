@@ -15,7 +15,9 @@ export default function LogNumber({ logKey, number, search }) {
           <LogColon>: </LogColon>
         </span>
       )}
-      <LogValue><HighLighted search={search} value={String(number)} /></LogValue>
+      <LogValue>
+        <HighLighted search={search} value={String(number)} />
+      </LogValue>
     </span>
   )
 }

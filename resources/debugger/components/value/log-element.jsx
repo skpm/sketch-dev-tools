@@ -66,7 +66,7 @@ const HighLight = styled.span`
   color: black;
 `
 
-export function HighLighted({value, search}) {
+export function HighLighted({ value, search }) {
   if (!search) {
     return value
   }
@@ -83,7 +83,9 @@ export function HighLighted({value, search}) {
 
   return (
     <span>
-      {firstPart}<HighLight>{secondPart}</HighLight>{thirdPart}
+      {firstPart}
+      <HighLight>{secondPart}</HighLight>
+      {thirdPart}
     </span>
   )
 }

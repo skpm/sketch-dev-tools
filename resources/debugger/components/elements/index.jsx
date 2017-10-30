@@ -3,11 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { fetchTree } from '../../redux/ducks/elements'
 import ElementTreeItem from './element-tree-item'
-import {
-  Wrapper,
-  TopBar,
-  ButtonFilter
-} from '../list-element'
+import { Wrapper, TopBar, ButtonFilter } from '../list-element'
 
 const mapStateToProps = state => ({
   tree: state.elements.tree,

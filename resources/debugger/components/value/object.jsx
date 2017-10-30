@@ -38,7 +38,11 @@ export default class LogObject extends Component {
             {Object.keys(this.props.object).map(key => {
               return (
                 <li key={key}>
-                  <LogValue value={this.props.object[key]} logKey={key} search={this.props.search} />
+                  <LogValue
+                    value={this.props.object[key]}
+                    logKey={key}
+                    search={this.props.search}
+                  />
                 </li>
               )
             })}

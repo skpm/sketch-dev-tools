@@ -14,13 +14,10 @@ const mapStateToProps = state => ({
 
 const Network = ({ requests }) => (
   <Wrapper>
-    <TopBar>
-    </TopBar>
+    <TopBar />
     <ScrollingList>
       <ListInner>
-        <ClearLabel>
-          Coming soon
-        </ClearLabel>
+        <ClearLabel>Coming soon</ClearLabel>
       </ListInner>
     </ScrollingList>
   </Wrapper>

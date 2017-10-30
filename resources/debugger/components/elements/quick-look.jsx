@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
-import { fetchLayerMetadata, fetchPageMetadata } from '../../redux/ducks/elements'
+import {
+  fetchLayerMetadata,
+  fetchPageMetadata,
+} from '../../redux/ducks/elements'
 import LogObject from '../value/object'
 
 const Loading = styled.div`
@@ -45,7 +48,9 @@ class QuickLook extends Component {
   componentDidMount() {
     if (!this.props.element.meta) {
       if (this.props.element.fromPage) {
-        this.props.dispatch(fetchLayerMetadata(this.props.element.id, this.props.element.fromPage))
+        this.props.dispatch(
+          fetchLayerMetadata(this.props.element.id, this.props.element.fromPage)
+        )
       } else {
         this.props.dispatch(fetchPageMetadata(this.props.element.id))
       }
@@ -57,7 +62,11 @@ class QuickLook extends Component {
       <div>
         <Overlay />
         <Wrapper onClick={e => e.preventDefault()}>
-          {!this.props.element.meta ? <Loading>Loading...</Loading> : <LogObject object={this.props.element.meta} />}
+          {!this.props.element.meta ? (
+            <Loading>Loading...</Loading>
+          ) : (
+            <LogObject object={this.props.element.meta} />
+          )}
         </Wrapper>
       </div>
     )

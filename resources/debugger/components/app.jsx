@@ -15,7 +15,7 @@ const Container = styled.div`
 `
 
 const TabBar = styled.div`
-  position: fixed ;
+  position: fixed;
   z-index: 1;
   ul {
     /* margin-left: 20px; */ /* bring back this if titlebar is hidden */
