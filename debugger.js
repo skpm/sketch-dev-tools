@@ -85,6 +85,10 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
     type = 'Array'
     primitive = 'Array'
     value = prepareArrayDeep(value, skipMocha)
+  } else if (value === null || value === undefined || Number.isNaN(value)) {
+    type = 'Empty'
+    primitive = 'Empty'
+    value = String(value)
   } else if (typeOf === 'object') {
     if (value.isKindOfClass && typeof value.class === 'function') {
       type = String(value.class())
@@ -141,9 +145,6 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
   } else if (value === true || value === false) {
     type = 'Boolean'
     primitive = 'Boolean'
-  } else if (value === null || value === undefined || Number.isNaN(value)) {
-    type = 'Empty'
-    primitive = 'Empty'
   } else if (typeOf === 'number') {
     primitive = 'Number'
     type = 'Number'
