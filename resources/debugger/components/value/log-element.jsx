@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 
 export const LogKey = styled.span`
@@ -71,24 +72,32 @@ const HighLight = styled.span`
   color: black;
 `
 
-export function HighLighted({value, search}) {
+export function HighLighted({ value, search }) {
+  const stringValue = String(value)
   if (!search) {
-    return value
+    return stringValue
   }
 
-  const index = value.toLowerCase().indexOf(search.toLowerCase())
+  const index = stringValue.toLowerCase().indexOf(search.toLowerCase())
 
   if (index === -1) {
     return value
   }
 
-  const firstPart = value.slice(0, index)
-  const secondPart = value.slice(index, index + search.length)
-  const thirdPart = value.slice(index + search.length, value.length)
+  const firstPart = stringValue.slice(0, index)
+  const secondPart = stringValue.slice(index, index + search.length)
+  const thirdPart = stringValue.slice(index + search.length, String(value).length)
 
   return (
     <span>
-      {firstPart}<HighLight>{secondPart}</HighLight>{thirdPart}
+      {firstPart}
+      <HighLight>{secondPart}</HighLight>
+      {thirdPart}
     </span>
   )
+}
+
+HighLighted.propTypes = {
+  search: PropTypes.string,
+  value: PropTypes.string,
 }

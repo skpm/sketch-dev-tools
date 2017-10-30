@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { fetchTree } from '../../redux/ducks/elements'
 import ElementTreeItem from './element-tree-item'
-import {
-  Wrapper,
-  TopBar,
-  ButtonFilter
-} from '../list-element'
+import { Wrapper, TopBar, ButtonFilter } from '../list-element'
 
 const mapStateToProps = state => ({
   tree: state.elements.tree,
@@ -50,7 +47,14 @@ class Elements extends Component {
   render() {
     return (
       <Wrapper>
-        <TopBar />
+        <TopBar>
+          <ButtonFilter
+            onClick={() => this.props.dispatch(fetchTree())}
+            title="Refresh the state"
+          >
+            ⟲
+          </ButtonFilter>
+        </TopBar>
         {this.props.loading && <Loading>Loading...</Loading>}
         {this.props.tree.length > 0 ? (
           <ElementTree>
@@ -60,12 +64,25 @@ class Elements extends Component {
           </ElementTree>
         ) : (
           <Empty>
-            No Elements found! We'll keep looking, just to be sure ;)
+            No Elements found! We will keep looking, just to be sure ;)
           </Empty>
         )}
       </Wrapper>
     )
   }
+}
+
+Elements.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  tree: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      children: PropTypes.array,
+      class: PropTypes.string,
+      name: PropTypes.string,
+    })
+  ).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps)(Elements)

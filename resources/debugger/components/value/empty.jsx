@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import { LogKey, LogColon, HighLighted } from './log-element'
 
@@ -8,12 +9,6 @@ const LogValue = styled.span`
   font-style: italic;
   user-select: auto;
 `
-
-export function emptyAsString(value) {
-  return value === undefined
-  ? 'undefined'
-  : Number.isNan(value) ? 'NaN' : 'null'
-}
 
 export default function LogEmpty({ logKey, value, search }) {
   return (
@@ -25,8 +20,14 @@ export default function LogEmpty({ logKey, value, search }) {
         </span>
       )}
       <LogValue>
-        <HighLighted search={search} value={emptyAsString(value)} />
+        <HighLighted search={search} value={value} />
       </LogValue>
     </span>
   )
+}
+
+LogEmpty.propTypes = {
+  search: PropTypes.string,
+  logKey: PropTypes.string,
+  value: PropTypes.string,
 }

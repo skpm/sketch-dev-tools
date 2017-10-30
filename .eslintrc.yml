@@ -15,3 +15,5 @@ rules:
   import/no-extraneous-dependencies: 0
   jsx-a11y/accessible-emoji: 0
   no-underscore-dangle: 0
+  react/no-array-index-key: 0
+  react/require-default-props: 0

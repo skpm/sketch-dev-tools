@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import LogList from './log-list'
@@ -56,7 +57,7 @@ const SearchIcon = styled.span`
   transform: rotateZ(-30deg);
 `
 
-const Console = (props) => (
+const Console = props => (
   <Wrapper>
     <TopBar>
       <Filter>
@@ -85,9 +86,7 @@ const Console = (props) => (
                 : {}
             }
             title={
-              props.types[type]
-                ? `Hide ${type} logs`
-                : `Show ${type} logs`
+              props.types[type] ? `Hide ${type} logs` : `Show ${type} logs`
             }
           >
             {type}
@@ -102,13 +101,8 @@ const Console = (props) => (
               }
             : { opacity: 0.5 }
         }
-        onClick={() =>
-          props.dispatch(setShowLogTimes(!props.showLogTimes))}
-        title={
-          props.showLogTimes
-            ? 'Hide log timestamp'
-            : 'Show log timestamp'
-        }
+        onClick={() => props.dispatch(setShowLogTimes(!props.showLogTimes))}
+        title={props.showLogTimes ? 'Hide log timestamp' : 'Show log timestamp'}
       >
         🕙
       </ButtonFilter>
@@ -122,5 +116,12 @@ const Console = (props) => (
     <LogList />
   </Wrapper>
 )
+
+Console.propTypes = {
+  search: PropTypes.string.isRequired,
+  showLogTimes: PropTypes.bool.isRequired,
+  types: PropTypes.objectOf(PropTypes.bool).isRequired,
+  dispatch: PropTypes.func.isRequired,
+}
 
 export default connect(mapStateToProps)(Console)

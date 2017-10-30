@@ -58,7 +58,16 @@ const Actions = ({ actions, clearTs, showActionTimes, dispatch }) => (
 )
 
 Actions.propTypes = {
-  actions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  clearTs: PropTypes.number.isRequired,
+  showActionTimes: PropTypes.bool.isRequired,
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      ts: PropTypes.number,
+      name: PropTypes.string,
+      context: PropTypes.any,
+    })
+  ).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps)(Actions)

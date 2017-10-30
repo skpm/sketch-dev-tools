@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { css } from 'emotion'
@@ -105,5 +106,15 @@ const LogList = props => (
     </ListInner>
   </ScrollingList>
 )
+
+LogList.propTypes = {
+  clearTs: PropTypes.number.isRequired,
+  showLogTimes: PropTypes.bool.isRequired,
+  logs: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string,
+    ts: PropTypes.number,
+    values: PropTypes.arrayOf(PropTypes.any)
+  })).isRequired,
+}
 
 export default connect(mapStateToProps)(LogList)

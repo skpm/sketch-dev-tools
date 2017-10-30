@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import moment from 'moment'
 import { Timestamp } from '../list-element'
@@ -57,6 +58,15 @@ class Action extends Component {
       </Wrapper>
     )
   }
+}
+
+Action.propTypes = {
+  showActionTimes: PropTypes.bool.isRequired,
+  action: PropTypes.shape({
+    ts: PropTypes.number,
+    name: PropTypes.string,
+    context: PropTypes.any,
+  }).isRequired,
 }
 
 export default Action

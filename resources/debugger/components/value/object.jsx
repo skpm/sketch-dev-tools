@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import LogValue from './value'
 import {
   LogKey,
@@ -10,10 +11,10 @@ import {
 } from './log-element'
 
 export default class LogObject extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      collapsed: true,
+      collapsed: !props.opened,
     }
   }
 
@@ -38,7 +39,11 @@ export default class LogObject extends Component {
             {Object.keys(this.props.object).map(key => {
               return (
                 <li key={key}>
-                  <LogValue value={this.props.object[key]} logKey={key} search={this.props.search} />
+                  <LogValue
+                    value={this.props.object[key]}
+                    logKey={key}
+                    search={this.props.search}
+                  />
                 </li>
               )
             })}
@@ -53,4 +58,12 @@ export default class LogObject extends Component {
       </span>
     )
   }
+}
+
+LogObject.propTypes = {
+  opened: PropTypes.bool,
+  search: PropTypes.string,
+  logKey: PropTypes.string,
+  prefix: PropTypes.string,
+  object: PropTypes.objectOf(PropTypes.any).isRequired,
 }

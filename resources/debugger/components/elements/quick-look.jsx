@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
-import { fetchLayerMetadata, fetchPageMetadata } from '../../redux/ducks/elements'
+import {
+  fetchLayerMetadata,
+  fetchPageMetadata,
+} from '../../redux/ducks/elements'
 import LogObject from '../value/object'
 
 const Loading = styled.div`
@@ -49,31 +52,41 @@ class QuickLook extends Component {
   componentDidMount() {
     if (!this.props.element.meta) {
       if (this.props.element.fromPage) {
-        this.props.dispatch(fetchLayerMetadata(this.props.element.id, this.props.element.fromPage))
+        this.props.dispatch(
+          fetchLayerMetadata(this.props.element.id, this.props.element.fromPage)
+        )
       } else {
         this.props.dispatch(fetchPageMetadata(this.props.element.id))
       }
     }
-    // TODO: Opening a QuickLook view should dismiss other previously open views.
-    // TODO: 👇 Open by default the first toggle of the QuickLook view.
-    var quickLook = ReactDOM.findDOMNode(this);
-    setTimeout(function () {
-      var firstToggle = quickLook.getElementsByTagName('button')[0];
-      firstToggle.click();
-    }, 10);
   }
-
 
   render() {
     return (
       <div>
+        <Overlay />
         <Wrapper onClick={e => e.preventDefault()}>
-          <h4>{this.props.element.id}</h4>
-          {!this.props.element.meta ? <Loading>Loading...</Loading> : <LogObject object={this.props.element.meta} />}
+          {!this.props.element.meta ? (
+            <Loading>Loading...</Loading>
+          ) : (
+            <LogObject object={this.props.element.meta} opened />
+          )}
         </Wrapper>
       </div>
     )
   }
+}
+
+QuickLook.propTypes = {
+  element: PropTypes.shape({
+    id: PropTypes.string,
+    children: PropTypes.array,
+    class: PropTypes.string,
+    name: PropTypes.string,
+    meta: PropTypes.objectOf(PropTypes.any),
+    fromPage: PropTypes.string,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(QuickLook)

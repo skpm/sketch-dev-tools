@@ -1,3 +1,4 @@
+/* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign */
 const webpack = require('webpack')
 
 module.exports = config => {

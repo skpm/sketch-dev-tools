@@ -1,5 +1,5 @@
-/* eslint-disable no-undef, global-require, no-undef  */
-
+/* globals AppController */
+/* eslint-disable global-require */
 import WebUI from 'sketch-module-web-view'
 import getSketchState, {
   getPageMetadata,
@@ -66,18 +66,4 @@ export default function(context) {
       },
     },
   })
-
-  // Keeping the panel at the default window level
-  webUI.panel.setLevel(NSNormalWindowLevel)
-  // I found that keeping it at a window level allows me to
-  // interact with Sketch freely without having the debugger
-  // always in the way. I can switch to the debugger when needed
-  // with the native 'Move focus to next window' shortcut.
-  // IDEA: Add level/position/size options to debugger window?
-  // IDEA: Add option to 'dock to bottom' à la chrome devtools?
-  // IDEA: Keeping the window always on top is handy for debuggin the debugger
-
-  // Setting some minSizes until we make it all responsive
-  const minSize = { width: 700, height: 300 }
-  webUI.panel.setContentMinSize(minSize)
 }

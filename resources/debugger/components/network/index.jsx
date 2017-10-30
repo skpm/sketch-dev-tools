@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   Wrapper,
@@ -14,16 +15,18 @@ const mapStateToProps = state => ({
 
 const Network = ({ requests }) => (
   <Wrapper>
-    <TopBar>
-    </TopBar>
+    <TopBar />
     <ScrollingList>
       <ListInner>
-        <ClearLabel>
-          Coming soon
-        </ClearLabel>
+        <ClearLabel>Coming soon</ClearLabel>
+        {requests.length > 0 && <pre>{JSON.stringify(requests, null, 2)}</pre>}
       </ListInner>
     </ScrollingList>
   </Wrapper>
 )
+
+Network.propTypes = {
+  requests: PropTypes.arrayOf(PropTypes.any).isRequired,
+}
 
 export default connect(mapStateToProps)(Network)

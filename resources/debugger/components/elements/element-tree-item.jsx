@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import { css } from 'emotion'
 import QuickLook from './quick-look'
@@ -72,7 +72,7 @@ const ToggleButton = styled.button`
   }
 `
 
-const Info = styled.Button`
+const Info = styled.span`
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -82,8 +82,6 @@ const Info = styled.Button`
   cursor: pointer;
   border-radius: 50%;
   position: relative;
-  border: none;
-  pointer-events: all;
 `
 
 export default class ElementTreeItem extends Component {
@@ -91,7 +89,7 @@ export default class ElementTreeItem extends Component {
     super()
     this.state = {
       expanded: false,
-      quickLook: false
+      quickLook: false,
     }
   }
 
@@ -100,40 +98,28 @@ export default class ElementTreeItem extends Component {
     return (
       <span>
         <ElementClass>{element.class}</ElementClass>
-        {!close &&
-          element.name && <ElementName> {element.name}</ElementName>}
+        {!close && element.name && <ElementName> {element.name}</ElementName>}
       </span>
     )
   }
 
   renderQuickLook() {
-    return this.props.element.id !== '?' && (<Info onClick={(e) =>{
-      if (e.isDefaultPrevented()) {
-        return
-      }
-      this.setState({
-        quickLook: !this.state.quickLook
-      })
-    }}>?{this.state.quickLook && (
-      <QuickLook element={this.props.element} />
-    )}</Info>)
-  }
-
-  propagateClick(e) {
-    var target = ReactDOM.findDOMNode(e.target);
-    if (target.tagName == 'LI') {
-      var toggleButton = target.getElementsByTagName('button')[0];
-      if (toggleButton) {
-        toggleButton.click()
-      }
-    }
-    else if (target.tagName == 'SPAN') {
-      target = target.closest('li');
-      var toggleButton = target.getElementsByTagName('button')[0];
-      if (toggleButton) {
-        toggleButton.click()
-      }
-    }
+    return (
+      this.props.element.id !== '?' && (
+        <Info
+          onClick={e => {
+            if (e.isDefaultPrevented()) {
+              return
+            }
+            this.setState({
+              quickLook: !this.state.quickLook,
+            })
+          }}
+        >
+          ?{this.state.quickLook && <QuickLook element={this.props.element} />}
+        </Info>
+      )
+    )
   }
 
   renderElement() {
@@ -141,10 +127,7 @@ export default class ElementTreeItem extends Component {
 
     if (element.children.length > 0) {
       return (
-        <TreeElement
-          className={this.state.expanded && expandedTree}
-          onClick={(e) => this.propagateClick(e)}
-        >
+        <TreeElement className={this.state.expanded && expandedTree}>
           <ToggleButton
             style={this.state.expanded ? { transform: 'rotate(90deg)' } : {}}
             onClick={() => this.setState({ expanded: !this.state.expanded })}
@@ -153,14 +136,18 @@ export default class ElementTreeItem extends Component {
           </ToggleButton>
           {this.state.expanded ? (
             <span>
-              <WrapElement>&lt;{this.renderElementName()}&gt; {this.renderQuickLook()}</WrapElement>
-              {element.children.map((e) => (
-                <ElementTreeItem key={element.id} element={e} />
+              <WrapElement>
+                &lt;{this.renderElementName()}&gt; {this.renderQuickLook()}
+              </WrapElement>
+              {element.children.map((e, i) => (
+                <ElementTreeItem key={element.id + i} element={e} />
               ))}
               <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
             </span>
           ) : (
-            <WrapElement>&lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}</WrapElement>
+            <WrapElement>
+              &lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}
+            </WrapElement>
           )}
         </TreeElement>
       )
@@ -168,7 +155,9 @@ export default class ElementTreeItem extends Component {
 
     return (
       <TreeElement>
-        <WrapElement>&lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}</WrapElement>
+        <WrapElement>
+          &lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}
+        </WrapElement>
       </TreeElement>
     )
   }
@@ -176,4 +165,13 @@ export default class ElementTreeItem extends Component {
   render() {
     return <Element>{this.renderElement()}</Element>
   }
+}
+
+ElementTreeItem.propTypes = {
+  element: PropTypes.shape({
+    id: PropTypes.string,
+    children: PropTypes.array,
+    class: PropTypes.string,
+    name: PropTypes.string,
+  }).isRequired,
 }
