@@ -9,7 +9,7 @@ import LogValue from '../value/value'
 const Wrapper = styled.li`
   list-style: none;
   background: none white;
-  font-size: 12px;
+  font-size: 13px;
   padding: 0.3rem;
   font-family: Consolas, Menlo, Monaco, 'Lucida Console', monospace;
   flex-direction: row;

@@ -31,8 +31,8 @@ const expandedTree = css`
     top: 2rem;
     bottom: 1rem;
     left: -1rem;
-    width: 0.1rem;
-    background: #bbb;
+    width: 2px;
+    background: #e6e6e6;
   }
 `
 

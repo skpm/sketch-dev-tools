@@ -24,15 +24,28 @@ const Wrapper = styled.div`
   position: fixed;
   right: 0;
   top: 30px;
-  background: white;
+  padding: 8px 8px 40px 8px;
+  background: #f8f8f8;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 30%;
+  max-width: 95%;
   height: calc(100% - 30px);
   overflow: auto;
   color: black;
   text-align: left;
+  font-size: 13px;
   cursor: auto;
   z-index: 10;
+  resize: horizontal;
+  direction: rtl;
+  > * {
+    direction: ltr;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 `
 
 const Overlay = styled.div`

@@ -4,7 +4,6 @@ import styled from 'react-emotion'
 
 export const LogKey = styled.span`
   color: #704cea;
-  padding: 0 0 0 1.2rem;
   user-select: auto;
 `
 
@@ -28,6 +27,10 @@ export const ValueWrapper = styled.ul`
   padding: 0 0 0 1rem;
   list-style: none;
   margin: 0;
+
+  > li {
+    margin-bottom: 4px;
+  }
 `
 
 export const ButtonToggle = styled.button`
@@ -43,6 +46,7 @@ export const ButtonToggle = styled.button`
   height: 1.2rem;
   transition: transform 0.2s;
 
+
   &:before {
     content: ' ';
     position: absolute;
@@ -55,6 +59,7 @@ export const ButtonToggle = styled.button`
     border-style: solid;
     border-width: 0.4rem 0 0.4rem 0.6rem;
     border-color: transparent transparent transparent currentColor;
+    transform: scale(.8)
   }
 
   &.expanded {

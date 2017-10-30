@@ -33,7 +33,7 @@ const Empty = styled.p`
 
 const ElementTree = styled.div`
   flex: 1;
-  padding: 1.5rem;
+  font-size: 13px;
   overflow: auto;
   font-family: Consolas, Menlo, Monaco, 'Lucida Console', monospace;
   height: 100%;

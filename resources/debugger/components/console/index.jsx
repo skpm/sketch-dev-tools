@@ -19,9 +19,9 @@ const mapStateToProps = state => ({
 
 const SearchInput = styled.input`
   margin-top: 5px;
-  width: 20rem;
+  width: 25vw;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 2px 4rem 2px 1rem;
+  padding: 2px .5rem 2px 1rem;
   background: none #fff;
   border-radius: 2px;
   user-select: auto;
