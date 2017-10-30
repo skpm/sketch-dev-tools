@@ -96,7 +96,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     bridgeHandler(props.dispatch)
-    this.navigateToTab = this. navigateToTab.bind(this)
+    this.navigateToTab = this.navigateToTab.bind(this)
   }
 
   componentDidMount() {
