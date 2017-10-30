@@ -7,6 +7,25 @@ import { css } from 'emotion'
 import styled from 'react-emotion'
 import bridgeHandler from '../handler'
 
+const tabs = [
+  {
+    url: '/console',
+    label: 'Console'
+  },
+  {
+    url: '/elements',
+    label: 'Elements'
+  },
+  {
+    url: '/network',
+    label: 'Network'
+  },
+  {
+    url: '/actions',
+    label: 'Actions'
+  }
+]
+
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -77,6 +96,25 @@ class App extends Component {
   constructor(props) {
     super(props)
     bridgeHandler(props.dispatch)
+    this.navigateToTab = this. navigateToTab.bind(this)
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === 'Tab' && event.ctrlKey) {
+        this.navigateToTab(event.shiftKey ? 'prev' : 'next')
+      }
+    })
+  }
+
+  navigateToTab(direction) {
+    const currentTabIndex = tabs.findIndex(t => t.url === this.props.location.pathname)
+    this.props.history.push(tabs[Math.max(
+      Math.min(
+        currentTabIndex + (direction === 'next' ? 1 : -1),
+        tabs.length - 1
+      ),
+    0)].url)
   }
 
   render() {
@@ -84,30 +122,7 @@ class App extends Component {
       <Container>
         <TabBar>
           <ul>
-            <li>
-              <Tab to="/console" activeClassName={selectedTab}>
-                {/* <span>🗄</span> */}
-                <Label>Console</Label>
-              </Tab>
-            </li>
-            <li>
-              <Tab to="/elements" activeClassName={selectedTab}>
-                {/* <span>💎</span> */}
-                <Label>State</Label>
-              </Tab>
-            </li>
-            <li>
-              <Tab to="/network" activeClassName={selectedTab}>
-                {/* <span>🌐</span> */}
-                <Label>Network</Label>
-              </Tab>
-            </li>
-            <li>
-              <Tab to="/actions" activeClassName={selectedTab}>
-                {/* <span>🛎</span> */}
-                <Label>Actions</Label>
-              </Tab>
-            </li>
+            {tabs.map(t => <li><Tab to={t.url} activeClassName={selectedTab}><Label>{t.label}</Label></Tab></li>)}
           </ul>
         </TabBar>
         <TabContent>{this.props.children}</TabContent>
