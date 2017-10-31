@@ -142,6 +142,7 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
   } else if (typeOf === 'function') {
     type = 'Function'
     primitive = 'Function'
+    value = String(value)
   } else if (value === true || value === false) {
     type = 'Boolean'
     primitive = 'Boolean'
