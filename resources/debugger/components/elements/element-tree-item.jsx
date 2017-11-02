@@ -13,6 +13,14 @@ const Element = styled.ul`
 
 const WrapElement = styled.span`
   color: #aaa;
+
+  ${props => props.hasInfo ? `
+    cursor: pointer;
+  ` : ''}
+
+  &:hover {
+    backgroundColor: ${props => props.hasInfo ? '#aaa' : 'transparent'};
+  }
 `
 
 const ElementClass = styled.span`
@@ -48,19 +56,6 @@ const OffsetButtonToggle = styled(ButtonToggle)`
   top: 0.3rem;
 `
 
-const Info = styled.span`
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: #aaa;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 50%;
-  position: relative;
-  line-height: 18px;
-`
-
 export default class ElementTreeItem extends Component {
   constructor() {
     super()
@@ -80,22 +75,21 @@ export default class ElementTreeItem extends Component {
     )
   }
 
-  renderQuickLook() {
+  renderQuickLook(expanded) {
     return (
-      this.props.element.id !== '?' && (
-        <Info
-          onClick={e => {
-            if (e.isDefaultPrevented()) {
-              return
-            }
-            this.setState({
-              quickLook: !this.state.quickLook,
-            })
-          }}
-        >
-          ?{this.state.quickLook && <QuickLook element={this.props.element} />}
-        </Info>
-      )
+      <WrapElement
+        onClick={e => {
+          if (e.isDefaultPrevented() || this.props.element.id === '?') {
+            return
+          }
+          this.setState({
+            quickLook: !this.state.quickLook,
+          })
+        }}
+        hasInfo={this.props.element.id !== '?'}
+      >
+        &lt;{this.renderElementName()}{expanded ? '>' : ' />'} {this.state.quickLook && <QuickLook element={this.props.element} />}
+      </WrapElement>
     )
   }
 
@@ -113,18 +107,14 @@ export default class ElementTreeItem extends Component {
           </OffsetButtonToggle>
           {this.state.expanded ? (
             <span>
-              <WrapElement>
-                &lt;{this.renderElementName()}&gt; {this.renderQuickLook()}
-              </WrapElement>
+              {this.renderQuickLook(true)}
               {element.children.map((e, i) => (
                 <ElementTreeItem key={element.id + i} element={e} />
               ))}
               <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
             </span>
           ) : (
-            <WrapElement>
-              &lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}
-            </WrapElement>
+            this.renderQuickLook(false)
           )}
         </TreeElement>
       )
@@ -132,9 +122,7 @@ export default class ElementTreeItem extends Component {
 
     return (
       <TreeElement>
-        <WrapElement>
-          &lt;{this.renderElementName()} /&gt; {this.renderQuickLook()}
-        </WrapElement>
+        {this.renderQuickLook(false)}
       </TreeElement>
     )
   }
