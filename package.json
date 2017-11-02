@@ -1,6 +1,6 @@
 {
   "name": "@skpm/sketch-debugger",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "files": [
     "debugger.js",
     "shared-actions.js"
