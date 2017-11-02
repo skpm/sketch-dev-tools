@@ -4,6 +4,8 @@
   "commands": [
     {
       "name": "Show debugger",
+      "description": "Open the debugger panel",
+      "icon": "icon.png",
       "identifier": "skpm.debugger.show-debugger",
       "script": "./show-debugger.js",
       "shortcut": "cmd option i"
@@ -27,8 +29,7 @@
   "menu": {
     "title": "⚙️ Debugger",
     "items": [
-      "skpm.debugger.show-debugger",
-      "skpm.debugger.test-log"
+      "skpm.debugger.show-debugger"
     ]
   }
 }

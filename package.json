@@ -19,7 +19,7 @@
   "license": "MIT",
   "scripts": {
     "build": "skpm-build",
-    "prepare": "NODE_ENV=production skpm-build",
+    "prepare": "(rm -rf plugin.sketchplugin/Contents/Resources/_webpack_resources || true) && NODE_ENV=production skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "link": "npm run build && skpm-link",

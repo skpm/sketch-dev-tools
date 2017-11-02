@@ -16,17 +16,15 @@ const Loading = styled.div`
   z-index: 1;
   width: 100%;
   height: 100%;
-  padding: 0 0 0 50%;
   text-align: center;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.8);
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
   color: #aaa;
-  padding-top: 200px;
+  padding-top: 150px;
 `
 
 const Empty = styled.p`
-  margin: 4rem 0 0 -12rem;
-  width: 24rem;
-  padding: 0 0 0 50%;
+  margin-top: 100px;
   text-align: center;
   color: #aaa;
 `

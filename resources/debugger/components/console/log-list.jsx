@@ -110,11 +110,13 @@ const LogList = props => (
 LogList.propTypes = {
   clearTs: PropTypes.number.isRequired,
   showLogTimes: PropTypes.bool.isRequired,
-  logs: PropTypes.arrayOf(PropTypes.shape({
-    type: PropTypes.string,
-    ts: PropTypes.number,
-    values: PropTypes.arrayOf(PropTypes.any)
-  })).isRequired,
+  logs: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      ts: PropTypes.number,
+      values: PropTypes.arrayOf(PropTypes.any),
+    })
+  ).isRequired,
 }
 
 export default connect(mapStateToProps)(LogList)

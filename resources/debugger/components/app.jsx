@@ -10,20 +10,20 @@ import bridgeHandler from '../handler'
 const tabs = [
   {
     url: '/console',
-    label: 'Console'
+    label: 'Console',
   },
   {
     url: '/elements',
-    label: 'Elements'
+    label: 'Elements',
   },
   {
     url: '/network',
-    label: 'Network'
+    label: 'Network',
   },
   {
     url: '/actions',
-    label: 'Actions'
-  }
+    label: 'Actions',
+  },
 ]
 
 const Container = styled.div`
@@ -100,7 +100,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener('keydown', event => {
       if (event.key === 'Tab' && event.ctrlKey) {
         this.navigateToTab(event.shiftKey ? 'prev' : 'next')
       }
@@ -108,13 +108,20 @@ class App extends Component {
   }
 
   navigateToTab(direction) {
-    const currentTabIndex = tabs.findIndex(t => t.url === this.props.location.pathname)
-    this.props.history.push(tabs[Math.max(
-      Math.min(
-        currentTabIndex + (direction === 'next' ? 1 : -1),
-        tabs.length - 1
-      ),
-    0)].url)
+    const currentTabIndex = tabs.findIndex(
+      t => t.url === this.props.location.pathname
+    )
+    this.props.history.push(
+      tabs[
+        Math.max(
+          Math.min(
+            currentTabIndex + (direction === 'next' ? 1 : -1),
+            tabs.length - 1
+          ),
+          0
+        )
+      ].url
+    )
   }
 
   render() {
@@ -122,7 +129,13 @@ class App extends Component {
       <Container>
         <TabBar>
           <ul>
-            {tabs.map(t => <li><Tab to={t.url} activeClassName={selectedTab}><Label>{t.label}</Label></Tab></li>)}
+            {tabs.map(t => (
+              <li key={t.url}>
+                <Tab to={t.url} activeClassName={selectedTab}>
+                  <Label>{t.label}</Label>
+                </Tab>
+              </li>
+            ))}
           </ul>
         </TabBar>
         <TabContent>{this.props.children}</TabContent>

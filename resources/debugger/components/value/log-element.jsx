@@ -46,7 +46,6 @@ export const ButtonToggle = styled.button`
   height: 1.2rem;
   transition: transform 0.2s;
 
-
   &:before {
     content: ' ';
     position: absolute;
@@ -59,7 +58,7 @@ export const ButtonToggle = styled.button`
     border-style: solid;
     border-width: 0.4rem 0 0.4rem 0.6rem;
     border-color: transparent transparent transparent currentColor;
-    transform: scale(.8)
+    transform: scale(0.8);
   }
 
   &.expanded {
@@ -86,7 +85,10 @@ export function HighLighted({ value, search }) {
 
   const firstPart = stringValue.slice(0, index)
   const secondPart = stringValue.slice(index, index + search.length)
-  const thirdPart = stringValue.slice(index + search.length, String(value).length)
+  const thirdPart = stringValue.slice(
+    index + search.length,
+    String(value).length
+  )
 
   return (
     <span>
