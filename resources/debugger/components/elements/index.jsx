@@ -47,6 +47,7 @@ class Elements extends Component {
       <Wrapper>
         <TopBar>
           <ButtonFilter
+            style={{paddingTop: 0}}
             onClick={() => this.props.dispatch(fetchTree())}
             title="Refresh the state"
           >

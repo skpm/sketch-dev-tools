@@ -42,27 +42,23 @@ export const ButtonToggle = styled.button`
   text-indent: -100rem;
   padding: 0;
   margin: 0.2rem 0 0;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1rem;
+  height: 1rem;
   transition: transform 0.2s;
+  ${props => (props.expanded ? 'transform: rotate(90deg);' : '')}
 
   &:before {
     content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
-    margin: -0.4rem 0 0 -0.3rem;
+    margin: -0.333rem 0 0 -0.25rem;
     width: 0;
     height: 0;
     opacity: 0.5;
     border-style: solid;
-    border-width: 0.4rem 0 0.4rem 0.6rem;
+    border-width: 0.333rem 0 0.333rem 0.5rem;
     border-color: transparent transparent transparent currentColor;
-    transform: scale(0.8);
-  }
-
-  &.expanded {
-    transform: rotate(90deg);
   }
 `
 

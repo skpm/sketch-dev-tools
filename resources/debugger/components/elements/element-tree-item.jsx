@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import { css } from 'emotion'
 import QuickLook from './quick-look'
+import { ButtonToggle } from '../value/log-element'
 
 const Element = styled.ul`
   padding: 0 0 0 2rem;
@@ -41,35 +42,10 @@ const TreeElement = styled.li`
   padding: 0.5rem 0;
 `
 
-const ToggleButton = styled.button`
+const OffsetButtonToggle = styled(ButtonToggle)`
   position: absolute;
-  top: 0.3rem;
   left: -1.5rem;
-  text-indent: -999px;
-  overflow: hidden;
-  color: inherit;
-  border: 0 none;
-  background: none transparent;
-  text-indent: -100rem;
-  padding: 0;
-  margin: 0.2rem 0 0;
-  width: 1.2rem;
-  height: 1.2rem;
-  transition: transform 0.2s;
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -0.4rem 0 0 -0.3rem;
-    width: 0;
-    opacity: 0.5;
-    height: 0;
-    border-style: solid;
-    border-width: 0.4rem 0 0.4rem 0.6rem;
-    border-color: transparent transparent transparent currentColor;
-  }
+  top: 0.3rem;
 `
 
 const Info = styled.span`
@@ -129,12 +105,12 @@ export default class ElementTreeItem extends Component {
     if (element.children.length > 0) {
       return (
         <TreeElement className={this.state.expanded && expandedTree}>
-          <ToggleButton
-            style={this.state.expanded ? { transform: 'rotate(90deg)' } : {}}
+          <OffsetButtonToggle
+            expanded={this.state.expanded}
             onClick={() => this.setState({ expanded: !this.state.expanded })}
           >
             &gt;
-          </ToggleButton>
+          </OffsetButtonToggle>
           {this.state.expanded ? (
             <span>
               <WrapElement>

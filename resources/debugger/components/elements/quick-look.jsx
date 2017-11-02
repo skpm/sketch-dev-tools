@@ -53,11 +53,11 @@ const Wrapper = styled.div`
 
 const Overlay = styled.div`
   position: fixed;
-  width: calc(100vw - 80px);
-  height: 100vh;
+  width: 100vw;
+  height: calc(100vh - 30px);
   cursor: auto;
-  top: 0;
-  left: 80px;
+  top: 30px;
+  left: 0;
   z-index: 8;
 `
 

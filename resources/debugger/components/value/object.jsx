@@ -23,7 +23,7 @@ export default class LogObject extends Component {
       <span>
         <ButtonToggle
           onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-          className={!this.state.collapsed && 'expanded'}
+          expanded={!this.state.collapsed}
         >
           &gt;
         </ButtonToggle>
