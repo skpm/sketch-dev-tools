@@ -82,6 +82,7 @@ const Info = styled.span`
   cursor: pointer;
   border-radius: 50%;
   position: relative;
+  line-height: 18px;
 `
 
 export default class ElementTreeItem extends Component {
