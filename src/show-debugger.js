@@ -28,7 +28,7 @@ export default function(context) {
     onlyShowCloseButton: true,
     hideTitleBar: false,
     shouldKeepAround: true,
-    title: 'Debugger',
+    title: 'DevTools',
     resizable: true,
     onPanelClose() {
       AppController.sharedInstance()

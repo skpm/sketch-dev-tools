@@ -3,16 +3,16 @@
   "bundleVersion": 1,
   "commands": [
     {
-      "name": "Show debugger",
-      "description": "Open the debugger panel",
+      "name": "Show DevTools",
+      "description": "Open the DevTools panel",
       "icon": "icon.png",
-      "identifier": "skpm.debugger.show-debugger",
+      "identifier": "skpm.dev-tools.show-dev-tools",
       "script": "./show-debugger.js",
       "shortcut": "cmd option i"
     },
     {
       "name": "Catch all actions",
-      "identifier": "skpm.debugger.catch-all-actions",
+      "identifier": "skpm.dev-tools.catch-all-actions",
       "script": "./catch-all-actions.js",
       "handlers": {
         "actions": {
@@ -22,15 +22,12 @@
     },
     {
       "name": "test log",
-      "identifier": "skpm.debugger.test-log",
+      "identifier": "skpm.dev-tools.test-log",
       "script": "./test-log.js"
     }
   ],
   "menu": {
-    "title": "⚙️ Debugger",
-    "items": [
-      "skpm.debugger.show-debugger",
-      "skpm.debugger.test-log"
-    ]
+    "title": "⚙️ DevTools",
+    "items": ["skpm.dev-tools.show-dev-tools"]
   }
 }

@@ -2,13 +2,13 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
   <channel>
     <item>
-      <enclosure url="https://github.com/skpm/sketch-debugger/releases/download/v0.2.0/plugin.sketchplugin.zip" sparkle:version="0.2.0"/>
+      <enclosure url="https://github.com/skpm/sketch-dev-tools/releases/download/v0.2.0/plugin.sketchplugin.zip" sparkle:version="0.2.0"/>
     </item>
     <item>
-      <enclosure url="https://github.com/skpm/sketch-debugger/releases/download/v0.1.6/plugin.sketchplugin.zip" sparkle:version="0.1.6"/>
+      <enclosure url="https://github.com/skpm/sketch-dev-tools/releases/download/v0.1.6/plugin.sketchplugin.zip" sparkle:version="0.1.6"/>
     </item>
     <item>
-      <enclosure url="https://github.com/skpm/sketch-debugger/releases/download/v0.1.5/plugin.sketchplugin.zip" sparkle:version="0.1.5"/>
+      <enclosure url="https://github.com/skpm/sketch-dev-tools/releases/download/v0.1.5/plugin.sketchplugin.zip" sparkle:version="0.1.5"/>
     </item>
   </channel>
 </rss>
