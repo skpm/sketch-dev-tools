@@ -8,7 +8,7 @@
       "icon": "icon.png",
       "identifier": "skpm.dev-tools.show-dev-tools",
       "script": "./show-debugger.js",
-      "shortcut": "cmd option i"
+      "shortcut": "cmd option j"
     },
     {
       "name": "Catch all actions",
