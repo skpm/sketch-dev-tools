@@ -35,12 +35,7 @@ export const ClearLabel = styled.li`
   color: #aaa;
   text-align: center;
   font-size: 13px;
-  margin-bottom: -100px;
-  position: absolute;
-  margin: auto;
-  left: 0;
-  right: 0;
-  margin-top: -70px;
+  margin: 10px 0;
 `
 
 export const Timestamp = styled.span`
@@ -49,7 +44,7 @@ export const Timestamp = styled.span`
 `
 
 const List = styled.div`
-  height: 100vh;
+  height: calc(100vh - 30px);
   padding: 0;
   overflow-y: scroll;
   display: flex;
@@ -71,7 +66,11 @@ export class ScrollingList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this._refs.list && prevProps.items.length !== this.props.items.length) {
+    if (
+      this._refs.list &&
+      prevProps.items &&
+      prevProps.items.length !== this.props.items.length
+    ) {
       if (this.state.autoScroll) {
         this._refs.list.scrollTop = this._refs.list.scrollHeight
       } else {
@@ -110,5 +109,5 @@ export class ScrollingList extends Component {
 }
 
 ScrollingList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  items: PropTypes.arrayOf(PropTypes.any),
 }

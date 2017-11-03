@@ -6,6 +6,7 @@ import LogArray from './array'
 import LogString from './string'
 import LogNumber from './number'
 import LogEmpty from './empty'
+import LogError from './error'
 
 export default function Value({ value, logKey, search }) {
   switch (value.primitive) {
@@ -44,6 +45,9 @@ export default function Value({ value, logKey, search }) {
           search={search}
         />
       )
+
+    case 'Error':
+      return <LogError error={value.value} logKey={logKey} search={search} />
 
     case 'Unknown':
     default:

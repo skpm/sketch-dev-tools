@@ -1,4 +1,9 @@
-import { ADD_LOG, CLEAR_LOGS } from '../../../../shared-actions'
+import {
+  ADD_LOG,
+  CLEAR_LOGS,
+  GROUP,
+  GROUP_END,
+} from '../../../../shared-actions'
 
 const SET_SEARCH = 'logs/SET_SEARCH'
 const SET_TYPES = 'logs/SET_TYPES'
@@ -18,6 +23,7 @@ const initialState = {
   selectedLog: null,
   selectedLogValue: null,
   showLogTimes: false,
+  groups: {},
 }
 
 const handlers = {}
@@ -31,7 +37,10 @@ export const addLog = log => ({
 
 handlers[ADD_LOG] = (state, { payload }) => ({
   ...state,
-  logs: state.logs.concat(payload.log),
+  logs: state.logs.concat({
+    ...payload.log,
+    group: state.groups[payload.log.plugin] || 0,
+  }),
 })
 
 export const clearLogs = () => ({
@@ -92,6 +101,36 @@ export const setShowLogTimes = show => ({
 handlers[SET_SHOW_LOG_TIMES] = (state, { payload }) => ({
   ...state,
   showLogTimes: payload.show,
+})
+
+export const group = ({ plugin }) => ({
+  type: GROUP,
+  payload: {
+    plugin,
+  },
+})
+
+handlers[GROUP] = (state, { payload }) => ({
+  ...state,
+  groups: {
+    ...state.groups,
+    [payload.plugin]: (state.groups[payload.plugin] || 0) + 1,
+  },
+})
+
+export const groupEnd = ({ plugin }) => ({
+  type: GROUP_END,
+  payload: {
+    plugin,
+  },
+})
+
+handlers[GROUP_END] = (state, { payload }) => ({
+  ...state,
+  groups: {
+    ...state.groups,
+    [payload.plugin]: Math.max((state.groups[payload.plugin] || 0) - 1, 0),
+  },
 })
 
 export default function(state = initialState, action) {

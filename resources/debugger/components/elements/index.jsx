@@ -63,7 +63,7 @@ class Elements extends Component {
           </ElementTree>
         ) : (
           <Empty>
-            No Elements found! We will keep looking, just to be sure ;)
+            No Sketch document found.
           </Empty>
         )}
       </Wrapper>

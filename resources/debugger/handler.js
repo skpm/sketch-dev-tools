@@ -8,9 +8,11 @@ import {
   ADD_REQUEST,
   SET_RESPONSE,
   ADD_ACTION,
+  GROUP,
+  GROUP_END,
 } from '../../shared-actions'
 import { addAction } from './redux/ducks/actions'
-import { addLog, clearLogs } from './redux/ducks/logs'
+import { addLog, clearLogs, group, groupEnd } from './redux/ducks/logs'
 import {
   setTree,
   setLayerMetadata,
@@ -42,6 +44,10 @@ export default function(dispatch) {
         return dispatch(setResponse(jsonData.payload))
       case ADD_ACTION:
         return dispatch(addAction(jsonData.payload))
+      case GROUP:
+        return dispatch(group(jsonData.payload))
+      case GROUP_END:
+        return dispatch(groupEnd(jsonData.payload))
       default:
         return console.error(
           new Error('unknown action received from the bridge')

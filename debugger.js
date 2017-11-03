@@ -1,4 +1,4 @@
-/* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign, no-var, vars-on-top, prefer-template, prefer-arrow-callback, func-names */
+/* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign, no-var, vars-on-top, prefer-template, prefer-arrow-callback, func-names, prefer-destructuring, object-shorthand */
 var remoteWebview = require('sketch-module-web-view/remote')
 
 module.exports.identifier = 'skpm.debugger'
@@ -14,13 +14,54 @@ function toArray(object) {
   return arr
 }
 
-function prepareArrayDeep(array, skipMocha) {
+module.exports.prepareStackTrace = function(stackTrace) {
+  var stack = stackTrace.split('\n')
+  stack = stack.map(s => s.replace(/\sg/, ''))
+
+  // pop the last 2 frames as it's ours here
+  stack.splice(0, 2)
+
+  stack = stack.map(function(entry) {
+    var fn = null
+    var file = null
+    var line = null
+    var column = null
+    var split = entry.split('@')
+    fn = split[0]
+    file = split[1]
+
+    if (file) {
+      split = file.split(':')
+      file = split[0]
+      line = split[1]
+      column = split[2]
+    }
+
+    var filePath = file
+
+    if (file) {
+      file = file.split('/')
+      file = file[file.length - 1]
+    }
+    return {
+      fn: fn,
+      file: file,
+      filePath: filePath,
+      line: line,
+      column: column,
+    }
+  })
+
+  return stack
+}
+
+function prepareArray(array, skipMocha) {
   return array.map(function(i) {
     return module.exports.prepareValue(i, skipMocha)
   })
 }
 
-module.exports.prepareObjectDeep = function(object, skipMocha) {
+module.exports.prepareObject = function(object, skipMocha) {
   const deep = {}
   Object.keys(object).forEach(key => {
     deep[key] = module.exports.prepareValue(object[key], skipMocha)
@@ -81,10 +122,15 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
   if (value instanceof Error) {
     type = 'Error'
     primitive = 'Error'
+    value = {
+      message: value.message,
+      name: value.name,
+      stack: module.exports.prepareStackTrace(value.stack),
+    }
   } else if (Array.isArray(value)) {
     type = 'Array'
     primitive = 'Array'
-    value = prepareArrayDeep(value, skipMocha)
+    value = prepareArray(value, skipMocha)
   } else if (value === null || value === undefined || Number.isNaN(value)) {
     type = 'Empty'
     primitive = 'Empty'
@@ -101,14 +147,14 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
         type === '__NSCFDictionary'
       ) {
         primitive = 'Object'
-        value = module.exports.prepareObjectDeep(Object(value), skipMocha)
+        value = module.exports.prepareObject(Object(value), skipMocha)
       } else if (
         type === 'NSArray' ||
         type === 'NSMutableArray' ||
         type === '__NSArrayM'
       ) {
         primitive = 'Array'
-        value = prepareArrayDeep(toArray(value), skipMocha)
+        value = prepareArray(toArray(value), skipMocha)
       } else if (
         type === 'NSString' ||
         type === '__NSCFString' ||
@@ -137,7 +183,7 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
     } else {
       type = 'Object'
       primitive = 'Object'
-      value = module.exports.prepareObjectDeep(value, skipMocha)
+      value = module.exports.prepareObject(value, skipMocha)
     }
   } else if (typeOf === 'function') {
     type = 'Function'

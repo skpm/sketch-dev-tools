@@ -1,5 +1,5 @@
 /* globals NSApp MSDocumentWindow NSPredicate */
-import { prepareObjectDeep } from '../debugger'
+import { prepareObject } from '../debugger'
 
 function toArray(object) {
   if (Array.isArray(object)) {
@@ -108,7 +108,7 @@ export function getPageMetadata(pageId) {
   delete dict['<class>']
   delete dict.name
 
-  return prepareObjectDeep(dict, true)
+  return prepareObject(dict, true)
 }
 
 export function getLayerMetadata(layerId, pageId) {
@@ -134,7 +134,7 @@ export function getLayerMetadata(layerId, pageId) {
   delete dict['<class>']
   delete dict.name
 
-  return prepareObjectDeep(dict, true)
+  return prepareObject(dict, true)
 }
 
 export default function getElementTree() {
