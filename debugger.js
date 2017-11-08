@@ -22,25 +22,19 @@ module.exports.prepareStackTrace = function(stackTrace) {
   stack.splice(0, 2)
 
   stack = stack.map(function(entry) {
-    var fn = null
-    var file = null
     var line = null
     var column = null
+    var file = null
     var split = entry.split('@')
-    fn = split[0]
-    file = split[1]
+    var fn = split[0]
+    var filePath = split[1]
 
-    if (file) {
-      split = file.split(':')
-      file = split[0]
+    if (filePath) {
+      split = filePath.split(':')
+      filePath = split[0]
       line = split[1]
       column = split[2]
-    }
-
-    var filePath = file
-
-    if (file) {
-      file = file.split('/')
+      file = filePath.split('/')
       file = file[file.length - 1]
     }
     return {
