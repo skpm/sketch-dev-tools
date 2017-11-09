@@ -1,7 +1,10 @@
 {
   "name": "@skpm/sketch-debugger",
   "version": "0.2.1",
-  "files": ["debugger.js", "shared-actions.js"],
+  "files": [
+    "debugger.js",
+    "shared-actions.js"
+  ],
   "engines": {
     "sketch": ">=3.0"
   },
@@ -16,17 +19,14 @@
   "license": "MIT",
   "scripts": {
     "build": "skpm-build",
-    "prepare":
-      "(rm -rf sketch-dev-tools.sketchplugin/Contents/Resources/_webpack_resources || true) && NODE_ENV=production skpm-build",
+    "prepare": "(rm -rf sketch-dev-tools.sketchplugin/Contents/Resources/_webpack_resources || true) && NODE_ENV=production skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "link": "npm run build && skpm-link",
     "lint-staged": "lint-staged",
     "lint": "eslint --quiet --ignore-path=.gitignore .",
-    "prettier:base":
-      "prettier --single-quote --trailing-comma es5 --no-semi --write",
-    "prettify":
-      "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
+    "prettier:base": "prettier --single-quote --trailing-comma es5 --no-semi --write",
+    "prettify": "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
   },
   "devDependencies": {
     "@skpm/builder": "^0.1.6",
@@ -60,8 +60,12 @@
   "dependencies": {
     "sketch-module-web-view": "^0.2.6"
   },
-  "resources": ["resources/webview.js"],
-  "pre-commit": ["lint-staged"],
+  "resources": [
+    "resources/webview.js"
+  ],
+  "pre-commit": [
+    "lint-staged"
+  ],
   "lint-staged": {
     "*.js": [
       "npm run prettier:base",
