@@ -1,10 +1,7 @@
 {
   "name": "@skpm/sketch-debugger",
   "version": "0.2.2",
-  "files": [
-    "debugger.js",
-    "shared-actions.js"
-  ],
+  "files": ["debugger.js", "shared-actions.js"],
   "engines": {
     "sketch": ">=3.0"
   },
@@ -19,17 +16,20 @@
   "license": "MIT",
   "scripts": {
     "build": "skpm-build",
-    "prepare": "(rm -rf sketch-dev-tools.sketchplugin/Contents/Resources/_webpack_resources || true) && NODE_ENV=production skpm-build",
+    "prepare":
+      "(rm -rf sketch-dev-tools.sketchplugin/Contents/Resources/_webpack_resources || true) && NODE_ENV=production skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
     "link": "npm run build && skpm-link",
     "lint-staged": "lint-staged",
     "lint": "eslint --quiet --ignore-path=.gitignore .",
-    "prettier:base": "prettier --single-quote --trailing-comma es5 --no-semi --write",
-    "prettify": "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
+    "prettier:base":
+      "prettier --single-quote --trailing-comma es5 --no-semi --write",
+    "prettify":
+      "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
   },
   "devDependencies": {
-    "@skpm/builder": "^0.1.6",
+    "@skpm/builder": "^0.2.0",
     "@skpm/extract-loader": "^1.0.1",
     "babel-plugin-emotion": "^8.0.9",
     "css-loader": "^0.28.7",
@@ -48,8 +48,8 @@
     "pre-commit": "^1.2.2",
     "prettier": "^1.7.4",
     "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
     "react-emotion": "^8.0.9",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
@@ -60,12 +60,8 @@
   "dependencies": {
     "sketch-module-web-view": "^0.2.6"
   },
-  "resources": [
-    "resources/webview.js"
-  ],
-  "pre-commit": [
-    "lint-staged"
-  ],
+  "resources": ["resources/webview.js"],
+  "pre-commit": ["lint-staged"],
   "lint-staged": {
     "*.js": [
       "npm run prettier:base",
