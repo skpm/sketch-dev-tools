@@ -28,7 +28,7 @@ export default function(context) {
     onlyShowCloseButton: true,
     hideTitleBar: false,
     shouldKeepAround: true,
-    title: 'DevTools',
+    title: 'Sketch DevTools',
     resizable: true,
     onPanelClose() {
       AppController.sharedInstance()
