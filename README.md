@@ -25,9 +25,7 @@
 
 ## Usage
 
-This only works with [`skpm`](https://github.com/skpm/skpm).
-
-To show logs in the debugger, you need to use `console` (as apposed to `log` directly).
+If you want show some proper logs in the devTolls, you need to use `console` (as apposed to `log` directly). `console` is polyfilled by [`skpm`](https://github.com/skpm/skpm) automatically.
 
 You might notice performance issues when the debugger is opened, that's because it's listening to all actions.
 
