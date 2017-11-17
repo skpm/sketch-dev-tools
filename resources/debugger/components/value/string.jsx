@@ -17,7 +17,7 @@ export default function LogString({ logKey, string, search }) {
         </span>
       )}
       <LogValue>
-        <HighLighted search={search} value={JSON.stringify(string)} />
+        <HighLighted search={search} value={string} />
       </LogValue>
     </span>
   )

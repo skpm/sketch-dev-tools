@@ -1,6 +1,6 @@
 {
   "name": "@skpm/sketch-debugger",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "files": [
     "debugger.js",
     "shared-actions.js"
@@ -32,6 +32,7 @@
     "@skpm/builder": "^0.2.0",
     "@skpm/extract-loader": "^1.0.1",
     "babel-plugin-emotion": "^8.0.9",
+    "cocoascript-class": "^0.1.2",
     "css-loader": "^0.28.7",
     "emotion": "^8.0.9",
     "eslint": "^4.9.0",

@@ -54,7 +54,7 @@ export default function Value({ value, logKey, search }) {
       console.log('unknown value: ', value)
       return (
         <LogString
-          string={String(value.value)}
+          string={JSON.stringify(String(value.value))}
           logKey={logKey}
           search={search}
         />

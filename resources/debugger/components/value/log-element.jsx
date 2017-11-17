@@ -45,9 +45,7 @@ export const ButtonToggle = styled.button`
   width: 1rem;
   height: 1rem;
   transition: transform 0.2s;
-  ${props => (props.expanded ? 'transform: rotate(90deg);' : '')}
-
-  &:before {
+  ${props => (props.expanded ? 'transform: rotate(90deg);' : '')} &:before {
     content: ' ';
     position: absolute;
     top: 50%;
@@ -65,12 +63,17 @@ export const ButtonToggle = styled.button`
 const HighLight = styled.span`
   background: yellow;
   color: black;
+  white-space: pre-wrap;
+`
+
+const WithLineBreak = styled.span`
+  white-space: pre-wrap;
 `
 
 export function HighLighted({ value, search }) {
   const stringValue = String(value)
   if (!search) {
-    return stringValue
+    return <WithLineBreak>{stringValue}</WithLineBreak>
   }
 
   const index = stringValue.toLowerCase().indexOf(search.toLowerCase())
@@ -88,9 +91,9 @@ export function HighLighted({ value, search }) {
 
   return (
     <span>
-      {firstPart}
+      <WithLineBreak>{firstPart}</WithLineBreak>
       <HighLight>{secondPart}</HighLight>
-      {thirdPart}
+      <WithLineBreak>{thirdPart}</WithLineBreak>
     </span>
   )
 }

@@ -9,10 +9,16 @@ import {
   SET_TREE,
   SET_PAGE_METADATA,
   SET_LAYER_METADATA,
+  ADD_LOG,
 } from '../shared-actions'
-import { identifier } from '../debugger'
+import { identifier, sendToDebugger, prepareValue } from '../debugger'
+import startListening from './listen-to-logs'
+
+const logRegex = new RegExp(`^${console._skpmPrefix}`)
 
 export default function(context) {
+  let stopListening
+
   // enabled listening to all the actions
   AppController.sharedInstance()
     .pluginManager()
@@ -34,6 +40,10 @@ export default function(context) {
       AppController.sharedInstance()
         .pluginManager()
         .setWilcardsEnabled(false)
+
+      if (stopListening) {
+        stopListening()
+      }
     },
     handlers: {
       getSketchState() {
@@ -74,4 +84,25 @@ export default function(context) {
   if (process.env.NODE_ENV === 'production') {
     webUI.panel.setLevel(NSNormalWindowLevel)
   }
+
+  // start listening to all the logs
+  stopListening = startListening(text => {
+    let logs = text.split(' «Plugin Output»\n')
+    logs.pop()
+
+    // filter out the one we handle with `console`
+    logs = logs.filter(l => !logRegex.test(l))
+
+    if (!logs.length) {
+      return
+    }
+
+    const payload = {
+      ts: Date.now(),
+      type: 'log',
+      values: logs.map(prepareValue),
+    }
+
+    sendToDebugger(ADD_LOG, payload)
+  })
 }

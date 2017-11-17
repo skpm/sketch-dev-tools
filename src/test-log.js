@@ -16,4 +16,5 @@ export default function(context) {
   console.log(42)
   console.log(context.document)
   console.log(new Error('error test'))
+  log('test from a normal log') // eslint-disable-line
 }
