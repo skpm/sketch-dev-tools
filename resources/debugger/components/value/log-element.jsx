@@ -64,10 +64,12 @@ const HighLight = styled.span`
   background: yellow;
   color: black;
   white-space: pre-wrap;
+  user-select: auto;
 `
 
 const WithLineBreak = styled.span`
   white-space: pre-wrap;
+  user-select: auto;
 `
 
 export function HighLighted({ value, search }) {
