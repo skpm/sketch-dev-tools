@@ -145,7 +145,8 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
       } else if (
         type === 'NSArray' ||
         type === 'NSMutableArray' ||
-        type === '__NSArrayM'
+        type === '__NSArrayM' ||
+        type === '__NSSingleObjectArrayI'
       ) {
         primitive = 'Array'
         value = prepareArray(toArray(value), skipMocha)
