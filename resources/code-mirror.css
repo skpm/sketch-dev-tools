@@ -1,0 +1,81 @@
+.CodeMirror * {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/*
+    Made with colours from Highlight.js.
+    Who in turn got them from Base16.
+    https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow.css
+*/
+
+.CodeMirror {
+  background: #fff;
+  color: #444;
+}
+
+div.CodeMirror-selected {
+  background: #e0e0e0 !important;
+}
+
+.CodeMirror-gutters {
+  background: #fff;
+  border-right: 0;
+}
+
+.CodeMirror-linenumber {
+  color: #b4b7b4;
+}
+
+.CodeMirror-cursor {
+  border-left: 1px solid #969896 !important;
+}
+
+span.cm-comment {
+  color: #8e908c;
+}
+span.cm-atom {
+  color: #b294bb;
+}
+span.cm-number {
+  color: #f5871f;
+}
+
+span.cm-property,
+span.cm-attribute {
+  color: #444;
+}
+span.cm-keyword {
+  color: #8959a8;
+}
+span.cm-string {
+  color: #718c00;
+}
+
+span.cm-variable {
+  color: #444;
+}
+span.cm-variable-2 {
+  color: #444;
+}
+span.cm-def {
+  color: #4271ae;
+}
+span.cm-error {
+  background: #c66;
+  color: #969896;
+}
+span.cm-bracket {
+  color: #282a2e;
+}
+span.cm-tag {
+  color: #c66;
+}
+span.cm-link {
+  color: #b294bb;
+}
+
+.CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}

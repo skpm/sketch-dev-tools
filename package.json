@@ -29,10 +29,12 @@
     "prettify": "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
   },
   "devDependencies": {
+    "@babel/standalone": "^7.0.0-beta.32",
     "@skpm/builder": "^0.2.0",
     "@skpm/extract-loader": "^1.0.1",
     "babel-plugin-emotion": "^8.0.9",
     "cocoascript-class": "^0.1.2",
+    "codemirror": "^5.31.0",
     "css-loader": "^0.28.7",
     "emotion": "^8.0.9",
     "eslint": "^4.9.0",
@@ -50,6 +52,7 @@
     "prettier": "^1.7.4",
     "prop-types": "^15.6.0",
     "react": "^16.1.0",
+    "react-codemirror": "^1.0.0",
     "react-dom": "^16.1.0",
     "react-emotion": "^8.0.9",
     "react-redux": "^5.0.6",

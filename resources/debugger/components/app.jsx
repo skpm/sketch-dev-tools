@@ -17,6 +17,10 @@ const tabs = [
     label: 'Elements',
   },
   {
+    url: '/playground',
+    label: 'Playground',
+  },
+  {
     url: '/network',
     label: 'Network',
   },
