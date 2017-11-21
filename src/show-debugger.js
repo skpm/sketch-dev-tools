@@ -14,7 +14,7 @@ import {
 } from '../shared-actions'
 import { identifier, sendToDebugger, prepareValue } from '../debugger'
 import startListening from './listen-to-logs'
-import { runScript, clearScriptsCache } from './run-script'
+import { runScript, clearScriptsCache, runCommand } from './run-script'
 
 const logRegex = new RegExp(`^${console._skpmPrefix}`)
 
@@ -85,6 +85,19 @@ export default function(context) {
             name: SET_SCRIPT_RESULT,
             payload: {
               result: prepareValue(result),
+              id: runId,
+            },
+          })})`
+        )
+      },
+
+      onRunCommand(command, runId) {
+        const { err, result } = runCommand(command)
+        webUI.eval(
+          `sketchBridge(${JSON.stringify({
+            name: SET_SCRIPT_RESULT,
+            payload: {
+              result: prepareValue(err || result || 'done'),
               id: runId,
             },
           })})`

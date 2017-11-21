@@ -8,7 +8,11 @@ import Codemirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 // import 'codemirror/addon/lint/lint'
 
-import { setScriptValue, runScript } from '../../redux/ducks/playground'
+import {
+  setScriptValue,
+  runScript,
+  runCommand,
+} from '../../redux/ducks/playground'
 import { Wrapper, TopBar, ButtonFilter } from '../list-element'
 import { Dumb as LogList } from '../console/log-list'
 
@@ -121,6 +125,29 @@ const EditorWrapper = styled(SplitPanel)`
   }
 `
 
+const WrappedLogList = styled(LogList)`
+  height: calc(100% - 20px);
+  position: relative;
+`
+
+const Input = styled.input`
+  width: 100%;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  height: 20px;
+  user-select: auto;
+  padding-left: 20px;
+  outline: none;
+  color: #444;
+`
+
+const BashIcon = styled.span`
+  position: absolute;
+  bottom: 2px;
+  left: 6px;
+  color: #444;
+`
+
 const Playground = ({
   currentScript,
   dispatch,
@@ -144,27 +171,39 @@ const Playground = ({
         options={codeMirrorOptions}
         onChange={text => dispatch(setScriptValue(text))}
       />
-      <LogList
-        logs={
-          result
-            ? logs.concat({
-                ts: Date.now(),
-                group: 0,
-                plugin: '',
-                type: 'log',
-                values: [result],
-              })
-            : logs
-        }
-        search=""
-        showLogTimes={false}
-        types={{
-          log: true,
-          info: true,
-          warn: true,
-          error: true,
-        }}
-      />
+      <div style={{ height: '100%' }}>
+        <WrappedLogList
+          logs={
+            result
+              ? logs.concat({
+                  ts: Date.now(),
+                  group: 0,
+                  plugin: '',
+                  type: 'log',
+                  values: [result],
+                })
+              : logs
+          }
+          search=""
+          showLogTimes={false}
+          types={{
+            log: true,
+            info: true,
+            warn: true,
+            error: true,
+          }}
+        />
+        <Input
+          onKeyDown={e => {
+            // enter
+            if (e.keyCode === 13) {
+              e.preventDefault()
+              dispatch(runCommand(e.currentTarget.value, runId))
+            }
+          }}
+        />
+        <BashIcon>›</BashIcon>
+      </div>
     </EditorWrapper>
     {loading && (
       <LoadingBarContainer>

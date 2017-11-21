@@ -16,6 +16,10 @@ export function clearScriptsCache() {
   )
 }
 
+export function runCommand(command) {
+  return exec(`cd "${PATH_TO_BUNDLE}" && ${command}`)
+}
+
 export function runScript(rawScript) {
   // BCDefaultsSetValueForKey([inputField string], ScriptEditorLastRunKey);
   const errorPointer = MOPointer.alloc().init()
@@ -38,7 +42,7 @@ export function runScript(rawScript) {
       return errorPointer
     }
 
-    const error = exec(
+    const { error } = exec(
       `cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`
     )
     if (error) {

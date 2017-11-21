@@ -3,6 +3,7 @@ import { SET_SCRIPT_RESULT } from '../../../../shared-actions'
 const CLEAR_CACHE = 'playground/CLEAR_CACHE'
 const RUN_SCRIPT = 'playground/RUN_SCRIPT'
 const SET_SCRIPT_VALUE = 'playground/SET_SCRIPT_VALUE'
+const RUN_COMMAND = 'playground/RUN_COMMAND'
 
 const initialState = {
   currentScript: 'console.log(context)',
@@ -77,6 +78,26 @@ export const clearCache = () => ({
   type: CLEAR_CACHE,
   meta: {
     sketch: ['clearScriptsCache'],
+  },
+})
+
+export const runCommand = (command, runId) => ({
+  type: RUN_COMMAND,
+  payload: {
+    runId: runId + 1,
+  },
+  meta: {
+    sketch: ['onRunCommand', command, runId + 1],
+  },
+})
+
+handlers[RUN_COMMAND] = (state, { payload }) => ({
+  ...state,
+  loading: true,
+  runId: payload.runId,
+  timestamp: {
+    start: Date.now(),
+    end: null,
   },
 })
 

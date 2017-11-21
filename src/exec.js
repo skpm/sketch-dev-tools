@@ -28,8 +28,18 @@ export default function exec(command) {
         NSUTF8StringEncoding
       )
     }
-    return message
+    return { err: message, result: undefined }
   }
 
-  return undefined
+  if (data != null && data.length()) {
+    return {
+      err: undefined,
+      result: NSString.alloc().initWithData_encoding_(
+        data,
+        NSUTF8StringEncoding
+      ),
+    }
+  }
+
+  return { err: undefined, result: undefined }
 }
