@@ -8,7 +8,11 @@ const initialState = {
   currentScript: 'console.log(context)',
   loading: false,
   runId: 0,
-  result: '',
+  result: undefined,
+  timestamp: {
+    start: null,
+    end: null,
+  },
 }
 
 const handlers = {}
@@ -39,6 +43,10 @@ handlers[RUN_SCRIPT] = (state, { payload }) => ({
   ...state,
   loading: true,
   runId: payload.runId,
+  timestamp: {
+    start: Date.now(),
+    end: null,
+  },
 })
 
 export const setScriptResult = ({ id, result }) => ({
@@ -58,6 +66,10 @@ handlers[SET_SCRIPT_RESULT] = (state, { payload }) => {
     ...state,
     result: payload.result,
     loading: false,
+    timestamp: {
+      ...state.timestamp,
+      end: Date.now(),
+    },
   }
 }
 

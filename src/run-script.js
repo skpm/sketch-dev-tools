@@ -9,7 +9,11 @@ const PATH_TO_BUNDLE = context.plugin
 const SCRIPTS_PATH = `${PATH_TO_BUNDLE}/.scripts`
 
 export function clearScriptsCache() {
-  exec(`rm -rf "${SCRIPTS_PATH}" && mkdir -r "${SCRIPTS_PATH}"`)
+  exec(
+    `rm -rf "${SCRIPTS_PATH}" && mkdir -r "${SCRIPTS_PATH}" && touch "${
+      SCRIPTS_PATH
+    }/.gitkeep"`
+  )
 }
 
 export function runScript(rawScript) {
@@ -30,20 +34,15 @@ export function runScript(rawScript) {
       NSUTF8StringEncoding,
       errorPointer
     )
-
     if (errorPointer.value()) {
       return errorPointer
     }
 
-    try {
-      const error = exec(
-        `cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`
-      )
-      if (error) {
-        return error
-      }
-    } catch (err) {
-      return err
+    const error = exec(
+      `cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`
+    )
+    if (error) {
+      return error
     }
   }
 
@@ -70,12 +69,13 @@ export function runScript(rawScript) {
     'document'
   )
 
-  const output = AppController.sharedInstance().runPluginCommand_fromMenu_context(
+  AppController.sharedInstance().runPluginCommand_fromMenu_context(
     command,
     true,
     {}
   )
 
   NSApp.delegate().refreshCurrentDocument()
-  return output
+
+  return undefined
 }

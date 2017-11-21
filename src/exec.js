@@ -4,11 +4,12 @@ export default function exec(command) {
   const pipe = NSPipe.pipe()
   const errPipe = NSPipe.pipe()
 
-  task.setLaunchPath_('/bin/bash')
-  task.setArguments_(NSArray.arrayWithArray_(['-c', '-l', command]))
+  task.setLaunchPath('/bin/bash')
+  task.setArguments(NSArray.arrayWithArray(['-c', '-l', command]))
   task.standardOutput = pipe
   task.standardError = errPipe
   task.launch()
+  task.waitUntilExit()
 
   const errData = errPipe.fileHandleForReading().readDataToEndOfFile()
   const data = pipe.fileHandleForReading().readDataToEndOfFile()

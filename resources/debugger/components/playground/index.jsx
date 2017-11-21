@@ -1,21 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { keyframes, css } from 'emotion'
+import { keyframes } from 'emotion'
 import styled from 'react-emotion'
-
+import SplitPanel from 'react-split-pane'
 import Codemirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 // import 'codemirror/addon/lint/lint'
 
 import { setScriptValue, runScript } from '../../redux/ducks/playground'
 import { Wrapper, TopBar, ButtonFilter } from '../list-element'
+import { Dumb as LogList } from '../console/log-list'
 
 const mapStateToProps = state => ({
   currentScript: state.playground.currentScript,
   loading: state.playground.loading,
   result: state.playground.result,
   runId: state.playground.runId,
+  logs: state.playground.timestamp.start
+    ? state.logs.logs.filter(
+        l =>
+          l.ts >= state.playground.timestamp.start &&
+          (state.playground.timestamp.end
+            ? l.ts <= state.playground.timestamp.end
+            : true)
+      )
+    : [],
 })
 
 const codeMirrorOptions = {
@@ -81,11 +91,44 @@ const LoadingBar = styled.div`
   );
 `
 
-const editor = css`
-  height: calc(100% - 30px);
+const EditorWrapper = styled(SplitPanel)`
+  height: calc(100% - 30px) !important;
+
+  .Resizer {
+    background: #000;
+    opacity: 0.1;
+    z-index: 1;
+    box-sizing: border-box;
+    -webkit-background-clip: padding;
+    background-clip: padding-box;
+    width: 11px;
+    margin: 0 -5px;
+    border-left: 5px solid rgba(255, 255, 255, 0);
+    border-right: 5px solid rgba(255, 255, 255, 0);
+    cursor: col-resize;
+    transition: all 2s ease;
+  }
+
+  .Resizer:hover {
+    border-left: 5px solid rgba(0, 0, 0, 0.5);
+    border-right: 5px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .CodeMirror,
+  .ReactCodeMirror {
+    height: 100%;
+    width: 100%;
+  }
 `
 
-const Playground = ({ currentScript, dispatch, loading, runId }) => (
+const Playground = ({
+  currentScript,
+  dispatch,
+  loading,
+  runId,
+  result,
+  logs,
+}) => (
   <Wrapper>
     <TopBar>
       <ButtonFilter
@@ -95,12 +138,34 @@ const Playground = ({ currentScript, dispatch, loading, runId }) => (
         ▶︎
       </ButtonFilter>
     </TopBar>
-    <Codemirror
-      className={editor}
-      value={currentScript}
-      options={codeMirrorOptions}
-      onChange={text => dispatch(setScriptValue(text))}
-    />
+    <EditorWrapper defaultSize={300} primary="second">
+      <Codemirror
+        value={currentScript}
+        options={codeMirrorOptions}
+        onChange={text => dispatch(setScriptValue(text))}
+      />
+      <LogList
+        logs={
+          result
+            ? logs.concat({
+                ts: Date.now(),
+                group: 0,
+                plugin: '',
+                type: 'log',
+                values: [result],
+              })
+            : logs
+        }
+        search=""
+        showLogTimes={false}
+        types={{
+          log: true,
+          info: true,
+          warn: true,
+          error: true,
+        }}
+      />
+    </EditorWrapper>
     {loading && (
       <LoadingBarContainer>
         <LoadingBar />
@@ -114,6 +179,18 @@ Playground.propTypes = {
   dispatch: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   runId: PropTypes.number.isRequired,
+  result: PropTypes.shape({
+    type: PropTypes.string,
+    ts: PropTypes.number,
+    values: PropTypes.arrayOf(PropTypes.any),
+  }),
+  logs: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      ts: PropTypes.number,
+      values: PropTypes.arrayOf(PropTypes.any),
+    })
+  ).isRequired,
 }
 
 export default connect(mapStateToProps)(Playground)
