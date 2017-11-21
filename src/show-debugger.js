@@ -14,7 +14,7 @@ import {
 } from '../shared-actions'
 import { identifier, sendToDebugger, prepareValue } from '../debugger'
 import startListening from './listen-to-logs'
-import runScript from './run-script'
+import { runScript, clearScriptsCache } from './run-script'
 
 const logRegex = new RegExp(`^${console._skpmPrefix}`)
 
@@ -89,6 +89,10 @@ export default function(context) {
             },
           })})`
         )
+      },
+
+      clearScriptsCache() {
+        clearScriptsCache()
       },
     },
   })

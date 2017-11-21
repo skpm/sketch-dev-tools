@@ -1,5 +1,7 @@
-import { RUN_SCRIPT, SET_SCRIPT_RESULT } from '../../../../shared-actions'
+import { SET_SCRIPT_RESULT } from '../../../../shared-actions'
 
+const CLEAR_CACHE = 'playground/CLEAR_CACHE'
+const RUN_SCRIPT = 'playground/RUN_SCRIPT'
 const SET_SCRIPT_VALUE = 'playground/SET_SCRIPT_VALUE'
 
 const initialState = {
@@ -58,6 +60,13 @@ handlers[SET_SCRIPT_RESULT] = (state, { payload }) => {
     loading: false,
   }
 }
+
+export const clearCache = () => ({
+  type: CLEAR_CACHE,
+  meta: {
+    sketch: ['clearScriptsCache'],
+  },
+})
 
 export default function(state = initialState, action) {
   if (handlers[action.type]) {

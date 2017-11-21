@@ -1,54 +1,25 @@
-/* globals NSPipe, NSTask, NSArray, NSUTF8StringEncoding, NSString, MOPointer, context, NSFileManager, MSPluginScript, MSPluginCommand, AppController, NSApp */
+/* globals NSUTF8StringEncoding, NSString, MOPointer, context, NSFileManager, MSPluginScript, MSPluginCommand, AppController, NSApp */
+import exec from './exec'
 
-function exec(command) {
-  const task = NSTask.alloc().init()
-  const pipe = NSPipe.pipe()
-  const errPipe = NSPipe.pipe()
+const PATH_TO_BUNDLE = context.plugin
+  .urlForResourceNamed('icon.png')
+  .path()
+  .replace('/icon.png', '')
 
-  task.setLaunchPath_('/bin/bash')
-  task.setArguments_(NSArray.arrayWithArray_(['-c', '-l', command]))
-  task.standardOutput = pipe
-  task.standardError = errPipe
-  task.launch()
+const SCRIPTS_PATH = `${PATH_TO_BUNDLE}/.scripts`
 
-  const errData = errPipe.fileHandleForReading().readDataToEndOfFile()
-  const data = pipe.fileHandleForReading().readDataToEndOfFile()
-
-  // eslint-disable-next-line
-  if (task.terminationStatus() != 0) {
-    let message = 'Unknown error'
-    if (errData != null && errData.length()) {
-      message = NSString.alloc().initWithData_encoding_(
-        errData,
-        NSUTF8StringEncoding
-      )
-    } else if (data != null && data.length()) {
-      message = NSString.alloc().initWithData_encoding_(
-        data,
-        NSUTF8StringEncoding
-      )
-    }
-    return message
-  }
-
-  return undefined
+export function clearScriptsCache() {
+  exec(`rm -rf "${SCRIPTS_PATH}" && mkdir -r "${SCRIPTS_PATH}"`)
 }
 
-export default function(rawScript) {
+export function runScript(rawScript) {
   // BCDefaultsSetValueForKey([inputField string], ScriptEditorLastRunKey);
   const errorPointer = MOPointer.alloc().init()
 
-  const PATH_TO_BUNDLE = context.plugin
-    .urlForResourceNamed('icon.png')
-    .path()
-    .replace('/icon.png', '')
-
   // use a hash of the script to avoid rebundling every time
   const hash = NSString.stringWithString(rawScript).hash()
-  const pathToRawFile = `${PATH_TO_BUNDLE}/.scripts/${hash}.js`
-  const pathToBundledFile = `${PATH_TO_BUNDLE}/.scripts/Contents/Sketch/${
-    hash
-  }.js`
+  const pathToRawFile = `${SCRIPTS_PATH}/${hash}.js`
+  const pathToBundledFile = `${SCRIPTS_PATH}/Contents/Sketch/${hash}.js`
 
   if (!NSFileManager.defaultManager().fileExistsAtPath(pathToBundledFile)) {
     NSString.stringWithString(
