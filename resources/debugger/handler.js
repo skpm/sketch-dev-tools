@@ -10,6 +10,7 @@ import {
   ADD_ACTION,
   GROUP,
   GROUP_END,
+  SET_SCRIPT_RESULT,
 } from '../../shared-actions'
 import { addAction } from './redux/ducks/actions'
 import { addLog, clearLogs, group, groupEnd } from './redux/ducks/logs'
@@ -19,6 +20,7 @@ import {
   setPageMetadata,
 } from './redux/ducks/elements'
 import { addRequest, setResponse } from './redux/ducks/network'
+import { setScriptResult } from './redux/ducks/playground'
 
 export default function(dispatch) {
   /**
@@ -48,6 +50,8 @@ export default function(dispatch) {
         return dispatch(group(jsonData.payload))
       case GROUP_END:
         return dispatch(groupEnd(jsonData.payload))
+      case SET_SCRIPT_RESULT:
+        return dispatch(setScriptResult(jsonData.payload))
       default:
         return console.error(
           new Error('unknown action received from the bridge')

@@ -10,6 +10,7 @@ import {
   SET_PAGE_METADATA,
   SET_LAYER_METADATA,
   ADD_LOG,
+  SET_SCRIPT_RESULT,
 } from '../shared-actions'
 import { identifier, sendToDebugger, prepareValue } from '../debugger'
 import startListening from './listen-to-logs'
@@ -77,8 +78,17 @@ export default function(context) {
         )
       },
 
-      onRunScript(script) {
-        runScript(script)
+      onRunScript(script, runId) {
+        const result = runScript(script)
+        webUI.eval(
+          `sketchBridge(${JSON.stringify({
+            name: SET_SCRIPT_RESULT,
+            payload: {
+              result: prepareValue(result),
+              id: runId,
+            },
+          })})`
+        )
       },
     },
   })

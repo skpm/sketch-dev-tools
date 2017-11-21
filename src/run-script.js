@@ -1,4 +1,4 @@
-/* globals log, NSPipe, NSTask, NSArray, NSUTF8StringEncoding, NSString, NSException, MOPointer, context, NSFileManager, MSPluginScript, MSPluginCommand, AppController, NSApp */
+/* globals NSPipe, NSTask, NSArray, NSUTF8StringEncoding, NSString, MOPointer, context, NSFileManager, MSPluginScript, MSPluginCommand, AppController, NSApp */
 
 function exec(command) {
   const task = NSTask.alloc().init()
@@ -28,15 +28,15 @@ function exec(command) {
         NSUTF8StringEncoding
       )
     }
-    return NSException.raise_format_('failed', message)
+    return message
   }
 
-  return NSString.alloc().initWithData_encoding_(data, NSUTF8StringEncoding)
+  return undefined
 }
 
 export default function(rawScript) {
   // BCDefaultsSetValueForKey([inputField string], ScriptEditorLastRunKey);
-  const error = MOPointer.alloc().init()
+  const errorPointer = MOPointer.alloc().init()
 
   const PATH_TO_BUNDLE = context.plugin
     .urlForResourceNamed('icon.png')
@@ -57,21 +57,34 @@ export default function(rawScript) {
       pathToRawFile,
       true,
       NSUTF8StringEncoding,
-      error
+      errorPointer
     )
 
+    if (errorPointer.value()) {
+      return errorPointer
+    }
+
     try {
-      exec(`cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`)
+      const error = exec(
+        `cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`
+      )
+      if (error) {
+        return error
+      }
     } catch (err) {
-      log(err)
+      return err
     }
   }
 
   const bundledScript = NSString.stringWithContentsOfFile_encoding_error(
     pathToBundledFile,
     NSUTF8StringEncoding,
-    error
+    errorPointer
   )
+
+  if (errorPointer.value()) {
+    return errorPointer
+  }
 
   const pluginScript = MSPluginScript.alloc().initWithString_filename(
     bundledScript,
