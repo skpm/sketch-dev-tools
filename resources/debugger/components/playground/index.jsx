@@ -1,3 +1,4 @@
+/* globals document */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -47,8 +48,6 @@ const codeMirrorOptions = {
     },
   },
 }
-
-// TODO: catch cmd + R
 
 const LoadingBarContainer = styled.div`
   width: 100%;
@@ -148,70 +147,97 @@ const BashIcon = styled.span`
   color: #444;
 `
 
-const Playground = ({
-  currentScript,
-  dispatch,
-  loading,
-  runId,
-  result,
-  logs,
-}) => (
-  <Wrapper>
-    <TopBar>
-      <ButtonFilter
-        title="Run Script (cmd + R)"
-        onClick={() => dispatch(runScript(currentScript, runId))}
-      >
-        ▶︎
-      </ButtonFilter>
-    </TopBar>
-    <EditorWrapper defaultSize={300} primary="second">
-      <Codemirror
-        value={currentScript}
-        options={codeMirrorOptions}
-        onChange={text => dispatch(setScriptValue(text))}
-      />
-      <div style={{ height: '100%' }}>
-        <WrappedLogList
-          logs={
-            result
-              ? logs.concat({
-                  ts: Date.now(),
-                  group: 0,
-                  plugin: '',
-                  type: 'log',
-                  values: [result],
-                })
-              : logs
-          }
-          search=""
-          showLogTimes={false}
-          types={{
-            log: true,
-            info: true,
-            warn: true,
-            error: true,
-          }}
-        />
-        <Input
-          onKeyDown={e => {
-            // enter
-            if (e.keyCode === 13) {
-              e.preventDefault()
-              dispatch(runCommand(e.currentTarget.value, runId))
-            }
-          }}
-        />
-        <BashIcon>›</BashIcon>
-      </div>
-    </EditorWrapper>
-    {loading && (
-      <LoadingBarContainer>
-        <LoadingBar />
-      </LoadingBarContainer>
-    )}
-  </Wrapper>
-)
+class Playground extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.onCommandInputKeyDown = this.onCommandInputKeyDown.bind(this)
+    this.onRunScript = this.onRunScript.bind(this)
+    this.onScriptValueChange = this.onScriptValueChange.bind(this)
+    this.commandRListener = this.commandRListener.bind(this)
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.commandRListener)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.commandRListener)
+  }
+
+  onCommandInputKeyDown(e) {
+    // enter
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      this.props.dispatch(runCommand(e.currentTarget.value, this.props.runId))
+    }
+  }
+
+  onRunScript() {
+    this.props.dispatch(runScript(this.props.currentScript, this.props.runId))
+  }
+
+  onScriptValueChange(text) {
+    this.props.dispatch(setScriptValue(text))
+  }
+
+  commandRListener(event) {
+    if (event.key === 'r' && event.metaKey) {
+      this.onRunScript()
+    }
+  }
+
+  render() {
+    const { currentScript, loading, result, logs } = this.props
+
+    return (
+      <Wrapper>
+        <TopBar>
+          <ButtonFilter title="Run Script (cmd + R)" onClick={this.onRunScript}>
+            ▶︎
+          </ButtonFilter>
+        </TopBar>
+        <EditorWrapper defaultSize={300} primary="second">
+          <Codemirror
+            value={currentScript}
+            options={codeMirrorOptions}
+            onChange={this.onScriptValueChange}
+          />
+          <div style={{ height: '100%' }}>
+            <WrappedLogList
+              logs={
+                result
+                  ? logs.concat({
+                      ts: Date.now(),
+                      group: 0,
+                      plugin: '',
+                      type: 'log',
+                      values: [result],
+                    })
+                  : logs
+              }
+              search=""
+              showLogTimes={false}
+              types={{
+                log: true,
+                info: true,
+                warn: true,
+                error: true,
+              }}
+            />
+            <Input onKeyDown={this.onCommandInputKeyDown} />
+            <BashIcon>›</BashIcon>
+          </div>
+        </EditorWrapper>
+        {loading && (
+          <LoadingBarContainer>
+            <LoadingBar />
+          </LoadingBarContainer>
+        )}
+      </Wrapper>
+    )
+  }
+}
 
 Playground.propTypes = {
   currentScript: PropTypes.string.isRequired,
