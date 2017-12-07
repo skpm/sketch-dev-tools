@@ -17,7 +17,6 @@ import { selectValue } from '../../redux/ducks/logs'
 const mapStateToProps = state => ({
   logs: state.logs.logs,
   selectedLog: state.logs.selectedLog,
-  selectedLogValue: state.logs.selectedLogValue,
   search: state.logs.search,
   types: state.logs.types,
   showLogTimes: state.logs.showLogTimes,
@@ -79,11 +78,13 @@ const Value = styled.li`
 `
 
 const LogList = props => (
-  <ScrollingList items={props.logs}>
+  <ScrollingList items={props.logs} className={props.className}>
     <ListInner>
-      <ClearLabel>
-        Logs cleared at {moment(props.clearTs).format('HH:mm:ss')}
-      </ClearLabel>
+      {props.clearTs && (
+        <ClearLabel>
+          Logs cleared at {moment(props.clearTs).format('HH:mm:ss')}
+        </ClearLabel>
+      )}
       {props.logs.filter(filterLogs(props)).map((log, i) => (
         <Log key={i} className={LogTypes[log.type]}>
           {props.showLogTimes && (
@@ -108,7 +109,7 @@ const LogList = props => (
 )
 
 LogList.propTypes = {
-  clearTs: PropTypes.number.isRequired,
+  clearTs: PropTypes.number,
   showLogTimes: PropTypes.bool.isRequired,
   logs: PropTypes.arrayOf(
     PropTypes.shape({
@@ -117,6 +118,12 @@ LogList.propTypes = {
       values: PropTypes.arrayOf(PropTypes.any),
     })
   ).isRequired,
+  types: PropTypes.objectOf(PropTypes.bool).isRequired, // eslint-disable-line react/no-unused-prop-types
+  selectedLog: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+  search: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
+  className: PropTypes.string,
 }
 
 export default connect(mapStateToProps)(LogList)
+
+export const Dumb = LogList

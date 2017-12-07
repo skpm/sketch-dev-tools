@@ -10,7 +10,7 @@ const LogListener = new ObjCClass({
     this._listeners = NSDictionary.dictionaryWithDictionary({
       onLog,
     })
-    log('starting listening') // creates the log file
+    log('starting to listen') // creates the log file
     const pipe = NSPipe.pipe()
 
     this._fileHandle = pipe.fileHandleForReading()

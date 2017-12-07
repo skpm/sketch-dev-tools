@@ -4,17 +4,11 @@ import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import LogList from './log-list'
 import { Wrapper, TopBar, Filter, ButtonFilter } from '../list-element'
-import {
-  setSearch,
-  setTypes,
-  clearLogs,
-  setShowLogTimes,
-} from '../../redux/ducks/logs'
+import { setSearch, setTypes, clearLogs } from '../../redux/ducks/logs'
 
 const mapStateToProps = state => ({
   search: state.logs.search,
   types: state.logs.types,
-  showLogTimes: state.logs.showLogTimes,
 })
 
 const SearchInput = styled.input`
@@ -94,19 +88,6 @@ const Console = props => (
         ))}
       </LogTypesFilter>
       <ButtonFilter
-        style={
-          props.showLogTimes
-            ? {
-                opacity: 1,
-              }
-            : { opacity: 0.5 }
-        }
-        onClick={() => props.dispatch(setShowLogTimes(!props.showLogTimes))}
-        title={props.showLogTimes ? 'Hide log timestamp' : 'Show log timestamp'}
-      >
-        🕙
-      </ButtonFilter>
-      <ButtonFilter
         onClick={() => props.dispatch(clearLogs())}
         title="Clear console"
       >
@@ -119,7 +100,6 @@ const Console = props => (
 
 Console.propTypes = {
   search: PropTypes.string.isRequired,
-  showLogTimes: PropTypes.bool.isRequired,
   types: PropTypes.objectOf(PropTypes.bool).isRequired,
   dispatch: PropTypes.func.isRequired,
 }

@@ -7,6 +7,7 @@ import Actions from './components/actions'
 import Console from './components/console'
 import Elements from './components/elements'
 import Network from './components/network'
+import Playground from './components/playground'
 import NotFound from './components/404'
 
 export default () => (
@@ -17,6 +18,7 @@ export default () => (
         <Route exact path="/actions" component={Actions} />
         <Route exact path="/console" component={Console} />
         <Route exact path="/elements" component={Elements} />
+        <Route exact path="/playground" component={Playground} />
         <Route exact path="/network" component={Network} />
         <Route component={NotFound} />
       </Switch>
