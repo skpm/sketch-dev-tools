@@ -13,7 +13,7 @@ import {
   SET_SCRIPT_RESULT,
 } from '../shared-actions'
 import { identifier, sendToDebugger, prepareValue } from '../debugger'
-import startListening from './listen-to-logs'
+import startListeningToLogs from './listen-to-logs'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
 
 const logRegex = new RegExp(`^${console._skpmPrefix}`)
@@ -30,7 +30,7 @@ export default function(context) {
     identifier,
     x: 0,
     y: 0,
-    width: 800,
+    width: 830,
     height: 400,
     blurredBackground: true,
     onlyShowCloseButton: true,
@@ -118,7 +118,7 @@ export default function(context) {
   }
 
   // start listening to all the logs
-  stopListening = startListening(text => {
+  stopListening = startListeningToLogs(text => {
     let logs = text.split(' «Plugin Output»\n')
     logs.pop()
 
