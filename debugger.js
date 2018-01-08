@@ -7,8 +7,8 @@ function toArray(object) {
   if (Array.isArray(object)) {
     return object
   }
-  const arr = []
-  for (let j = 0; j < object.count(); j += 1) {
+  var arr = []
+  for (var j = 0; j < object.count(); j += 1) {
     arr.push(object.objectAtIndex(j))
   }
   return arr
@@ -16,7 +16,9 @@ function toArray(object) {
 
 module.exports.prepareStackTrace = function(stackTrace) {
   var stack = stackTrace.split('\n')
-  stack = stack.map(s => s.replace(/\sg/, ''))
+  stack = stack.map(function(s) {
+    return s.replace(/\sg/, '')
+  })
 
   // pop the last 2 frames as it's ours here
   stack.splice(0, 2)
@@ -193,7 +195,11 @@ module.exports.prepareValue = function prepareValue(value, skipMocha) {
     type = 'Number'
   }
 
-  return { value, type, primitive }
+  return {
+    value,
+    type,
+    primitive,
+  }
 }
 
 module.exports.isDebuggerPresent = remoteWebview.isWebviewPresent.bind(
@@ -204,6 +210,11 @@ module.exports.isDebuggerPresent = remoteWebview.isWebviewPresent.bind(
 module.exports.sendToDebugger = function sendToDebugger(name, payload) {
   return remoteWebview.sendToWebview(
     module.exports.identifier,
-    'sketchBridge(' + JSON.stringify({ name, payload }) + ');'
+    'sketchBridge(' +
+      JSON.stringify({
+        name: name,
+        payload: payload,
+      }) +
+      ');'
   )
 }
