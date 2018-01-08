@@ -112,8 +112,8 @@ function introspectMochaObject(value) {
 }
 
 module.exports.prepareValue = function prepareValue(value, skipMocha) {
-  let type = 'String'
-  let primitive = 'String'
+  var type = 'String'
+  var primitive = 'String'
   const typeOf = typeof value
   if (value instanceof Error) {
     type = 'Error'
