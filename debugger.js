@@ -59,7 +59,7 @@ function prepareArray(array, skipMocha) {
 
 module.exports.prepareObject = function(object, skipMocha) {
   const deep = {}
-  Object.keys(object).forEach(key => {
+  Object.keys(object).forEach(function(key) {
     deep[key] = module.exports.prepareValue(object[key], skipMocha)
   })
   return deep
