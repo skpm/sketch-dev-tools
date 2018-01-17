@@ -25,7 +25,7 @@
 
 ## Usage
 
-If you want show some proper logs in the devTolls, you need to use `console` (as apposed to `log` directly). `console` is polyfilled by [`skpm`](https://github.com/skpm/skpm) automatically.
+If you want to show some proper logs in the DevTools, you need to use `console` (as apposed to `log` directly). `console` is polyfilled by [`skpm`](https://github.com/skpm/skpm) automatically.
 
 You might notice performance issues when the debugger is opened, that's because it's listening to all actions.
 
