@@ -1,6 +1,7 @@
 /* globals AppController */
 /* eslint-disable global-require, no-undef */
 import WebUI from 'sketch-module-web-view'
+import { prepareValue } from 'sketch-utils'
 import getSketchState, {
   getPageMetadata,
   getLayerMetadata,
@@ -12,7 +13,7 @@ import {
   ADD_LOG,
   SET_SCRIPT_RESULT,
 } from '../shared-actions'
-import { identifier, sendToDebugger, prepareValue } from '../debugger'
+import { identifier, sendToDebugger } from '../debugger'
 import startListeningToLogs from './listen-to-logs'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
 

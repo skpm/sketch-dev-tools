@@ -1,4 +1,5 @@
-import { isDebuggerPresent, sendToDebugger, prepareValue } from '../debugger'
+import { prepareValue } from 'sketch-utils'
+import { isDebuggerPresent, sendToDebugger } from '../debugger'
 import { ADD_ACTION } from '../shared-actions'
 
 // eslint-disable-next-line
