@@ -97,7 +97,9 @@ export function getPageMetadata(pageId) {
   delete dict['<class>']
   delete dict.name
 
-  return prepareObject(dict, true)
+  return prepareObject(dict, {
+    skipMocha: true,
+  })
 }
 
 export function getLayerMetadata(layerId, pageId) {
@@ -123,7 +125,9 @@ export function getLayerMetadata(layerId, pageId) {
   delete dict['<class>']
   delete dict.name
 
-  return prepareObject(dict, true)
+  return prepareObject(dict, {
+    skipMocha: true,
+  })
 }
 
 export default function getElementTree() {
