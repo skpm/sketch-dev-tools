@@ -25,6 +25,7 @@ export const ButtonFilter = styled(Filter)`
 export const Wrapper = styled.div`
   flex: 1;
   overflow: hidden;
+  height: 100vh;
 `
 
 export const ListInner = styled.ul`
