@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { css } from 'emotion'
 import QuickLook from './quick-look'
+import { selectElement } from '../../redux/ducks/elements'
 import { ButtonToggle } from '../value/log-element'
+
+const mapStateToProps = state => ({
+  selectedElement: state.elements.selectedElement,
+})
 
 const Element = styled.ul`
   padding: 0 0 0 2rem;
@@ -56,12 +62,11 @@ const OffsetButtonToggle = styled(ButtonToggle)`
   top: 0.3rem;
 `
 
-export default class ElementTreeItem extends Component {
+class ElementTreeItem extends Component {
   constructor() {
     super()
     this.state = {
       expanded: false,
-      quickLook: false,
     }
   }
 
@@ -82,13 +87,11 @@ export default class ElementTreeItem extends Component {
           if (e.isDefaultPrevented() || this.props.element.id === '?') {
             return
           }
-          this.setState({
-            quickLook: !this.state.quickLook,
-          })
+          this.props.dispatch(selectElement(this.props.element.id))
         }}
         hasInfo={this.props.element.id !== '?'}
       >
-        &lt;{this.renderElementName()}{expanded ? '>' : ' />'} {this.state.quickLook && <QuickLook element={this.props.element} />}
+        &lt;{this.renderElementName()}{expanded ? '>' : ' />'} {this.props.selectedElement === this.props.element.id && <QuickLook element={this.props.element} />}
       </WrapElement>
     )
   }
@@ -109,7 +112,7 @@ export default class ElementTreeItem extends Component {
             <span>
               {this.renderQuickLook(true)}
               {element.children.map((e, i) => (
-                <ElementTreeItem key={element.id + i} element={e} />
+                <ElementTreeItemWrapper key={element.id + i} element={e} />
               ))}
               <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
             </span>
@@ -139,4 +142,9 @@ ElementTreeItem.propTypes = {
     class: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,
+  selectedElement: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
 }
+
+const ElementTreeItemWrapper = connect(mapStateToProps)(ElementTreeItem)
+export default ElementTreeItemWrapper
