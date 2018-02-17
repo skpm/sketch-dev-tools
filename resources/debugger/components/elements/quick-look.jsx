@@ -51,16 +51,6 @@ const Wrapper = styled.div`
   }
 `
 
-const Overlay = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: calc(100vh - 30px);
-  cursor: auto;
-  top: 30px;
-  left: 0;
-  z-index: 8;
-`
-
 class QuickLook extends Component {
   componentDidMount() {
     if (!this.props.element.meta) {
@@ -77,7 +67,6 @@ class QuickLook extends Component {
   render() {
     return (
       <div>
-        <Overlay />
         <Wrapper onClick={e => e.preventDefault()}>
           {!this.props.element.meta ? (
             <Loading>Loading...</Loading>

@@ -7,10 +7,12 @@ import {
 const FETCH_TREE = 'elements/FETCH_TREE'
 const FETCH_PAGE_METADATA = 'elements/FETCH_PAGE_METADATA'
 const FETCH_LAYER_METADATA = 'elements/FETCH_LAYER_METADATA'
+const SELECT_ELEMENT = 'elements/SELECT_ELEMENT'
 
 const initialState = {
   loading: true,
   tree: [],
+  selectedElement: '',
 }
 
 const handlers = {}
@@ -125,6 +127,18 @@ handlers[SET_LAYER_METADATA] = (state, { payload }) => ({
       }),
     })),
   })),
+})
+
+export const selectElement = id => ({
+  type: SELECT_ELEMENT,
+  payload: {
+    id,
+  },
+})
+
+handlers[SELECT_ELEMENT] = (state, { payload }) => ({
+  ...state,
+  selectedElement: payload.id,
 })
 
 export default function(state = initialState, action) {
