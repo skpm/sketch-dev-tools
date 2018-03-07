@@ -177,8 +177,8 @@ class Playground extends React.Component {
     this.props.dispatch(runScript(this.props.currentScript, this.props.runId))
   }
 
-  onScriptValueChange(text) {
-    this.props.dispatch(setScriptValue(text))
+  onScriptValueChange(editor, data, value) {
+    this.props.dispatch(setScriptValue(value))
   }
 
   commandRListener(event) {
@@ -201,7 +201,7 @@ class Playground extends React.Component {
           <CodeMirror
             value={currentScript}
             options={codeMirrorOptions}
-            onChange={this.onScriptValueChange}
+            onBeforeChange={this.onScriptValueChange}
           />
           <div style={{ height: '100%' }}>
             <WrappedLogList
