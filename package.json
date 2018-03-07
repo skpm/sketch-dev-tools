@@ -1,6 +1,6 @@
 {
   "name": "@skpm/sketch-debugger",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "See your plugin logs, inspect the state of Sketch documents, explore actions, and more.",
   "files": [
     "debugger.js",
