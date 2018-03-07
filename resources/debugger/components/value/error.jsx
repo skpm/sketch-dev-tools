@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import LogValue from './value'
 import { LogKey, LogColon, ButtonToggle, ValueWrapper } from './log-element'
 
 export default class LogError extends Component {
@@ -33,14 +32,7 @@ export default class LogError extends Component {
           <ValueWrapper>
             {this.props.error.stack.map((value, key) => (
               <li key={key}>
-                <span>
-                  <LogValue
-                    value={{
-                      value: `${value.fn} ${value.file}@${value.line};${value.column}`,
-                    }}
-                    search={this.props.search}
-                  />
-                </span>
+                <span>{value.fn} {value.file}@{value.line};{value.column}</span>
               </li>
             ))}
           </ValueWrapper>
@@ -52,7 +44,6 @@ export default class LogError extends Component {
 
 LogError.propTypes = {
   opened: PropTypes.bool,
-  search: PropTypes.string,
   logKey: PropTypes.string,
   error: PropTypes.shape({
     name: PropTypes.string,
@@ -62,8 +53,8 @@ LogError.propTypes = {
         fn: PropTypes.string,
         file: PropTypes.string,
         filePath: PropTypes.string,
-        line: PropTypes.number,
-        column: PropTypes.number,
+        line: PropTypes.string,
+        column: PropTypes.string,
       })
     ),
   }).isRequired,

@@ -122,6 +122,7 @@ LogList.propTypes = {
   selectedLog: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   search: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
   className: PropTypes.string,
+  dispatch: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 }
 
 export default connect(mapStateToProps)(LogList)

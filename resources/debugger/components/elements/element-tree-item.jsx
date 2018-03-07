@@ -84,6 +84,7 @@ export default class ElementTreeItem extends Component {
           }
           this.setState({
             quickLook: !this.state.quickLook,
+            expanded: true
           })
         }}
         hasInfo={this.props.element.id !== '?'}
@@ -96,7 +97,7 @@ export default class ElementTreeItem extends Component {
   renderElement() {
     const { element } = this.props
 
-    if (element.children.length > 0) {
+    if (element && element.children && element.children.length > 0) {
       return (
         <TreeElement className={this.state.expanded && expandedTree}>
           <OffsetButtonToggle

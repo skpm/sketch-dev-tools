@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { keyframes } from 'emotion'
 import styled from 'react-emotion'
 import SplitPanel from 'react-split-pane'
-import Codemirror from 'react-codemirror'
+import {Controlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript'
 // import 'codemirror/addon/lint/lint'
 
@@ -198,7 +198,7 @@ class Playground extends React.Component {
           </ButtonFilter>
         </TopBar>
         <EditorWrapper defaultSize={300} primary="second">
-          <Codemirror
+          <CodeMirror
             value={currentScript}
             options={codeMirrorOptions}
             onChange={this.onScriptValueChange}
@@ -218,6 +218,7 @@ class Playground extends React.Component {
               }
               search=""
               showLogTimes={false}
+              dispatch={this.props.dispatch}
               types={{
                 log: true,
                 info: true,

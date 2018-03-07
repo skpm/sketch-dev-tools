@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "skpm-build && mkdir dev-tools.sketchplugin/Contents/Resources/.scripts",
+    "build": "skpm-build && (mkdir dev-tools.sketchplugin/Contents/Resources/.scripts || true)",
     "prepare": "(rm -rf dev-tools.sketchplugin || true) && NODE_ENV=production skpm-build && cd dev-tools.sketchplugin/Contents/Resources && npm i && (mkdir .scripts || true)",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
@@ -35,7 +35,10 @@
   "devDependencies": {
     "@babel/standalone": "^7.0.0-beta.40",
     "@skpm/builder": "^0.4.2",
+    "@skpm/child_process": "^0.2.2",
     "@skpm/extract-loader": "^1.0.1",
+    "@skpm/fs": "^0.1.2",
+    "@skpm/os": "^0.1.1",
     "babel-plugin-emotion": "^9.0.1",
     "cocoascript-class": "^0.1.2",
     "codemirror": "^5.35.0",
@@ -56,7 +59,7 @@
     "prettier": "^1.7.4",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
-    "react-codemirror": "^1.0.0",
+    "react-codemirror2": "^4.1.0",
     "react-dom": "^16.2.0",
     "react-emotion": "^9.0.2",
     "react-redux": "^5.0.7",

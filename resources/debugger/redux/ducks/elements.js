@@ -70,9 +70,25 @@ handlers[SET_PAGE_METADATA] = (state, { payload }) => ({
       ...c,
       children: c.children.map(page => {
         if (page.id === payload.pageId) {
+          if (page.children) {
+            return {
+              ...page,
+              meta: payload.state.meta,
+              children: payload.state.map(x => {
+                const existingChild = page.children.find(y => y.id === x.id)
+                if (existingChild) {
+                  return {
+                    ...existingChild,
+                    ...c,
+                  }
+                }
+                return c
+              }),
+            }
+          }
           return {
             ...page,
-            meta: payload.state,
+            ...payload.state,
           }
         }
         return page
@@ -114,10 +130,30 @@ handlers[SET_LAYER_METADATA] = (state, { payload }) => ({
           return {
             ...page,
             children: page.children.map(
-              findLayerWithId.bind(this, payload.layerId, layer => ({
-                ...layer,
-                meta: payload.state,
-              }))
+              findLayerWithId.bind(this, payload.layerId, layer => {
+                if (layer.children) {
+                  return {
+                    ...layer,
+                    meta: payload.state.meta,
+                    children: payload.state.map(child => {
+                      const existingChild = layer.children.find(
+                        x => child.id === x.id
+                      )
+                      if (existingChild) {
+                        return {
+                          ...existingChild,
+                          ...child,
+                        }
+                      }
+                      return child
+                    }),
+                  }
+                }
+                return {
+                  ...layer,
+                  ...payload.state,
+                }
+              })
             ),
           }
         }

@@ -27,7 +27,6 @@ function inspectLayer(pageId, layer, index) {
     class: String(layer.class()),
     name: String(layer.name()),
     fromPage: pageId,
-    children: getLayerChildren(layer, pageId),
   }
 }
 
@@ -45,7 +44,6 @@ function getDocumentPages(doc) {
       desc: String(page.description()),
       class: String(page.class()),
       name: String(page.name()),
-      children: getPageLayers(page, pageId),
     }
   })
 }
@@ -97,9 +95,12 @@ export function getPageMetadata(pageId) {
   delete dict['<class>']
   delete dict.name
 
-  return prepareObject(dict, {
-    skipMocha: true,
-  })
+  return {
+    meta: prepareObject(dict, {
+      skipMocha: true,
+    }),
+    children: getPageLayers(page, pageId),
+  }
 }
 
 export function getLayerMetadata(layerId, pageId) {
@@ -119,15 +120,20 @@ export function getLayerMetadata(layerId, pageId) {
     return undefined
   }
 
-  const dict = result[0].treeAsDictionary()
+  const layer = result[0]
+
+  const dict = layer.treeAsDictionary()
   delete dict.children
   delete dict.layers
   delete dict['<class>']
   delete dict.name
 
-  return prepareObject(dict, {
-    skipMocha: true,
-  })
+  return {
+    meta: prepareObject(dict, {
+      skipMocha: true,
+    }),
+    children: getLayerChildren(layer, pageId),
+  }
 }
 
 export default function getElementTree() {

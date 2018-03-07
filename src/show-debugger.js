@@ -93,16 +93,19 @@ export default function(context) {
       },
 
       onRunCommand(command, runId) {
-        const { err, result } = runCommand(command)
-        webUI.eval(
-          `sketchBridge(${JSON.stringify({
-            name: SET_SCRIPT_RESULT,
-            payload: {
-              result: prepareValue(err || result || 'done'),
-              id: runId,
-            },
-          })})`
-        )
+        runCommand(command)
+          .catch(err => err)
+          .then(result => {
+            webUI.eval(
+              `sketchBridge(${JSON.stringify({
+                name: SET_SCRIPT_RESULT,
+                payload: {
+                  result: prepareValue(result || 'done'),
+                  id: runId,
+                },
+              })})`
+            )
+          })
       },
 
       clearScriptsCache() {
