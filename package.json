@@ -34,9 +34,9 @@
   },
   "devDependencies": {
     "@babel/standalone": "^7.0.0-beta.40",
-    "@skpm/builder": "^0.4.2",
-    "@skpm/child_process": "^0.2.2",
-    "@skpm/extract-loader": "^1.0.1",
+    "@skpm/builder": "^0.5.4",
+    "@skpm/child_process": "^0.2.3",
+    "@skpm/extract-loader": "^2.0.2",
     "@skpm/fs": "^0.1.2",
     "@skpm/os": "^0.1.1",
     "babel-plugin-emotion": "^9.0.1",
@@ -59,7 +59,7 @@
     "prettier": "^1.7.4",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
-    "react-codemirror2": "^4.1.0",
+    "react-codemirror2": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-emotion": "^9.0.2",
     "react-redux": "^5.0.7",
@@ -70,7 +70,7 @@
     "redux-logger": "^3.0.6"
   },
   "dependencies": {
-    "sketch-module-web-view": "^0.2.6",
+    "sketch-module-web-view": "^1.1.4",
     "sketch-utils": "^0.1.2"
   },
   "resources": [

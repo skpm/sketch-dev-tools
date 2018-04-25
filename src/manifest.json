@@ -1,9 +1,10 @@
 {
-  "compatibleVersion": 3,
+  "compatibleVersion": 50,
   "bundleVersion": 1,
+  "icon": "icon.png",
   "commands": [
     {
-      "name": "Show DevTools",
+      "name": "⚙️ DevTools",
       "description": "Open the DevTools panel",
       "icon": "icon.png",
       "identifier": "skpm.dev-tools.show-dev-tools",
@@ -27,7 +28,7 @@
     }
   ],
   "menu": {
-    "title": "⚙️ DevTools",
+    "isRoot": true,
     "items": ["skpm.dev-tools.show-dev-tools"]
   }
 }

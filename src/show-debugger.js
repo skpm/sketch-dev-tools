@@ -1,6 +1,6 @@
 /* globals AppController */
 /* eslint-disable global-require, no-undef */
-import WebUI from 'sketch-module-web-view'
+import BrowserWindow from 'sketch-module-web-view'
 import { prepareValue } from 'sketch-utils'
 import getSketchState, {
   getPageMetadata,
@@ -10,16 +10,12 @@ import {
   SET_TREE,
   SET_PAGE_METADATA,
   SET_LAYER_METADATA,
-  ADD_LOG,
   SET_SCRIPT_RESULT,
 } from '../shared-actions'
-import { identifier, sendToDebugger } from '../debugger'
-import startListeningToLogs from './listen-to-logs'
+import { identifier } from '../debugger'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
 
-const logRegex = new RegExp(`^${console._skpmPrefix}`)
-
-export default function(context) {
+export default function() {
   let stopListening
 
   // enabled listening to all the actions
@@ -27,118 +23,97 @@ export default function(context) {
     .pluginManager()
     .setWilcardsEnabled(true)
 
-  const webUI = new WebUI(context, require('../resources/webview.html'), {
+  const browserWindow = new BrowserWindow({
     identifier,
-    x: 0,
-    y: 0,
     width: 830,
     height: 400,
-    blurredBackground: true,
-    onlyShowCloseButton: true,
-    hideTitleBar: false,
-    shouldKeepAround: true,
+    minWidth: 700,
+    minHeight: 300,
+    minimizable: false,
+    maximizable: false,
+    alwaysOnTop: process.env.NODE_ENV !== 'production',
+    fullscreenable: false,
+    acceptFirstMouse: true,
     title: 'Sketch DevTools',
     resizable: true,
-    onPanelClose() {
-      AppController.sharedInstance()
-        .pluginManager()
-        .setWilcardsEnabled(false)
+  })
 
-      if (stopListening) {
-        stopListening()
-      }
-    },
-    handlers: {
-      getSketchState() {
-        const state = getSketchState()
+  browserWindow.loadURL(require('../resources/webview.html'))
 
-        webUI.eval(
-          `sketchBridge(${JSON.stringify({ name: SET_TREE, payload: state })})`
-        )
-      },
+  browserWindow.once('ready-to-show', () => {
+    browserWindow.show()
+  })
 
-      getPageMetadata(pageId) {
-        const state = getPageMetadata(pageId)
+  browserWindow.on('closed', () => {
+    AppController.sharedInstance()
+      .pluginManager()
+      .setWilcardsEnabled(false)
 
-        webUI.eval(
-          `sketchBridge(${JSON.stringify({
-            name: SET_PAGE_METADATA,
-            payload: { pageId, state },
-          })})`
-        )
-      },
+    if (stopListening) {
+      stopListening()
+    }
+  })
 
-      getLayerMetadata(layerId, pageId) {
-        const state = getLayerMetadata(layerId, pageId)
+  browserWindow.webContents.on('getSketchState', () => {
+    const state = getSketchState()
 
-        webUI.eval(
-          `sketchBridge(${JSON.stringify({
-            name: SET_LAYER_METADATA,
-            payload: { layerId, pageId, state },
-          })})`
-        )
-      },
+    browserWindow.webContents.executeJavaScript(
+      `sketchBridge(${JSON.stringify({ name: SET_TREE, payload: state })})`
+    )
+  })
 
-      onRunScript(script, runId) {
-        const result = runScript(script)
-        webUI.eval(
+  browserWindow.webContents.on('getPageMetadata', pageId => {
+    const state = getPageMetadata(pageId)
+
+    browserWindow.webContents.executeJavaScript(
+      `sketchBridge(${JSON.stringify({
+        name: SET_PAGE_METADATA,
+        payload: { pageId, state },
+      })})`
+    )
+  })
+
+  browserWindow.webContents.on('getLayerMetadata', (layerId, pageId) => {
+    const state = getLayerMetadata(layerId, pageId)
+
+    browserWindow.webContents.executeJavaScript(
+      `sketchBridge(${JSON.stringify({
+        name: SET_LAYER_METADATA,
+        payload: { layerId, pageId, state },
+      })})`
+    )
+  })
+
+  browserWindow.webContents.on('onRunScript', (script, runId) => {
+    const result = runScript(script)
+    browserWindow.webContents.executeJavaScript(
+      `sketchBridge(${JSON.stringify({
+        name: SET_SCRIPT_RESULT,
+        payload: {
+          result: prepareValue(result),
+          id: runId,
+        },
+      })})`
+    )
+  })
+
+  browserWindow.webContents.on('onRunCommand', (command, runId) => {
+    runCommand(command)
+      .catch(err => err)
+      .then(result => {
+        browserWindow.webContents.executeJavaScript(
           `sketchBridge(${JSON.stringify({
             name: SET_SCRIPT_RESULT,
             payload: {
-              result: prepareValue(result),
+              result: prepareValue(result || 'done'),
               id: runId,
             },
           })})`
         )
-      },
-
-      onRunCommand(command, runId) {
-        runCommand(command)
-          .catch(err => err)
-          .then(result => {
-            webUI.eval(
-              `sketchBridge(${JSON.stringify({
-                name: SET_SCRIPT_RESULT,
-                payload: {
-                  result: prepareValue(result || 'done'),
-                  id: runId,
-                },
-              })})`
-            )
-          })
-      },
-
-      clearScriptsCache() {
-        clearScriptsCache()
-      },
-    },
+      })
   })
-  // Setting some minSizes until we make it all responsive
-  const minSize = { width: 700, height: 300 }
-  webUI.panel.setContentMinSize(minSize)
-  // Keep the window on top only for development
-  if (process.env.NODE_ENV === 'production') {
-    webUI.panel.setLevel(NSNormalWindowLevel)
-  }
 
-  // start listening to all the logs
-  stopListening = startListeningToLogs(text => {
-    let logs = text.split(' «Plugin Output»\n')
-    logs.pop()
-
-    // filter out the one we handle with `console`
-    logs = logs.filter(l => !logRegex.test(l))
-
-    if (!logs.length) {
-      return
-    }
-
-    const payload = {
-      ts: Date.now(),
-      type: 'log',
-      values: logs.map(prepareValue),
-    }
-
-    sendToDebugger(ADD_LOG, payload)
+  browserWindow.webContents.on('clearScriptsCache', () => {
+    clearScriptsCache()
   })
 }
