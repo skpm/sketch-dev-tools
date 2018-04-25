@@ -20,7 +20,7 @@ export function onAction(context) {
       const values = []
       const nativeValues = context.actionContext.payload
       for (let i = 0; i < nativeValues.length; i += 1) {
-        values.push(prepareValue(nativeValues[0]))
+        values.push(prepareValue(nativeValues[i]))
       }
       const payload = {
         ts: Date.now(),
