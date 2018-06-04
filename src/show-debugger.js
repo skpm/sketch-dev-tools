@@ -62,24 +62,24 @@ export default function() {
     )
   })
 
-  browserWindow.webContents.on('getPageMetadata', pageId => {
-    const state = getPageMetadata(pageId)
+  browserWindow.webContents.on('getPageMetadata', (pageId, docId) => {
+    const state = getPageMetadata(pageId, docId)
 
     browserWindow.webContents.executeJavaScript(
       `sketchBridge(${JSON.stringify({
         name: SET_PAGE_METADATA,
-        payload: { pageId, state },
+        payload: { pageId, docId, state },
       })})`
     )
   })
 
-  browserWindow.webContents.on('getLayerMetadata', (layerId, pageId) => {
-    const state = getLayerMetadata(layerId, pageId)
+  browserWindow.webContents.on('getLayerMetadata', (layerId, pageId, docId) => {
+    const state = getLayerMetadata(layerId, pageId, docId)
 
     browserWindow.webContents.executeJavaScript(
       `sketchBridge(${JSON.stringify({
         name: SET_LAYER_METADATA,
-        payload: { layerId, pageId, state },
+        payload: { layerId, pageId, docId, state },
       })})`
     )
   })

@@ -40,69 +40,73 @@ handlers[SET_TREE] = (state, { payload }) => ({
   loading: false,
 })
 
-export const fetchPageMetadata = pageId => ({
+export const fetchPageMetadata = (pageId, docId) => ({
   type: FETCH_PAGE_METADATA,
   meta: {
-    sketch: ['getPageMetadata', pageId],
+    sketch: ['getPageMetadata', pageId, docId],
   },
 })
 
-export const fetchLayerMetadata = (layerId, pageId) => ({
+export const fetchLayerMetadata = (layerId, pageId, docId) => ({
   type: FETCH_LAYER_METADATA,
   meta: {
-    sketch: ['getLayerMetadata', layerId, pageId],
+    sketch: ['getLayerMetadata', layerId, pageId, docId],
   },
 })
 
-export const setPageMetadata = ({ state, pageId }) => ({
+export const setPageMetadata = ({ state, pageId, docId }) => ({
   type: SET_PAGE_METADATA,
   payload: {
     state,
     pageId,
+    docId,
   },
 })
 
 handlers[SET_PAGE_METADATA] = (state, { payload }) => ({
   ...state,
-  tree: state.tree.map(d => ({
-    ...d,
-    children: d.children.map(c => ({
-      ...c,
-      children: c.children.map(page => {
-        if (page.id === payload.pageId) {
-          if (page.children) {
-            return {
-              ...page,
-              meta: payload.state.meta,
-              children: payload.state.map(x => {
-                const existingChild = page.children.find(y => y.id === x.id)
-                if (existingChild) {
-                  return {
-                    ...existingChild,
-                    ...c,
-                  }
-                }
-                return c
-              }),
-            }
-          }
+  tree: state.tree.map(d => {
+    if (d.id !== payload.docId) {
+      return d
+    }
+    return {
+      ...d,
+      children: d.children.map(page => {
+        if (page.id !== payload.pageId) {
+          return page
+        }
+        if (page.children) {
           return {
             ...page,
-            ...payload.state,
+            meta: payload.state.meta,
+            children: payload.state.children.map(child => {
+              const existingChild = page.children.find(y => y.id === child.id)
+              if (existingChild) {
+                return {
+                  ...existingChild,
+                  ...child,
+                }
+              }
+              return child
+            }),
           }
         }
-        return page
+        return {
+          ...page,
+          ...payload.state,
+        }
       }),
-    })),
-  })),
+    }
+  }),
 })
 
-export const setLayerMetadata = ({ state, pageId, layerId }) => ({
+export const setLayerMetadata = ({ state, pageId, layerId, docId }) => ({
   type: SET_LAYER_METADATA,
   payload: {
     state,
     pageId,
     layerId,
+    docId,
   },
 })
 
@@ -121,46 +125,48 @@ function findLayerWithId(layerId, fn, layer) {
 
 handlers[SET_LAYER_METADATA] = (state, { payload }) => ({
   ...state,
-  tree: state.tree.map(d => ({
-    ...d,
-    children: d.children.map(c => ({
-      ...c,
-      children: c.children.map(page => {
-        if (page.id === payload.pageId) {
-          return {
-            ...page,
-            children: page.children.map(
-              findLayerWithId.bind(this, payload.layerId, layer => {
-                if (layer.children) {
-                  return {
-                    ...layer,
-                    meta: payload.state.meta,
-                    children: payload.state.map(child => {
-                      const existingChild = layer.children.find(
-                        x => child.id === x.id
-                      )
-                      if (existingChild) {
-                        return {
-                          ...existingChild,
-                          ...child,
-                        }
-                      }
-                      return child
-                    }),
-                  }
-                }
+  tree: state.tree.map(d => {
+    if (d.id !== payload.docId) {
+      return d
+    }
+    return {
+      ...d,
+      children: d.children.map(page => {
+        if (page.id !== payload.pageId) {
+          return page
+        }
+        return {
+          ...page,
+          children: page.children.map(
+            findLayerWithId.bind(this, payload.layerId, layer => {
+              if (layer.children) {
                 return {
                   ...layer,
-                  ...payload.state,
+                  meta: payload.state.meta,
+                  children: payload.state.map(child => {
+                    const existingChild = layer.children.find(
+                      x => child.id === x.id
+                    )
+                    if (existingChild) {
+                      return {
+                        ...existingChild,
+                        ...child,
+                      }
+                    }
+                    return child
+                  }),
                 }
-              })
-            ),
-          }
+              }
+              return {
+                ...layer,
+                ...payload.state,
+              }
+            })
+          ),
         }
-        return page
       }),
-    })),
-  })),
+    }
+  }),
 })
 
 export default function(state = initialState, action) {

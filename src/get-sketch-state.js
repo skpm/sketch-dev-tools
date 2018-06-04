@@ -1,13 +1,8 @@
-/* globals NSApp MSDocumentWindow NSPredicate */
+/* globals NSPredicate */
+import sketch from 'sketch' // eslint-disable-line
 import { toArray, prepareObject } from 'sketch-utils'
 
-function getMSWindow() {
-  return toArray(NSApp.windows()).filter(win =>
-    win.isKindOfClass(MSDocumentWindow)
-  )
-}
-
-function getLayerChildren(layer, pageId) {
+function getLayerChildren(layer, pageId, docId) {
   if (!layer.children) {
     return []
   }
@@ -15,10 +10,10 @@ function getLayerChildren(layer, pageId) {
     child => child.objectID() !== layer.objectID()
   )
   // eslint-disable-next-line
-  return children.map(inspectLayer.bind(this, pageId))
+  return children.map(inspectLayer.bind(this, pageId, docId))
 }
 
-function inspectLayer(pageId, layer, index) {
+function inspectLayer(pageId, docId, layer, index) {
   return {
     type: 'layer',
     index,
@@ -27,54 +22,40 @@ function inspectLayer(pageId, layer, index) {
     class: String(layer.class()),
     name: String(layer.name()),
     fromPage: pageId,
+    fromDoc: docId,
   }
 }
 
-function getPageLayers(page, pageId) {
-  return toArray(page.layers()).map(inspectLayer.bind(this, pageId))
+function getPageLayers(page, docId) {
+  return page.layers.map(layer =>
+    inspectLayer(page.id, docId, layer.sketchObject)
+  )
 }
 
 function getDocumentPages(doc) {
-  return toArray(doc.pages()).map((page, index) => {
-    const pageId = String(page.objectID())
-    return {
-      type: 'page',
-      index,
-      id: pageId,
-      desc: String(page.description()),
-      class: String(page.class()),
-      name: String(page.name()),
-    }
-  })
+  return doc.pages.map((page, index) => ({
+    type: page.type,
+    index,
+    id: page.id,
+    desc: String(page.sketchObject.description()),
+    class: String(page.sketchObject.class()),
+    name: page.name,
+    fromDoc: doc.id,
+  }))
 }
 
-function getWindowDocument(win) {
-  if (win.isKindOfClass(MSDocumentWindow) && win.document()) {
-    return [
-      {
-        type: 'document',
-        index: 0,
-        id: '?',
-        desc: String(win.document().description()),
-        class: String(win.document().class()),
-        meta: {},
-        children: getDocumentPages(win.document()),
-      },
-    ]
-  }
-  return []
-}
-
-function findPageById(pageId) {
-  const windows = getMSWindow()
+function findPageById(pageId, docId) {
+  const documents = sketch.Document.getDocuments()
   let page
-  windows.forEach(win => {
-    if (!win.document()) {
+  documents.forEach(doc => {
+    if (page || doc.id !== docId) {
       return
     }
-    const pages = toArray(win.document().pages())
-    pages.forEach(p => {
-      if (String(p.objectID()) === pageId) {
+    doc.pages.forEach(p => {
+      if (page) {
+        return
+      }
+      if (p.id === pageId) {
         page = p
       }
     })
@@ -83,14 +64,14 @@ function findPageById(pageId) {
   return page
 }
 
-export function getPageMetadata(pageId) {
-  const page = findPageById(pageId)
+export function getPageMetadata(pageId, docId) {
+  const page = findPageById(pageId, docId)
 
   if (!page) {
     return undefined
   }
 
-  const dict = page.treeAsDictionary()
+  const dict = page.sketchObject.treeAsDictionary()
   delete dict.layers
   delete dict['<class>']
   delete dict.name
@@ -99,12 +80,12 @@ export function getPageMetadata(pageId) {
     meta: prepareObject(dict, {
       skipMocha: true,
     }),
-    children: getPageLayers(page, pageId),
+    children: getPageLayers(page, docId),
   }
 }
 
-export function getLayerMetadata(layerId, pageId) {
-  const page = findPageById(pageId)
+export function getLayerMetadata(layerId, pageId, docId) {
+  const page = findPageById(pageId, docId)
 
   if (!page) {
     return undefined
@@ -114,7 +95,9 @@ export function getLayerMetadata(layerId, pageId) {
     'objectID CONTAINS[c] %@',
     layerId
   )
-  const result = toArray(page.children().filteredArrayUsingPredicate(predicate))
+  const result = toArray(
+    page.sketchObject.children().filteredArrayUsingPredicate(predicate)
+  )
 
   if (!result || !result.length) {
     return undefined
@@ -132,19 +115,19 @@ export function getLayerMetadata(layerId, pageId) {
     meta: prepareObject(dict, {
       skipMocha: true,
     }),
-    children: getLayerChildren(layer, pageId),
+    children: getLayerChildren(layer, pageId, docId),
   }
 }
 
 export default function getElementTree() {
-  const windows = getMSWindow()
-  return windows.map((win, index) => ({
-    type: 'window',
+  const documents = sketch.Document.getDocuments()
+  return documents.map((doc, index) => ({
+    type: doc.type,
     index,
-    id: '?',
-    desc: String(win.description()),
-    class: String(win.class()),
-    name: String(win.title()),
-    children: getWindowDocument(win),
+    id: doc.id,
+    desc: String(doc.sketchObject.description()),
+    class: String(doc.sketchObject.class()),
+    meta: {},
+    children: getDocumentPages(doc),
   }))
 }

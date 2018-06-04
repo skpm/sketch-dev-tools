@@ -66,10 +66,10 @@ class QuickLook extends Component {
     if (!this.props.element.meta) {
       if (this.props.element.fromPage) {
         this.props.dispatch(
-          fetchLayerMetadata(this.props.element.id, this.props.element.fromPage)
+          fetchLayerMetadata(this.props.element.id, this.props.element.fromPage, this.props.element.fromDoc)
         )
       } else {
-        this.props.dispatch(fetchPageMetadata(this.props.element.id))
+        this.props.dispatch(fetchPageMetadata(this.props.element.id, this.props.element.fromDoc))
       }
     }
   }
@@ -97,6 +97,7 @@ QuickLook.propTypes = {
     name: PropTypes.string,
     meta: PropTypes.objectOf(PropTypes.any),
     fromPage: PropTypes.string,
+    fromDoc: PropTypes.string,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
