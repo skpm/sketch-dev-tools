@@ -8,6 +8,7 @@ import Console from './components/console'
 import Elements from './components/elements'
 import Network from './components/network'
 import Playground from './components/playground'
+import Settings from './components/settings'
 import NotFound from './components/404'
 
 export default () => (
@@ -20,6 +21,7 @@ export default () => (
         <Route exact path="/elements" component={Elements} />
         <Route exact path="/playground" component={Playground} />
         <Route exact path="/network" component={Network} />
+        <Route exact path="/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </App>

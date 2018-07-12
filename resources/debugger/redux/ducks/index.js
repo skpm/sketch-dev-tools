@@ -6,6 +6,7 @@ import logs from './logs'
 import elements from './elements'
 import network from './network'
 import playground from './playground'
+import settings from './settings'
 
 export default combineReducers({
   actions,
@@ -13,4 +14,5 @@ export default combineReducers({
   elements,
   playground,
   network,
+  settings,
 })

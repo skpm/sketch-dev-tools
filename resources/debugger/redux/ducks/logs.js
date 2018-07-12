@@ -8,7 +8,6 @@ import {
 const SET_SEARCH = 'logs/SET_SEARCH'
 const SET_TYPES = 'logs/SET_TYPES'
 const SELECT_VALUE = 'logs/SELECT_VALUE'
-const SET_SHOW_LOG_TIMES = 'logs/SET_SHOW_LOG_TIMES'
 
 const initialState = {
   logs: [],
@@ -22,7 +21,6 @@ const initialState = {
   },
   selectedLog: null,
   selectedLogValue: null,
-  showLogTimes: false,
   groups: {},
 }
 
@@ -89,18 +87,6 @@ handlers[SELECT_VALUE] = (state, { payload }) => ({
   ...state,
   selectedLog: payload.key,
   selectedLogValue: payload.value,
-})
-
-export const setShowLogTimes = show => ({
-  type: SET_SHOW_LOG_TIMES,
-  payload: {
-    show,
-  },
-})
-
-handlers[SET_SHOW_LOG_TIMES] = (state, { payload }) => ({
-  ...state,
-  showLogTimes: payload.show,
 })
 
 export const group = ({ plugin }) => ({

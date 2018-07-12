@@ -34,16 +34,16 @@
   },
   "devDependencies": {
     "@babel/standalone": "^7.0.0-beta.40",
-    "@skpm/builder": "^0.5.4",
-    "@skpm/child_process": "^0.2.3",
+    "@skpm/builder": "^0.5.8",
+    "@skpm/child_process": "^0.2.4",
     "@skpm/extract-loader": "^2.0.2",
-    "@skpm/fs": "^0.1.2",
+    "@skpm/fs": "^0.1.4",
     "@skpm/os": "^0.1.1",
-    "babel-plugin-emotion": "^9.0.1",
+    "babel-plugin-emotion": "^9.2.5",
     "cocoascript-class": "^0.1.2",
-    "codemirror": "^5.35.0",
-    "css-loader": "^0.28.10",
-    "emotion": "^9.0.2",
+    "codemirror": "^5.39.0",
+    "css-loader": "^1.0.0",
+    "emotion": "^9.2.5",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
@@ -70,7 +70,7 @@
     "redux-logger": "^3.0.6"
   },
   "dependencies": {
-    "sketch-module-web-view": "^1.1.4",
+    "sketch-module-web-view": "^1.2.3",
     "sketch-utils": "^0.1.2"
   },
   "resources": [

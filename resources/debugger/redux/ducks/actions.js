@@ -1,12 +1,10 @@
 import { ADD_ACTION } from '../../../../shared-actions'
 
 const CLEAR_ACTIONS = 'actions/CLEAR_ACTIONS'
-const SET_SHOW_ACTION_TIMES = 'actions/SET_SHOW_ACTION_TIMES'
 
 const initialState = {
   actions: [],
   clearTs: Date.now(),
-  showActionTimes: false,
 }
 
 const handlers = {}
@@ -36,18 +34,6 @@ handlers[CLEAR_ACTIONS] = state => ({
   ...state,
   actions: [],
   clearTs: Date.now(),
-})
-
-export const setShowActionTimes = show => ({
-  type: SET_SHOW_ACTION_TIMES,
-  payload: {
-    show,
-  },
-})
-
-handlers[SET_SHOW_ACTION_TIMES] = (state, { payload }) => ({
-  ...state,
-  showActionTimes: payload.show,
 })
 
 export default function(state = initialState, action) {

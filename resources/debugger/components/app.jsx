@@ -1,3 +1,4 @@
+/* globals document */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -76,6 +77,18 @@ const Tab = styled(NavLink)`
   }
 `
 
+const Setting = styled(NavLink)`
+  position: absolute;
+  right: 0;
+  margin: 5px 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 13px;
+  padding: 3px 5px;
+  cursor: pointer;
+  z-index: 1;
+  text-decoration: none;
+`
+
 const TabContent = styled.div`
   flex: 1;
   background: white;
@@ -131,6 +144,9 @@ class App extends Component {
   render() {
     return (
       <Container>
+        <Setting to="settings">
+          ⚙️
+        </Setting>
         <TabBar>
           <ul>
             {tabs.map(t => (
@@ -151,6 +167,12 @@ class App extends Component {
 App.propTypes = {
   children: PropTypes.node.isRequired,
   dispatch: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func
+  })
 }
 
 export default withRouter(connect()(App))

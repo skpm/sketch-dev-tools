@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 
 export const TopBar = styled.div`
+  padding-right: 30px;
   height: 30px;
   display: flex;
   background: white;
@@ -43,12 +44,12 @@ export const Timestamp = styled.span`
   padding: 0 1.2rem 0 0;
 `
 
-const List = styled.div`
+export const List = styled.div`
   height: calc(100vh - 30px);
   padding: 0;
   overflow-y: scroll;
   display: flex;
-  flex-direction: column-reverse;
+  ${props => props.inverse ? 'flex-direction: column-reverse' : 'flex-direction: column'};
   position: relative;
 `
 
@@ -98,6 +99,7 @@ export class ScrollingList extends Component {
   render() {
     return (
       <List
+        inverse
         innerRef={c => {
           this._refs.list = c
         }}

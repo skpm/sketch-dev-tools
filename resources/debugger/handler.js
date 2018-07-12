@@ -11,6 +11,7 @@ import {
   GROUP,
   GROUP_END,
   SET_SCRIPT_RESULT,
+  SET_SETTINGS,
 } from '../../shared-actions'
 import { addAction } from './redux/ducks/actions'
 import { addLog, clearLogs, group, groupEnd } from './redux/ducks/logs'
@@ -21,6 +22,7 @@ import {
 } from './redux/ducks/elements'
 import { addRequest, setResponse } from './redux/ducks/network'
 import { setScriptResult } from './redux/ducks/playground'
+import { setSettings } from './redux/ducks/settings'
 
 export default function(dispatch) {
   /**
@@ -52,6 +54,8 @@ export default function(dispatch) {
         return dispatch(groupEnd(jsonData.payload))
       case SET_SCRIPT_RESULT:
         return dispatch(setScriptResult(jsonData.payload))
+      case SET_SETTINGS:
+        return dispatch(setSettings(jsonData.payload))
       default:
         return console.error(
           new Error('unknown action received from the bridge')

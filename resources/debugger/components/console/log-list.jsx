@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
   selectedLog: state.logs.selectedLog,
   search: state.logs.search,
   types: state.logs.types,
-  showLogTimes: state.logs.showLogTimes,
+  showLogTimes: state.settings.showTimestamps,
   clearTs: state.logs.clearTs,
 })
 

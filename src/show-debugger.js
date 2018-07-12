@@ -1,6 +1,8 @@
 /* globals AppController */
-/* eslint-disable global-require, no-undef */
+/* eslint-disable global-require */
+import Settings from 'sketch/settings' // eslint-disable-line
 import BrowserWindow from 'sketch-module-web-view'
+import { getWebview } from 'sketch-module-web-view/remote'
 import { prepareValue } from 'sketch-utils'
 import getSketchState, {
   getPageMetadata,
@@ -11,17 +13,20 @@ import {
   SET_PAGE_METADATA,
   SET_LAYER_METADATA,
   SET_SCRIPT_RESULT,
+  SET_SETTINGS,
 } from '../shared-actions'
 import { identifier } from '../debugger'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
 
 export default function() {
-  let stopListening
-
-  // enabled listening to all the actions
-  AppController.sharedInstance()
-    .pluginManager()
-    .setWilcardsEnabled(true)
+  const existingWebview = getWebview(identifier)
+  if (existingWebview) {
+    if (existingWebview.isVisible()) {
+      // close the devtool if it's open
+      existingWebview.close()
+    }
+    return
+  }
 
   const browserWindow = new BrowserWindow({
     identifier,
@@ -31,27 +36,42 @@ export default function() {
     minHeight: 300,
     minimizable: false,
     maximizable: false,
-    alwaysOnTop: process.env.NODE_ENV !== 'production',
+    alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
     fullscreenable: false,
     acceptFirstMouse: true,
     title: 'Sketch DevTools',
     resizable: true,
+    show: false,
   })
 
   browserWindow.loadURL(require('../resources/webview.html'))
 
   browserWindow.once('ready-to-show', () => {
+    const settings = {
+      withAncestors: Settings.settingForKey('withAncestors') || false,
+      alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
+      theme: Settings.settingForKey('theme') || 'light',
+      showTimestamps: Settings.settingForKey('showTimestamps') || false,
+    }
+    browserWindow.webContents.executeJavaScript(
+      `sketchBridge(${JSON.stringify({
+        name: SET_SETTINGS,
+        payload: settings,
+      })})`
+    )
+
     browserWindow.show()
+
+    // enabled listening to all the actions
+    AppController.sharedInstance()
+      .pluginManager()
+      .setWilcardsEnabled(true)
   })
 
   browserWindow.on('closed', () => {
     AppController.sharedInstance()
       .pluginManager()
       .setWilcardsEnabled(false)
-
-    if (stopListening) {
-      stopListening()
-    }
   })
 
   browserWindow.webContents.on('getSketchState', () => {
@@ -60,6 +80,14 @@ export default function() {
     browserWindow.webContents.executeJavaScript(
       `sketchBridge(${JSON.stringify({ name: SET_TREE, payload: state })})`
     )
+  })
+
+  browserWindow.webContents.on('setSetting', (key, value) => {
+    Settings.setSettingForKey(key, value)
+
+    if (String(key) === 'alwaysOnTop') {
+      browserWindow.setAlwaysOnTop(value)
+    }
   })
 
   browserWindow.webContents.on('getPageMetadata', (pageId, docId) => {

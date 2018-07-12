@@ -10,33 +10,18 @@ import {
   ListInner,
   ClearLabel,
 } from '../list-element'
-import { setShowActionTimes, clearActions } from '../../redux/ducks/actions'
+import { clearActions } from '../../redux/ducks/actions'
 import Action from './action'
 
 const mapStateToProps = state => ({
   actions: state.actions.actions,
-  showActionTimes: state.actions.showActionTimes,
+  showActionTimes: state.settings.showTimestamps,
   clearTs: state.actions.clearTs,
 })
 
 const Actions = ({ actions, clearTs, showActionTimes, dispatch }) => (
   <Wrapper>
     <TopBar>
-      <ButtonFilter
-        style={
-          showActionTimes
-            ? {
-                opacity: 1,
-              }
-            : { opacity: 0.5 }
-        }
-        onClick={() => dispatch(setShowActionTimes(!showActionTimes))}
-        title={
-          showActionTimes ? 'Hide action timestamp' : 'Show action timestamp'
-        }
-      >
-        🕙
-      </ButtonFilter>
       <ButtonFilter
         onClick={() => dispatch(clearActions())}
         title="Clear actions"

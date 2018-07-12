@@ -1,5 +1,5 @@
 /* globals NSPredicate */
-import sketch from 'sketch' // eslint-disable-line
+import sketch from 'sketch/dom' // eslint-disable-line
 import { toArray, prepareObject } from 'sketch-utils'
 
 function getLayerChildren(layer, pageId, docId) {
