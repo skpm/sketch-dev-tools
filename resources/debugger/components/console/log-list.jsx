@@ -101,7 +101,7 @@ const LogList = props => (
               </Value>
             ))}
           </Values>
-          <File>{log.stack && log.stack[0].file}</File>
+          <File>{log.stack ? log.stack[0].file : ''}</File>
         </Log>
       ))}
     </ListInner>

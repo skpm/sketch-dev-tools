@@ -24,12 +24,17 @@ export function onAction(context) {
       const values = []
       const nativeValues = context.actionContext.payload
       for (let i = 0; i < nativeValues.length; i += 1) {
-        values.push(prepareValue(nativeValues[i]), options)
+        values.push(prepareValue(nativeValues[i], options))
       }
       const payload = {
         ts: Date.now(),
         type: String(context.actionContext.level),
         values,
+        stack: [
+          {
+            file: String(context.actionContext.command.identifier()),
+          },
+        ],
       }
 
       sendToDebugger(ADD_LOG, payload)
