@@ -56,7 +56,7 @@
     "lint-staged": "^7.0.0",
     "moment": "^2.21.0",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.7.4",
+    "prettier": "^1.13.7",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-codemirror2": "^5.0.1",
