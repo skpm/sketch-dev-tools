@@ -34,6 +34,7 @@ const Log = styled.li`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  overflow-x: hidden;
   border-top: 0.5px solid rgba(0, 0, 0, 0.1);
 `
 
@@ -101,7 +102,7 @@ const LogList = props => (
               </Value>
             ))}
           </Values>
-          <File>{log.stack ? log.stack[0].file : ''}</File>
+          <File title={log.stack ? log.stack[0].file : ''}>{log.stack ? log.stack[0].file : ''}</File>
         </Log>
       ))}
     </ListInner>
