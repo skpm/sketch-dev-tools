@@ -26,6 +26,11 @@ export default function Value({ value, logKey, search }) {
     case 'Empty':
       return <LogEmpty value={value.value} logKey={logKey} search={search} />
 
+    case 'Date':
+    case 'RegExp':
+    case 'Function':
+    case 'Buffer':
+    case 'Symbol':
     case 'String':
       return (
         <LogString
@@ -37,6 +42,9 @@ export default function Value({ value, logKey, search }) {
 
     case 'Mocha':
     case 'Object':
+      if (value.type === 'NSException') {
+        return <LogError error={value.value} logKey={logKey} search={search} />
+      }
       return (
         <LogObject
           object={value.value}
