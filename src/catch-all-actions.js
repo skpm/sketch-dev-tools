@@ -13,6 +13,10 @@ export function onAction(context) {
   }
   const options = {
     withAncestors: Settings.settingForKey('withAncestors') || false,
+    sourcemaps:
+      typeof Settings.settingForKey('sourcemaps') !== 'undefined'
+        ? Settings.settingForKey('sourcemaps')
+        : true,
   }
   const name = String(context.action)
   if (name === LOG_ACTION) {

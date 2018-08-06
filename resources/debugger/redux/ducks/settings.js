@@ -7,6 +7,7 @@ const initialState = {
   alwaysOnTop: false,
   theme: 'light',
   showTimestamps: false,
+  sourcemaps: true,
 }
 
 const handlers = {}
@@ -41,6 +42,7 @@ export const updateWithAncestors = updateSettingAction('withAncestors')
 export const updateAlwaysOnTop = updateSettingAction('alwaysOnTop')
 export const updateTheme = updateSettingAction('theme')
 export const updateShowTimestamps = updateSettingAction('showTimestamps')
+export const updateSourcemaps = updateSettingAction('sourcemaps')
 
 export default function(state = initialState, action) {
   if (handlers[action.type]) {

@@ -2,16 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'react-emotion'
-import {
-  Wrapper,
-  TopBar,
-  List,
-} from '../list-element'
+import { Wrapper, TopBar, List } from '../list-element'
 import {
   updateTheme,
   updateWithAncestors,
   updateAlwaysOnTop,
-  updateShowTimestamps
+  updateShowTimestamps,
+  updateSourcemaps,
 } from '../../redux/ducks/settings'
 
 const SettingRow = styled.div`
@@ -48,8 +45,10 @@ const Select = styled.select`
   border: 1px solid #d1d5da;
   border-radius: 3px;
   outline: none;
-  box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
-  background: #fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC") no-repeat right 8px center;
+  box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075);
+  background: #fff
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC')
+    no-repeat right 8px center;
   background-size: 8px 10px;
   -webkit-appearance: none;
   appearance: none;
@@ -78,9 +77,17 @@ const Settings = ({ settings, dispatch }) => (
     <List>
       <SettingRow>
         <dl>
-          <dt><SelectLabel htmlFor="theme_select">Theme</SelectLabel></dt>
+          <dt>
+            <SelectLabel htmlFor="theme_select">Theme</SelectLabel>
+          </dt>
           <dd>
-            <Select id="theme_select" name="theme_select" className="form-select" value={settings.theme} onChange={e => dispatch(updateTheme(e.currentTarget.value))}>
+            <Select
+              id="theme_select"
+              name="theme_select"
+              className="form-select"
+              value={settings.theme}
+              onChange={e => dispatch(updateTheme(e.currentTarget.value))}
+            >
               <option value="light">Light</option>
               <option value="dark">Dark</option>
             </Select>
@@ -88,20 +95,41 @@ const Settings = ({ settings, dispatch }) => (
         </dl>
       </SettingRow>
       <SettingRow>
-        <Note>When you log a native object, show the methods and properties defined by its ancestors in addition to the ones it defines.</Note>
+        <Note>
+          When you log a native object, show the methods and properties defined
+          by its ancestors in addition to the ones it defines.
+        </Note>
         <CheckBoxWrapper>
           <label htmlFor="with_ancestors">
-            <CheckBox type="checkbox" name="with_ancestors" checked={settings.withAncestors} id="with_ancestors" onChange={e => dispatch(updateWithAncestors(e.currentTarget.checked))} />
-            Inspect with ancestors
+            <CheckBox
+              type="checkbox"
+              name="with_ancestors"
+              checked={settings.withAncestors}
+              id="with_ancestors"
+              onChange={e =>
+                dispatch(updateWithAncestors(e.currentTarget.checked))
+              }
+            />
+            Inspect With Ancestors
           </label>
         </CheckBoxWrapper>
       </SettingRow>
       <SettingRow>
-        <Note>Always show the devtools on top of Sketch, even when not focused.</Note>
+        <Note>
+          Always show the devtools on top of Sketch, even when not focused.
+        </Note>
         <CheckBoxWrapper>
           <label htmlFor="always_on_top">
-            <CheckBox type="checkbox" name="always_on_top" checked={settings.alwaysOnTop} id="always_on_top" onChange={e => dispatch(updateAlwaysOnTop(e.currentTarget.checked))} />
-            Always on top
+            <CheckBox
+              type="checkbox"
+              name="always_on_top"
+              checked={settings.alwaysOnTop}
+              id="always_on_top"
+              onChange={e =>
+                dispatch(updateAlwaysOnTop(e.currentTarget.checked))
+              }
+            />
+            Always On Top
           </label>
         </CheckBoxWrapper>
       </SettingRow>
@@ -109,8 +137,35 @@ const Settings = ({ settings, dispatch }) => (
         <Note>Show the timestamps of the logs and actions.</Note>
         <CheckBoxWrapper>
           <label htmlFor="always_on_top">
-            <CheckBox type="checkbox" name="always_on_top" checked={settings.showTimestamps} id="always_on_top" onChange={e => dispatch(updateShowTimestamps(e.currentTarget.checked))} />
-            Show timestamps
+            <CheckBox
+              type="checkbox"
+              name="always_on_top"
+              checked={settings.showTimestamps}
+              id="always_on_top"
+              onChange={e =>
+                dispatch(updateShowTimestamps(e.currentTarget.checked))
+              }
+            />
+            Show Timestamps
+          </label>
+        </CheckBoxWrapper>
+      </SettingRow>
+      <SettingRow>
+        <Note>
+          Handle source maps in the stack traces of Errors (might slow logging).
+        </Note>
+        <CheckBoxWrapper>
+          <label htmlFor="sourcemaps">
+            <CheckBox
+              type="checkbox"
+              name="sourcemaps"
+              checked={settings.sourcemaps}
+              id="sourcemaps"
+              onChange={e =>
+                dispatch(updateSourcemaps(e.currentTarget.checked))
+              }
+            />
+            Handle Source Maps
           </label>
         </CheckBoxWrapper>
       </SettingRow>
@@ -125,7 +180,7 @@ Settings.propTypes = {
     theme: PropTypes.string,
     showTimestamps: PropTypes.bool,
   }),
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
 }
 
 export default connect(mapStateToProps)(Settings)
