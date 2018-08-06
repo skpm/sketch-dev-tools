@@ -42,9 +42,6 @@ export default function Value({ value, logKey, search }) {
 
     case 'Mocha':
     case 'Object':
-      if (value.type === 'NSException') {
-        return <LogError error={value.value} logKey={logKey} search={search} />
-      }
       return (
         <LogObject
           object={value.value}
