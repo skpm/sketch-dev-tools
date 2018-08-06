@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
+import pluginCall from 'sketch-module-web-view/client'
 import PropTypes from 'prop-types'
+import styled from 'react-emotion'
 import { LogKey, LogColon, ButtonToggle, ValueWrapper } from './log-element'
+
+const LinkToEditor = styled.span`
+  cursor: pointer;
+  user-select: auto;
+`
 
 export default class LogError extends Component {
   constructor(props) {
@@ -32,7 +39,16 @@ export default class LogError extends Component {
           <ValueWrapper>
             {this.props.error.stack.map((value, key) => (
               <li key={key}>
-                <span>{value.fn} {value.file}@{value.line};{value.column}</span>
+                <LinkToEditor
+                  onClick={e => {
+                    if (e.metaKey) {
+                      pluginCall('openFile', value.filePath)
+                    }
+                  }}
+                >
+                  {value.fn} {value.file}
+                  {value.line ? `:${value.line}:${value.column}` : ''}
+                </LinkToEditor>
               </li>
             ))}
           </ValueWrapper>

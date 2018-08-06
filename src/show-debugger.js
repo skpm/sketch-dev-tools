@@ -1,4 +1,4 @@
-/* globals AppController */
+/* globals AppController, NSWorkspace */
 /* eslint-disable global-require */
 import Settings from 'sketch/settings' // eslint-disable-line
 import BrowserWindow from 'sketch-module-web-view'
@@ -72,6 +72,10 @@ export default function() {
     AppController.sharedInstance()
       .pluginManager()
       .setWilcardsEnabled(false)
+  })
+
+  browserWindow.webContents.on('openFile', file => {
+    NSWorkspace.sharedWorkspace().openFile(file)
   })
 
   browserWindow.webContents.on('getSketchState', () => {

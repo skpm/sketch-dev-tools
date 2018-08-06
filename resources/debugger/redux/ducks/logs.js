@@ -7,7 +7,6 @@ import {
 
 const SET_SEARCH = 'logs/SET_SEARCH'
 const SET_TYPES = 'logs/SET_TYPES'
-const SELECT_VALUE = 'logs/SELECT_VALUE'
 
 const initialState = {
   logs: [],
@@ -73,20 +72,6 @@ export const setTypes = types => ({
 handlers[SET_TYPES] = (state, { payload }) => ({
   ...state,
   types: payload.types,
-})
-
-export const selectValue = (key, value) => ({
-  type: SELECT_VALUE,
-  payload: {
-    key,
-    value,
-  },
-})
-
-handlers[SELECT_VALUE] = (state, { payload }) => ({
-  ...state,
-  selectedLog: payload.key,
-  selectedLogValue: payload.value,
 })
 
 export const group = ({ plugin }) => ({

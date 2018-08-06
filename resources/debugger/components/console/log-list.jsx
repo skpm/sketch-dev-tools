@@ -12,7 +12,6 @@ import {
   ClearLabel,
   Timestamp,
 } from '../list-element'
-import { selectValue } from '../../redux/ducks/logs'
 
 const mapStateToProps = state => ({
   logs: state.logs.logs,
@@ -96,13 +95,14 @@ const LogList = props => (
               <Value
                 className={props.selectedLog === `${i}-${k}` && selectedValue}
                 key={`${i}-${k}`}
-                onClick={() => props.dispatch(selectValue(`${i}-${k}`, value))}
               >
                 <LogValue value={value} search={props.search} />
               </Value>
             ))}
           </Values>
-          <File title={log.stack ? log.stack[0].file : ''}>{log.stack ? log.stack[0].file : ''}</File>
+          <File title={log.stack ? log.stack[0].file : ''}>
+            {log.stack ? log.stack[0].file : ''}
+          </File>
         </Log>
       ))}
     </ListInner>
