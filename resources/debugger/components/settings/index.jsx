@@ -136,12 +136,12 @@ const Settings = ({ settings, dispatch }) => (
       <SettingRow>
         <Note>Show the timestamps of the logs and actions.</Note>
         <CheckBoxWrapper>
-          <label htmlFor="always_on_top">
+          <label htmlFor="show_timestamps">
             <CheckBox
               type="checkbox"
-              name="always_on_top"
+              name="show_timestamps"
               checked={settings.showTimestamps}
-              id="always_on_top"
+              id="show_timestamps"
               onChange={e =>
                 dispatch(updateShowTimestamps(e.currentTarget.checked))
               }
