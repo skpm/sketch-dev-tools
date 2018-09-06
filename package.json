@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "sketch-module-web-view": "^1.2.3",
-    "sketch-utils": "^0.2.3"
+    "sketch-utils": "^0.2.4"
   },
   "resources": [
     "resources/webview.js"
