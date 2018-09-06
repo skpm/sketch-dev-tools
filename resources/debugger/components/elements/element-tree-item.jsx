@@ -14,12 +14,13 @@ const Element = styled.ul`
 const WrapElement = styled.span`
   color: #aaa;
 
-  ${props => props.hasInfo ? `
+  ${props =>
+    props.hasInfo
+      ? `
     cursor: pointer;
-  ` : ''}
-
-  &:hover {
-    backgroundColor: ${props => props.hasInfo ? '#aaa' : 'transparent'};
+  `
+      : ''} &:hover {
+    backgroundcolor: ${props => (props.hasInfo ? '#aaa' : 'transparent')};
   }
 `
 
@@ -84,12 +85,15 @@ export default class ElementTreeItem extends Component {
           }
           this.setState({
             quickLook: !this.state.quickLook,
-            expanded: true
+            expanded: true,
           })
         }}
         hasInfo={this.props.element.id !== '?'}
       >
-        &lt;{this.renderElementName()}{expanded ? '>' : ' />'} {this.state.quickLook && <QuickLook element={this.props.element} />}
+        &lt;
+        {this.renderElementName()}
+        {expanded ? '>' : ' />'}{' '}
+        {this.state.quickLook && <QuickLook element={this.props.element} />}
       </WrapElement>
     )
   }
@@ -112,7 +116,11 @@ export default class ElementTreeItem extends Component {
               {element.children.map((e, i) => (
                 <ElementTreeItem key={element.id + i} element={e} />
               ))}
-              <WrapElement>&lt;/{this.renderElementName(true)}&gt;</WrapElement>
+              <WrapElement>
+                &lt;/
+                {this.renderElementName(true)}
+                &gt;
+              </WrapElement>
             </span>
           ) : (
             this.renderQuickLook(false)
@@ -121,11 +129,7 @@ export default class ElementTreeItem extends Component {
       )
     }
 
-    return (
-      <TreeElement>
-        {this.renderQuickLook(false)}
-      </TreeElement>
-    )
+    return <TreeElement>{this.renderQuickLook(false)}</TreeElement>
   }
 
   render() {

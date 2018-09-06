@@ -144,9 +144,7 @@ class App extends Component {
   render() {
     return (
       <Container>
-        <Setting to="settings">
-          ⚙️
-        </Setting>
+        <Setting to="settings">⚙️</Setting>
         <TabBar>
           <ul>
             {tabs.map(t => (
@@ -168,11 +166,11 @@ App.propTypes = {
   children: PropTypes.node.isRequired,
   dispatch: PropTypes.func,
   location: PropTypes.shape({
-    pathname: PropTypes.string
+    pathname: PropTypes.string,
   }),
   history: PropTypes.shape({
-    push: PropTypes.func
-  })
+    push: PropTypes.func,
+  }),
 }
 
 export default withRouter(connect()(App))

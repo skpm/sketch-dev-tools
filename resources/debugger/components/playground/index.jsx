@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { keyframes } from 'emotion'
 import styled from 'react-emotion'
 import SplitPanel from 'react-split-pane'
-import {Controlled as CodeMirror} from 'react-codemirror2'
+import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript'
 // import 'codemirror/addon/lint/lint'
 

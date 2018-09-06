@@ -49,7 +49,10 @@ export const List = styled.div`
   padding: 0;
   overflow-y: scroll;
   display: flex;
-  ${props => props.inverse ? 'flex-direction: column-reverse' : 'flex-direction: column'};
+  ${props =>
+    props.inverse
+      ? 'flex-direction: column-reverse'
+      : 'flex-direction: column'};
   position: relative;
 `
 

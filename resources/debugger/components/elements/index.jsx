@@ -47,7 +47,7 @@ class Elements extends Component {
       <Wrapper>
         <TopBar>
           <ButtonFilter
-            style={{paddingTop: 0}}
+            style={{ paddingTop: 0 }}
             onClick={() => this.props.dispatch(fetchTree())}
             title="Refresh the state"
           >
@@ -62,9 +62,7 @@ class Elements extends Component {
             ))}
           </ElementTree>
         ) : (
-          <Empty>
-            No Sketch document found.
-          </Empty>
+          <Empty>No Sketch document found.</Empty>
         )}
       </Wrapper>
     )
