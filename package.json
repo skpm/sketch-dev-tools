@@ -29,7 +29,7 @@
     "link": "npm run build && skpm-link",
     "lint-staged": "lint-staged",
     "lint": "eslint --quiet --ignore-path=.gitignore .",
-    "prettier:base": "prettier --single-quote --trailing-comma es5 --no-semi --write",
+    "prettier:base": "prettier --write",
     "prettify": "npm run prettier:base \"./src/**/*.{js,jsx}\" \"./resources/**/*.{js,jsx}\""
   },
   "devDependencies": {
@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "sketch-module-web-view": "^1.2.3",
-    "sketch-utils": "^0.2.4"
+    "sketch-utils": "^0.2.6"
   },
   "resources": [
     "resources/webview.js"
