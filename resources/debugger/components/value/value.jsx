@@ -31,6 +31,7 @@ export default function Value({ value, logKey, search }) {
     case 'Function':
     case 'Buffer':
     case 'Symbol':
+    case 'Boolean':
     case 'String':
       return (
         <LogString
