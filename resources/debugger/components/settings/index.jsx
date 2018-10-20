@@ -76,25 +76,6 @@ const Settings = ({ settings, dispatch }) => (
     <TopBar />
     <List>
       <SettingRow>
-        <dl>
-          <dt>
-            <SelectLabel htmlFor="theme_select">Theme</SelectLabel>
-          </dt>
-          <dd>
-            <Select
-              id="theme_select"
-              name="theme_select"
-              className="form-select"
-              value={settings.theme}
-              onChange={e => dispatch(updateTheme(e.currentTarget.value))}
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </Select>
-          </dd>
-        </dl>
-      </SettingRow>
-      <SettingRow>
         <Note>
           When you log a native object, show the methods and properties defined
           by its ancestors in addition to the ones it defines.

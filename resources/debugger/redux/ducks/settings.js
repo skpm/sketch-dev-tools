@@ -1,8 +1,7 @@
-import { SET_SETTINGS } from '../../../../shared-actions'
-
+/* globals window */
 const UPDATE_SETTING = 'settings/UPDATE_SETTING'
 
-const initialState = {
+const initialState = window.initialSettings || {
   withAncestors: false,
   alwaysOnTop: false,
   theme: 'light',
@@ -11,16 +10,6 @@ const initialState = {
 }
 
 const handlers = {}
-
-export const setSettings = ({ settings }) => ({
-  type: SET_SETTINGS,
-  payload: settings,
-})
-
-handlers[SET_SETTINGS] = (state, { payload }) => ({
-  ...state,
-  ...payload,
-})
 
 const updateSettingAction = key => value => ({
   type: UPDATE_SETTING,

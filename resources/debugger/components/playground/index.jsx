@@ -51,7 +51,7 @@ const codeMirrorOptions = {
 
 const LoadingBarContainer = styled.div`
   width: 100%;
-  height: 2px;
+  height: 4px;
   position: absolute;
   overflow: hidden;
   z-index: 10;
@@ -83,7 +83,7 @@ const LoadingBar = styled.div`
   top: 0;
   left: -100%;
   width: 100%;
-  height: 2px;
+  height: 4px;
   animation: ${loadingBarAnimation} 2s ease-out;
   animation-iteration-count: infinite;
   animation-timing-function: linear;

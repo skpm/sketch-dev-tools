@@ -1,4 +1,4 @@
-/* globals AppController, NSWorkspace */
+/* globals AppController, NSWorkspace, MSTheme */
 /* eslint-disable global-require */
 import Settings from 'sketch/settings' // eslint-disable-line
 import BrowserWindow from 'sketch-module-web-view'
@@ -13,7 +13,6 @@ import {
   SET_PAGE_METADATA,
   SET_LAYER_METADATA,
   SET_SCRIPT_RESULT,
-  SET_SETTINGS,
 } from '../shared-actions'
 import { identifier } from '../debugger'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
@@ -46,20 +45,22 @@ export default function() {
 
   browserWindow.loadURL(require('../resources/webview.html'))
 
-  browserWindow.once('ready-to-show', () => {
-    const settings = {
-      withAncestors: Settings.settingForKey('withAncestors') || false,
-      alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
-      theme: Settings.settingForKey('theme') || 'light',
-      showTimestamps: Settings.settingForKey('showTimestamps') || false,
-    }
-    browserWindow.webContents.executeJavaScript(
-      `sketchBridge(${JSON.stringify({
-        name: SET_SETTINGS,
-        payload: settings,
-      })})`
-    )
+  const settings = {
+    withAncestors: Settings.settingForKey('withAncestors') || false,
+    alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
+    theme: MSTheme.sharedTheme().isDark() ? 'dark' : 'light',
+    showTimestamps: Settings.settingForKey('showTimestamps') || false,
+    sourcemaps:
+      typeof Settings.settingForKey('sourcemaps') !== 'undefined'
+        ? Settings.settingForKey('sourcemaps')
+        : true,
+  }
 
+  browserWindow.webContents.insertJS(
+    `window.initialSettings = ${JSON.stringify(settings)}`
+  )
+
+  browserWindow.once('ready-to-show', () => {
     browserWindow.show()
 
     // enabled listening to all the actions
@@ -81,9 +82,11 @@ export default function() {
   browserWindow.webContents.on('getSketchState', () => {
     const state = getSketchState()
 
-    browserWindow.webContents.executeJavaScript(
-      `sketchBridge(${JSON.stringify({ name: SET_TREE, payload: state })})`
-    )
+    browserWindow.webContents
+      .executeJavaScript(
+        `sketchBridge(${JSON.stringify({ name: SET_TREE, payload: state })})`
+      )
+      .catch(console.error)
   })
 
   browserWindow.webContents.on('setSetting', (key, value) => {
@@ -97,51 +100,59 @@ export default function() {
   browserWindow.webContents.on('getPageMetadata', (pageId, docId) => {
     const state = getPageMetadata(pageId, docId)
 
-    browserWindow.webContents.executeJavaScript(
-      `sketchBridge(${JSON.stringify({
-        name: SET_PAGE_METADATA,
-        payload: { pageId, docId, state },
-      })})`
-    )
+    browserWindow.webContents
+      .executeJavaScript(
+        `sketchBridge(${JSON.stringify({
+          name: SET_PAGE_METADATA,
+          payload: { pageId, docId, state },
+        })})`
+      )
+      .catch(console.error)
   })
 
   browserWindow.webContents.on('getLayerMetadata', (layerId, pageId, docId) => {
     const state = getLayerMetadata(layerId, pageId, docId)
 
-    browserWindow.webContents.executeJavaScript(
-      `sketchBridge(${JSON.stringify({
-        name: SET_LAYER_METADATA,
-        payload: { layerId, pageId, docId, state },
-      })})`
-    )
+    browserWindow.webContents
+      .executeJavaScript(
+        `sketchBridge(${JSON.stringify({
+          name: SET_LAYER_METADATA,
+          payload: { layerId, pageId, docId, state },
+        })})`
+      )
+      .catch(console.error)
   })
 
   browserWindow.webContents.on('onRunScript', (script, runId) => {
     const result = runScript(script)
-    browserWindow.webContents.executeJavaScript(
-      `sketchBridge(${JSON.stringify({
-        name: SET_SCRIPT_RESULT,
-        payload: {
-          result: prepareValue(result),
-          id: runId,
-        },
-      })})`
-    )
+    browserWindow.webContents
+      .executeJavaScript(
+        `sketchBridge(${JSON.stringify({
+          name: SET_SCRIPT_RESULT,
+          payload: {
+            result: prepareValue(result),
+            id: runId,
+          },
+        })})`
+      )
+      .catch(console.error)
   })
 
   browserWindow.webContents.on('onRunCommand', (command, runId) => {
     runCommand(command)
       .catch(err => err)
       .then(result => {
-        browserWindow.webContents.executeJavaScript(
-          `sketchBridge(${JSON.stringify({
-            name: SET_SCRIPT_RESULT,
-            payload: {
-              result: prepareValue(result || 'done'),
-              id: runId,
-            },
-          })})`
-        )
+        browserWindow.webContents
+          .executeJavaScript(
+            `sketchBridge(${JSON.stringify({
+              name: SET_SCRIPT_RESULT,
+              payload: {
+                result: prepareValue(result || 'done'),
+                id: runId,
+              },
+            })})`
+          )
+          .catch(console.error)
       })
   })
 

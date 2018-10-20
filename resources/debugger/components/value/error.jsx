@@ -1,5 +1,6 @@
+/* globals window */
+
 import React, { Component } from 'react'
-import pluginCall from 'sketch-module-web-view/client'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 import { LogKey, LogColon, ButtonToggle, ValueWrapper } from './log-element'
@@ -18,31 +19,33 @@ export default class LogError extends Component {
   }
 
   render() {
+    const { collapsed } = this.state
+    const { logKey, error } = this.props
     return (
       <span>
         <ButtonToggle
-          onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-          expanded={!this.state.collapsed}
+          onClick={() => this.setState({ collapsed: !collapsed })}
+          expanded={!collapsed}
         >
           &gt;
         </ButtonToggle>
-        {this.props.logKey && (
+        {logKey && (
           <span>
-            <LogKey>{this.props.logKey}</LogKey>
+            <LogKey>{logKey}</LogKey>
             <LogColon>: </LogColon>
           </span>
         )}
         <span>
-          {this.props.error.name}: {this.props.error.message}
+          {error.name}: {error.message}
         </span>
-        {!this.state.collapsed && (
+        {!collapsed && (
           <ValueWrapper>
-            {this.props.error.stack.map((value, key) => (
+            {error.stack.map((value, key) => (
               <li key={key}>
                 <LinkToEditor
                   onClick={e => {
                     if (e.metaKey) {
-                      pluginCall('openFile', value.filePath)
+                      window.postMessage('openFile', value.filePath)
                     }
                   }}
                 >
