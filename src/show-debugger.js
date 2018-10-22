@@ -48,7 +48,10 @@ export default function() {
   const settings = {
     withAncestors: Settings.settingForKey('withAncestors') || false,
     alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
-    theme: MSTheme.sharedTheme().isDark() ? 'dark' : 'light',
+    theme:
+      typeof MSTheme !== 'undefined' && MSTheme.sharedTheme().isDark()
+        ? 'dark'
+        : 'light',
     showTimestamps: Settings.settingForKey('showTimestamps') || false,
     sourcemaps:
       typeof Settings.settingForKey('sourcemaps') !== 'undefined'
