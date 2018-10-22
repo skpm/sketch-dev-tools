@@ -13,14 +13,14 @@ import {
 const SettingRow = styled.div`
   padding: 16px;
   margin-top: -1px;
-  border-top: 1px solid #e1e4e8;
+  border-top: 1px solid ${props => props.theme.light};
 `
 
 const Note = styled.p`
   min-height: 17px;
   margin: 4px 0 2px;
   font-size: 12px;
-  color: #586069;
+  color: ${props => props.theme.lightText};
 `
 
 // const SelectLabel = styled.label`
