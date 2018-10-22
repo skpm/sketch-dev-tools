@@ -12,22 +12,20 @@
 
 ### From a release (simplest)
 
-* [Download](https://github.com/skpm/sketch-dev-tools/releases/latest) the latest release of the plugin
-* Un-zip
-* Double-click on the sketch plugin
+- [Download](https://github.com/skpm/sketch-dev-tools/releases/latest) the latest release of the plugin
+- Un-zip
+- Double-click on the sketch plugin
 
 ### From the sources
 
-* Clone the repo
-* Install the dependencies (`npm install`)
-* Build (`npm run build`)
-* Double-click on plugin.sketchplugin
+- Clone the repo
+- Install the dependencies (`npm install`)
 
 ## Usage
 
-If you want to show some proper logs in the DevTools, you need to use `console` (as apposed to `log` directly). `console` is polyfilled by [`skpm`](https://github.com/skpm/skpm) automatically.
+If you want to show some proper logs in the DevTools, you need to use Sketch >= 52.
 
-You might notice performance issues when the debugger is opened, that's because it's listening to all actions.
+You might notice performance issues when the DevTools are opened, that's because it's listening to all actions. Closing it will go back to normal.
 
 ## Contributing
 
@@ -36,5 +34,3 @@ Lots of room for improvement, let's build it together :) Check out the [issues](
 ## License
 
 MIT
-
-
