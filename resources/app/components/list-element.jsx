@@ -6,8 +6,8 @@ export const TopBar = styled.div`
   padding-right: 30px;
   height: 30px;
   display: flex;
-  background: white;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: ${props => props.theme.background};
+  border-bottom: 1px solid ${props => props.theme.light};
   justify-content: flex-end;
 `
 
@@ -17,7 +17,7 @@ export const Filter = styled.div`
 
 export const ButtonFilter = styled(Filter)`
   margin: 5px 0;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid ${props => props.theme.light};
   font-size: 13px;
   padding: 3px 5px;
   cursor: pointer;
@@ -33,7 +33,7 @@ export const ListInner = styled.ul`
 `
 
 export const ClearLabel = styled.li`
-  color: #aaa;
+  color: ${props => props.theme.lightText};
   text-align: center;
   font-size: 13px;
   margin: 10px 0;

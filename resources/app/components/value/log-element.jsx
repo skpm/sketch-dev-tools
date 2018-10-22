@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'react-emotion'
 
 export const LogKey = styled.span`
-  color: #704cea;
+  color: ${props => props.theme.purple};
   user-select: auto;
 `
 
@@ -61,8 +61,8 @@ export const ButtonToggle = styled.button`
 `
 
 const HighLight = styled.span`
-  background: yellow;
-  color: black;
+  background: ${props => props.theme.highlight};
+  color: ${props => props.theme.heavyText};
   white-space: pre-wrap;
   user-select: auto;
 `

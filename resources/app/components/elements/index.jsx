@@ -17,8 +17,8 @@ const Loading = styled.div`
   width: 100%;
   height: 100%;
   text-align: center;
-  background: rgba(255, 255, 255, 0.8);
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  background: ${props => props.theme.translucideBackground};
+  text-shadow: 0px 0px 2px ${props => props.theme.lessLight};
   color: #aaa;
   padding-top: 150px;
 `
@@ -26,7 +26,7 @@ const Loading = styled.div`
 const Empty = styled.p`
   margin-top: 100px;
   text-align: center;
-  color: #aaa;
+  color: ${props => props.theme.lightText};
 `
 
 const ElementTree = styled.div`

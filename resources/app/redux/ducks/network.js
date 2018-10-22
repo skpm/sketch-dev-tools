@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ADD_REQUEST, SET_RESPONSE } from '../../../../shared-actions'
 
 const initialState = {
@@ -19,7 +20,7 @@ handlers[ADD_REQUEST] = (state, { payload }) => ({
   requests: state.requests.concat({
     uid: payload.uid,
     request: payload.request,
-    started: Date.now(),
+    started: dayjs(),
     finished: false,
     response: null,
   }),
@@ -43,7 +44,7 @@ handlers[SET_RESPONSE] = (state, { payload }) => {
   const requests = [...state.requests]
   requests[findRequestIndex] = {
     ...requests.findRequestIndex,
-    finished: Date.now(),
+    finished: dayjs(),
     response: payload.response,
   }
 

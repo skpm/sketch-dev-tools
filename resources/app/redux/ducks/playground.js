@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { SET_SCRIPT_RESULT } from '../../../../shared-actions'
 
 const CLEAR_CACHE = 'playground/CLEAR_CACHE'
@@ -45,7 +46,7 @@ handlers[RUN_SCRIPT] = (state, { payload }) => ({
   loading: true,
   runId: payload.runId,
   timestamp: {
-    start: Date.now(),
+    start: dayjs(),
     end: null,
   },
 })
@@ -69,7 +70,7 @@ handlers[SET_SCRIPT_RESULT] = (state, { payload }) => {
     loading: false,
     timestamp: {
       ...state.timestamp,
-      end: Date.now(),
+      end: dayjs(),
     },
   }
 }
@@ -96,7 +97,7 @@ handlers[RUN_COMMAND] = (state, { payload }) => ({
   loading: true,
   runId: payload.runId,
   timestamp: {
-    start: Date.now(),
+    start: dayjs(),
     end: null,
   },
 })

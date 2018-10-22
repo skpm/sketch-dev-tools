@@ -37,8 +37,3 @@ body,
   display: flex;
   flex-direction: column;
 }
-
-.CodeMirror * {
-  -webkit-user-select: auto;
-  user-select: auto;
-}

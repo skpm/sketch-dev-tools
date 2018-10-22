@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import styled from 'react-emotion'
 import { Wrapper, TopBar, List } from '../list-element'
 import {
-  updateTheme,
   updateWithAncestors,
   updateAlwaysOnTop,
   updateShowTimestamps,
@@ -24,35 +23,35 @@ const Note = styled.p`
   color: #586069;
 `
 
-const SelectLabel = styled.label`
-  margin: 0 0 6px;
-  font-weight: 600;
-`
-
-const Select = styled.select`
-  margin-top: 8px;
-  padding: 6px 24px 6px 8px;
-  font-weight: 400;
-  display: inline-block;
-  max-width: 100%;
-  min-width: 200px;
-  height: 34px;
-  line-height: 20px;
-  color: #24292e;
-  vertical-align: middle;
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  border: 1px solid #d1d5da;
-  border-radius: 3px;
-  outline: none;
-  box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075);
-  background: #fff
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC')
-    no-repeat right 8px center;
-  background-size: 8px 10px;
-  -webkit-appearance: none;
-  appearance: none;
-`
+// const SelectLabel = styled.label`
+//   margin: 0 0 6px;
+//   font-weight: 600;
+// `
+//
+// const Select = styled.select`
+//   margin-top: 8px;
+//   padding: 6px 24px 6px 8px;
+//   font-weight: 400;
+//   display: inline-block;
+//   max-width: 100%;
+//   min-width: 200px;
+//   height: 34px;
+//   line-height: 20px;
+//   color: #24292e;
+//   vertical-align: middle;
+//   background-repeat: no-repeat;
+//   background-position: right 8px center;
+//   border: 1px solid #d1d5da;
+//   border-radius: 3px;
+//   outline: none;
+//   box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075);
+//   background: #fff
+//     url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC')
+//     no-repeat right 8px center;
+//   background-size: 8px 10px;
+//   -webkit-appearance: none;
+//   appearance: none;
+// `
 
 const CheckBoxWrapper = styled.div`
   padding-left: 20px;

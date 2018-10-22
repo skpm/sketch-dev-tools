@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import {
   ADD_LOG,
   CLEAR_LOGS,
@@ -10,7 +11,7 @@ const SET_TYPES = 'logs/SET_TYPES'
 
 const initialState = {
   logs: [],
-  clearTs: Date.now(),
+  clearTs: dayjs(),
   search: '',
   types: {
     log: true,
@@ -37,6 +38,7 @@ handlers[ADD_LOG] = (state, { payload }) => ({
   logs: state.logs.concat({
     ...payload.log,
     group: state.groups[payload.log.plugin] || 0,
+    ts: dayjs(payload.log.ts),
   }),
 })
 
@@ -47,7 +49,7 @@ export const clearLogs = () => ({
 handlers[CLEAR_LOGS] = state => ({
   ...state,
   logs: [],
-  clearTs: Date.now(),
+  clearTs: dayjs(),
 })
 
 export const setSearch = search => ({

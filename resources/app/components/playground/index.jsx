@@ -2,8 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { keyframes } from 'emotion'
-import styled from 'react-emotion'
+import styled, { keyframes } from 'react-emotion'
 import SplitPanel from 'react-split-pane'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript'
@@ -25,9 +24,9 @@ const mapStateToProps = state => ({
   logs: state.playground.timestamp.start
     ? state.logs.logs.filter(
         l =>
-          l.ts >= state.playground.timestamp.start &&
+          l.ts.isAfter(state.playground.timestamp.start) &&
           (state.playground.timestamp.end
-            ? l.ts <= state.playground.timestamp.end
+            ? l.ts.isBefore(state.playground.timestamp.end)
             : true)
       )
     : [],
@@ -89,8 +88,8 @@ const LoadingBar = styled.div`
   animation-timing-function: linear;
   background: -webkit-linear-gradient(
     left,
-    rgba(255, 255, 255, 0) 0%,
-    #3d85ee 70%
+    ${props => props.theme.transparentBackground} 0%,
+    ${props => props.theme.primary} 70%
   );
 `
 
@@ -98,7 +97,7 @@ const EditorWrapper = styled(SplitPanel)`
   height: calc(100% - 30px) !important;
 
   .Resizer {
-    background: #000;
+    background: ${props => props.theme.heavyText};
     opacity: 0.1;
     z-index: 1;
     box-sizing: border-box;
@@ -106,21 +105,90 @@ const EditorWrapper = styled(SplitPanel)`
     background-clip: padding-box;
     width: 11px;
     margin: 0 -5px;
-    border-left: 5px solid rgba(255, 255, 255, 0);
-    border-right: 5px solid rgba(255, 255, 255, 0);
+    border-left: 5px solid ${props => props.theme.transparentBackground};
+    border-right: 5px solid ${props => props.theme.transparentBackground};
     cursor: col-resize;
     transition: all 2s ease;
   }
 
   .Resizer:hover {
-    border-left: 5px solid rgba(0, 0, 0, 0.5);
-    border-right: 5px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid ${props => props.theme.translucideBackground};
+    border-right: 5px solid ${props => props.theme.translucideBackground};
+  }
+
+  .CodeMirror-gutters {
+    background: ${props => props.theme.background};
+    border-right: 0;
+  }
+
+  .CodeMirror-linenumber {
+    color: ${props => props.theme.lightText};
+  }
+
+  .CodeMirror-cursor {
+    border-left: 1px solid ${props => props.theme.lightText} !important;
+  }
+
+  span.cm-comment {
+    color: ${props => props.theme.highlighting.comment};
+  }
+  span.cm-atom {
+    color: ${props => props.theme.highlighting.atom};
+  }
+  span.cm-number {
+    color: ${props => props.theme.highlighting.number};
+  }
+
+  span.cm-property {
+    color: ${props => props.theme.highlighting.property};
+  }
+  span.cm-attribute {
+    color: ${props => props.theme.highlighting.attribute};
+  }
+  span.cm-keyword {
+    color: ${props => props.theme.highlighting.keyword};
+  }
+  span.cm-string {
+    color: ${props => props.theme.highlighting.string};
+  }
+
+  span.cm-variable,
+  span.cm-variable-2 {
+    color: ${props => props.theme.highlighting.variable};
+  }
+  span.cm-def {
+    color: ${props => props.theme.highlighting.def};
+  }
+  span.cm-error {
+    background: #c66;
+    color: #969896;
+  }
+  span.cm-bracket {
+    color: ${props => props.theme.highlighting.bracket};
+  }
+  span.cm-tag {
+    color: ${props => props.theme.highlighting.tag};
+  }
+  span.cm-link {
+    color: ${props => props.theme.highlighting.link};
+  }
+
+  .CodeMirror-matchingbracket {
+    text-decoration: underline;
   }
 
   .CodeMirror,
   .ReactCodeMirror {
     height: 100%;
     width: 100%;
+    background: ${props => props.theme.background};
+    color: ${props => props.theme.text};
+    user-select: auto;
+  }
+
+  .CodeMirror * {
+    -webkit-user-select: auto;
+    user-select: auto;
   }
 `
 
@@ -132,19 +200,20 @@ const WrappedLogList = styled(LogList)`
 const Input = styled.input`
   width: 100%;
   border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid ${props => props.theme.light};
   height: 20px;
   user-select: auto;
   padding-left: 20px;
   outline: none;
-  color: #444;
+  color: ${props => props.theme.text};
+  background: ${props => props.theme.background};
 `
 
 const BashIcon = styled.span`
   position: absolute;
   bottom: 2px;
   left: 6px;
-  color: #444;
+  color: ${props => props.theme.lightText};
 `
 
 class Playground extends React.Component {

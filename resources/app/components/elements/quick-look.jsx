@@ -7,6 +7,7 @@ import {
   fetchPageMetadata,
 } from '../../redux/ducks/elements'
 import LogObject from '../value/object'
+import { CompleteElementName } from './element-name'
 
 const Loading = styled.div`
   position: absolute;
@@ -17,9 +18,9 @@ const Loading = styled.div`
   left: 0;
   padding: 0;
   text-align: center;
-  background: rgba(255, 255, 255, 0.8);
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
-  color: #aaa;
+  background: ${props => props.theme.translucideBackground};
+  text-shadow: 0px 0px 2px ${props => props.theme.lessLight};
+  color: ${props => props.theme.lightText};
   padding-top: 150px;
 `
 
@@ -28,13 +29,13 @@ const Wrapper = styled.div`
   right: 0;
   top: 30px;
   padding: 8px 8px 40px 8px;
-  background: #f8f8f8;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  background: ${props => props.theme.darkBackground};
+  border-left: 1px solid ${props => props.theme.light};
   width: 30%;
   max-width: 95%;
   height: calc(100% - 30px);
   overflow: auto;
-  color: black;
+  color: ${props => props.theme.heavyText};
   text-align: left;
   font-size: 13px;
   cursor: auto;
@@ -81,13 +82,18 @@ class QuickLook extends Component {
   }
 
   render() {
+    const { element } = this.props
     return (
       <div>
         <Wrapper onClick={e => e.preventDefault()}>
-          {!this.props.element.meta ? (
+          {!element.meta ? (
             <Loading>Loading...</Loading>
           ) : (
-            <LogObject object={this.props.element.meta} opened />
+            <LogObject
+              prefix={<CompleteElementName element={element} />}
+              object={element.meta}
+              opened
+            />
           )}
         </Wrapper>
       </div>

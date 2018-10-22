@@ -4,9 +4,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { css } from 'emotion'
-import styled from 'react-emotion'
+import styled, { css } from 'react-emotion'
+import { ThemeProvider } from 'emotion-theming'
 import bridgeHandler from '../handler'
+import getTheme from '../theme'
 
 const tabs = [
   {
@@ -37,6 +38,7 @@ const Container = styled.div`
   height: 100%;
   overflow: hidden;
   display: flex;
+  color: ${props => props.theme.text};
 `
 
 const TabBar = styled.div`
@@ -57,7 +59,7 @@ const Tab = styled(NavLink)`
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: black;
+  color: ${props => props.theme.heavyText};
   text-decoration: none;
   font-size: 1.5rem;
   opacity: 0.5;
@@ -81,7 +83,7 @@ const Setting = styled(NavLink)`
   position: absolute;
   right: 0;
   margin: 5px 0;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid ${props => props.theme.light};
   font-size: 13px;
   padding: 3px 5px;
   cursor: pointer;
@@ -91,7 +93,7 @@ const Setting = styled(NavLink)`
 
 const TabContent = styled.div`
   flex: 1;
-  background: white;
+  background: ${props => props.theme.background};
   overflow: auto;
   display: flex;
   flex-direction: row;
@@ -104,9 +106,9 @@ const Label = styled.span`
   padding-top: 3px;
 `
 
-const selectedTab = css`
+const selectedTab = theme => css`
   opacity: 1 !important;
-  border-bottom: 1px solid #3d85ee !important;
+  border-bottom: 1px solid ${theme.primary} !important;
 `
 
 class App extends Component {
@@ -142,22 +144,25 @@ class App extends Component {
   }
 
   render() {
+    const theme = getTheme(this.props.theme)
     return (
-      <Container>
-        <Setting to="settings">⚙️</Setting>
-        <TabBar>
-          <ul>
-            {tabs.map(t => (
-              <li key={t.url}>
-                <Tab to={t.url} activeClassName={selectedTab}>
-                  <Label>{t.label}</Label>
-                </Tab>
-              </li>
-            ))}
-          </ul>
-        </TabBar>
-        <TabContent>{this.props.children}</TabContent>
-      </Container>
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Setting to="settings">⚙️</Setting>
+          <TabBar>
+            <ul>
+              {tabs.map(t => (
+                <li key={t.url}>
+                  <Tab to={t.url} activeClassName={selectedTab(theme)}>
+                    <Label>{t.label}</Label>
+                  </Tab>
+                </li>
+              ))}
+            </ul>
+          </TabBar>
+          <TabContent>{this.props.children}</TabContent>
+        </Container>
+      </ThemeProvider>
     )
   }
 }
@@ -171,6 +176,11 @@ App.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  theme: PropTypes.string,
 }
 
-export default withRouter(connect()(App))
+export default withRouter(
+  connect(state => ({
+    theme: state.settings.theme,
+  }))(App)
+)

@@ -5,7 +5,7 @@ import { LogKey, LogColon, HighLighted } from './log-element'
 
 const LogValue = styled.span`
   user-select: auto;
-  color: purple;
+  color: ${props => props.theme.purple};
 `
 
 export default function LogNumber({ logKey, number, search }) {

@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { css } from 'emotion'
-import styled from 'react-emotion'
+import styled, { css } from 'react-emotion'
 import LogValue from '../value/value'
 import filterLogs from './search'
 import {
@@ -24,7 +22,7 @@ const mapStateToProps = state => ({
 
 const Log = styled.li`
   list-style: none;
-  background: none white;
+  background: none ${props => props.theme.light};
   font-size: 13px;
   padding: 0.3rem;
   font-family: Consolas, Menlo, Monaco, 'Lucida Console', monospace;
@@ -34,7 +32,7 @@ const Log = styled.li`
   justify-content: flex-start;
   width: 100%;
   overflow-x: hidden;
-  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-top: 0.5px solid ${props => props.theme.light};
 `
 
 const LogTypes = {
@@ -65,15 +63,16 @@ const File = styled.span`
   padding: 0 0 0 1.2rem;
 `
 
-const selectedValue = css`
-  background: none rgba(0, 0, 0, 0.05);
-`
-
 const Value = styled.li`
   vertical-align: top;
 
-  &:hover {
-    ${selectedValue};
+  ${props =>
+    props.selected
+      ? `
+  background: none ${props.theme.lighter};
+  `
+      : ''} &:hover {
+    background: none ${props => props.theme.lighter};
   }
 `
 
@@ -82,18 +81,18 @@ const LogList = props => (
     <ListInner>
       {props.clearTs && (
         <ClearLabel>
-          Logs cleared at {moment(props.clearTs).format('HH:mm:ss')}
+          Logs cleared at {props.clearTs.format('HH:mm:ss')}
         </ClearLabel>
       )}
       {props.logs.filter(filterLogs(props)).map((log, i) => (
         <Log key={i} className={LogTypes[log.type]}>
           {props.showLogTimes && (
-            <Timestamp>{moment(log.ts).format('HH:mm:ss.SSS')}</Timestamp>
+            <Timestamp>{log.ts.format('HH:mm:ss.SSS')}</Timestamp>
           )}
           <Values>
             {log.values.map((value, k) => (
               <Value
-                className={props.selectedLog === `${i}-${k}` && selectedValue}
+                selected={props.selectedLog === `${i}-${k}`}
                 key={`${i}-${k}`}
               >
                 <LogValue value={value} search={props.search} />
@@ -110,12 +109,12 @@ const LogList = props => (
 )
 
 LogList.propTypes = {
-  clearTs: PropTypes.number,
+  clearTs: PropTypes.any,
   showLogTimes: PropTypes.bool.isRequired,
   logs: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.string,
-      ts: PropTypes.number,
+      ts: PropTypes.any,
       values: PropTypes.arrayOf(PropTypes.any),
     })
   ).isRequired,

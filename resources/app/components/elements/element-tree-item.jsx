@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
-import { css } from 'emotion'
 import QuickLook from './quick-look'
 import { ButtonToggle } from '../value/log-element'
+import { CompleteElementName } from './element-name'
 
 const Element = styled.ul`
   padding: 0 0 0 2rem;
@@ -12,7 +12,7 @@ const Element = styled.ul`
 `
 
 const WrapElement = styled.span`
-  color: #aaa;
+  color: ${props => props.theme.lightText};
 
   ${props =>
     props.hasInfo
@@ -20,21 +20,18 @@ const WrapElement = styled.span`
     cursor: pointer;
   `
       : ''} &:hover {
-    backgroundcolor: ${props => (props.hasInfo ? '#aaa' : 'transparent')};
+    backgroundcolor: ${props =>
+      props.hasInfo ? props.theme.lightText : 'transparent'};
   }
 `
 
-const ElementClass = styled.span`
-  color: #e55b33;
-  padding: 0 0.2rem;
-`
+const TreeElement = styled.li`
+  position: relative;
+  padding: 0.5rem 0;
+  ${props =>
+    props.expanded
+      ? `
 
-const ElementName = styled.span`
-  font-style: italic;
-  color: #aaa;
-`
-
-const expandedTree = css`
   &:before {
     content: ' ';
     position: absolute;
@@ -42,13 +39,10 @@ const expandedTree = css`
     bottom: 1rem;
     left: -1rem;
     width: 2px;
-    background: #e6e6e6;
+    background: ${props.theme.text};
   }
 `
-
-const TreeElement = styled.li`
-  position: relative;
-  padding: 0.5rem 0;
+      : ''};
 `
 
 const OffsetButtonToggle = styled(ButtonToggle)`
@@ -66,16 +60,6 @@ export default class ElementTreeItem extends Component {
     }
   }
 
-  renderElementName(close) {
-    const { element } = this.props
-    return (
-      <span>
-        <ElementClass>{element.class}</ElementClass>
-        {!close && element.name && <ElementName> {element.name}</ElementName>}
-      </span>
-    )
-  }
-
   renderQuickLook(expanded) {
     return (
       <WrapElement
@@ -91,7 +75,7 @@ export default class ElementTreeItem extends Component {
         hasInfo={this.props.element.id !== '?'}
       >
         &lt;
-        {this.renderElementName()}
+        <CompleteElementName element={this.props.element} />
         {expanded ? '>' : ' />'}{' '}
         {this.state.quickLook && <QuickLook element={this.props.element} />}
       </WrapElement>
@@ -103,7 +87,7 @@ export default class ElementTreeItem extends Component {
 
     if (element && element.children && element.children.length > 0) {
       return (
-        <TreeElement className={this.state.expanded && expandedTree}>
+        <TreeElement expanded={this.state.expanded}>
           <OffsetButtonToggle
             expanded={this.state.expanded}
             onClick={() => this.setState({ expanded: !this.state.expanded })}
@@ -118,7 +102,7 @@ export default class ElementTreeItem extends Component {
               ))}
               <WrapElement>
                 &lt;/
-                {this.renderElementName(true)}
+                <CompleteElementName element={this.props.element} hideName />
                 &gt;
               </WrapElement>
             </span>

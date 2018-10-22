@@ -1,10 +1,12 @@
+import dayjs from 'dayjs'
+
 import { ADD_ACTION } from '../../../../shared-actions'
 
 const CLEAR_ACTIONS = 'actions/CLEAR_ACTIONS'
 
 const initialState = {
   actions: [],
-  clearTs: Date.now(),
+  clearTs: dayjs(),
 }
 
 const handlers = {}
@@ -22,7 +24,7 @@ handlers[ADD_ACTION] = (state, { payload }) => ({
   actions: state.actions.concat({
     name: payload.name,
     context: payload.context,
-    ts: Date.now(),
+    ts: dayjs(),
   }),
 })
 
@@ -33,7 +35,7 @@ export const clearActions = () => ({
 handlers[CLEAR_ACTIONS] = state => ({
   ...state,
   actions: [],
-  clearTs: Date.now(),
+  clearTs: dayjs(),
 })
 
 export default function(state = initialState, action) {

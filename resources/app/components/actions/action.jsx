@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
-import moment from 'moment'
 import { Timestamp } from '../list-element'
 import { ButtonToggle } from '../value/log-element'
 import LogValue from '../value/value'
 
 const Wrapper = styled.li`
   list-style: none;
-  background: none white;
+  background: none ${props => props.theme.background};
   font-size: 13px;
   padding: 0.3rem;
   font-family: Consolas, Menlo, Monaco, 'Lucida Console', monospace;
@@ -17,7 +16,7 @@ const Wrapper = styled.li`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-top: 0.5px solid ${props => props.theme.light};
 `
 
 const Context = styled.div`
@@ -37,9 +36,7 @@ class Action extends Component {
     return (
       <Wrapper>
         {this.props.showActionTimes && (
-          <Timestamp>
-            {moment(this.props.action.ts).format('HH:mm:ss.SSS')}
-          </Timestamp>
+          <Timestamp>{this.props.action.ts.format('HH:mm:ss.SSS')}</Timestamp>
         )}
         <span>
           <ButtonToggle
@@ -63,7 +60,7 @@ class Action extends Component {
 Action.propTypes = {
   showActionTimes: PropTypes.bool.isRequired,
   action: PropTypes.shape({
-    ts: PropTypes.number,
+    ts: PropTypes.any,
     name: PropTypes.string,
     context: PropTypes.any,
   }).isRequired,

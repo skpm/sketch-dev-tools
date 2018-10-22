@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import {
   Wrapper,
   TopBar,
@@ -31,9 +30,7 @@ const Actions = ({ actions, clearTs, showActionTimes, dispatch }) => (
     </TopBar>
     <ScrollingList items={actions}>
       <ListInner>
-        <ClearLabel>
-          Actions cleared at {moment(clearTs).format('HH:mm:ss')}
-        </ClearLabel>
+        <ClearLabel>Actions cleared at {clearTs.format('HH:mm:ss')}</ClearLabel>
         {actions.map((action, i) => (
           <Action key={i} action={action} showActionTimes={showActionTimes} />
         ))}
@@ -43,7 +40,7 @@ const Actions = ({ actions, clearTs, showActionTimes, dispatch }) => (
 )
 
 Actions.propTypes = {
-  clearTs: PropTypes.number.isRequired,
+  clearTs: PropTypes.any.isRequired,
   showActionTimes: PropTypes.bool.isRequired,
   actions: PropTypes.arrayOf(
     PropTypes.shape({
