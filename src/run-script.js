@@ -2,11 +2,7 @@
 import { spawn, exec, execSync } from '@skpm/child_process'
 import * as fs from '@skpm/fs'
 
-const PATH_TO_BUNDLE = context.plugin
-  .urlForResourceNamed('icon.png')
-  .path()
-  .replace('/icon.png', '')
-
+const PATH_TO_BUNDLE = `${context.plugin.url().path()}/Contents/Resources`
 const SCRIPTS_PATH = `${PATH_TO_BUNDLE}/.scripts`
 
 export function clearScriptsCache() {
@@ -18,7 +14,7 @@ export function clearScriptsCache() {
 
 export function runCommand(command) {
   return new Promise((resolve, reject) => {
-    exec(`cd "${PATH_TO_BUNDLE}" && ${command}`, (err, stdout, stderr) => {
+    exec(command, { cwd: PATH_TO_BUNDLE }, (err, stdout, stderr) => {
       if (err) {
         return reject(err)
       }
@@ -44,7 +40,7 @@ export function runScript(rawScript) {
         `${rawScript}\n;export default function () {}`,
         'utf8'
       )
-      execSync(`cd "${PATH_TO_BUNDLE}" && node ./build-script.js ${hash}.js`)
+      execSync(`node ./build-script.js ${hash}.js`, { cwd: PATH_TO_BUNDLE })
     }
 
     const bundledScript = fs.readFileSync(pathToBundledFile, 'utf8')
