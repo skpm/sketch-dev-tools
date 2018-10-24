@@ -1,7 +1,7 @@
 {
   "name": "sketch-dev-tools-embeded",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "build-script.js",
   "scripts": {
@@ -10,7 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@skpm/builder": "^0.4.2",
-    "@skpm/util": "^0.1.2"
+    "@skpm/builder": "^0.5.10"
   }
 }
