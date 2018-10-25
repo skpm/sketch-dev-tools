@@ -10,7 +10,7 @@ export default {
   darkBackground: '#f8f8f8',
 
   lightText: '#aaa',
-  text: '#e6e6e6',
+  text: '#161616',
   heavyText: '#000',
 
   orange: '#e55b33',
