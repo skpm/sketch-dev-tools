@@ -35,7 +35,7 @@
   "devDependencies": {
     "@babel/standalone": "^7.1.0",
     "@skpm/builder": "^0.5.10",
-    "@skpm/child_process": "^0.2.4",
+    "@skpm/child_process": "^0.3.1",
     "@skpm/extract-loader": "^2.0.2",
     "@skpm/fs": "^0.2.0",
     "@skpm/os": "^0.1.1",

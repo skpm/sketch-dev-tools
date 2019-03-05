@@ -9,15 +9,13 @@ module.exports.isDebuggerPresent = remoteWebview.isWebviewPresent.bind(
 )
 
 module.exports.sendToDebugger = function sendToDebugger(name, payload) {
-  return remoteWebview
-    .sendToWebview(
-      module.exports.identifier,
-      'sketchBridge(' +
-        JSON.stringify({
-          name: name,
-          payload: payload,
-        }) +
-        ');'
-    )
-    .catch(function swallowError() {}) // swallow the error otherwise we end up in an infinite loop
+  return remoteWebview.sendToWebview(
+    module.exports.identifier,
+    'sketchBridge(' +
+      JSON.stringify({
+        name: name,
+        payload: payload,
+      }) +
+      ');'
+  )
 }
