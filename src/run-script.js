@@ -37,7 +37,7 @@ export function runScript(rawScript) {
     if (!fs.existsSync(pathToBundledFile)) {
       fs.writeFileSync(
         pathToRawFile,
-        `${rawScript}\n;export default function () {}`,
+        `import sketch from 'sketch'\n\nexport default function () {\n${rawScript}\n}\n`,
         'utf8'
       )
       execSync(`node ./build-script.js ${hash}.js`, { cwd: PATH_TO_BUNDLE })
