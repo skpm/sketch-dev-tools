@@ -10,6 +10,10 @@ const LinkToEditor = styled.span`
   user-select: auto;
 `
 
+const Selectable = styled.span`
+  user-select: auto;
+`
+
 export default class LogError extends Component {
   constructor(props) {
     super(props)
@@ -35,9 +39,9 @@ export default class LogError extends Component {
             <LogColon>: </LogColon>
           </span>
         )}
-        <span>
+        <Selectable>
           {error.name}: {error.message}
-        </span>
+        </Selectable>
         {!collapsed && (
           <ValueWrapper>
             {error.stack.map((value, key) => (
