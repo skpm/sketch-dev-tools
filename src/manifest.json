@@ -22,6 +22,16 @@
       }
     },
     {
+      "name": "Listen to logs",
+      "identifier": "skpm.dev-tools.listen-to-logs",
+      "script": "./catch-all-actions.js",
+      "handlers": {
+        "actions": {
+          "Log.finish": "onLogFinish"
+        }
+      }
+    },
+    {
       "name": "test log",
       "identifier": "skpm.dev-tools.test-log",
       "script": "./test-log.js"
