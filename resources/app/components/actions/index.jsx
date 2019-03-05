@@ -9,7 +9,7 @@ import {
   ListInner,
   ClearLabel,
 } from '../list-element'
-import { clearActions } from '../../redux/ducks/actions'
+import { clearActions, listenToActions } from '../../redux/ducks/actions'
 import Action from './action'
 
 const mapStateToProps = state => ({
@@ -18,26 +18,45 @@ const mapStateToProps = state => ({
   clearTs: state.actions.clearTs,
 })
 
-const Actions = ({ actions, clearTs, showActionTimes, dispatch }) => (
-  <Wrapper>
-    <TopBar>
-      <ButtonFilter
-        onClick={() => dispatch(clearActions())}
-        title="Clear actions"
-      >
-        🗑
-      </ButtonFilter>
-    </TopBar>
-    <ScrollingList items={actions}>
-      <ListInner>
-        <ClearLabel>Actions cleared at {clearTs.format('HH:mm:ss')}</ClearLabel>
-        {actions.map((action, i) => (
-          <Action key={i} action={action} showActionTimes={showActionTimes} />
-        ))}
-      </ListInner>
-    </ScrollingList>
-  </Wrapper>
-)
+class Actions extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(listenToActions({ enabled: true }))
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(listenToActions({ enabled: false }))
+  }
+
+  render() {
+    const { actions, clearTs, showActionTimes, dispatch } = this.props
+    return (
+      <Wrapper>
+        <TopBar>
+          <ButtonFilter
+            onClick={() => dispatch(clearActions())}
+            title="Clear actions"
+          >
+            🗑
+          </ButtonFilter>
+        </TopBar>
+        <ScrollingList items={actions}>
+          <ListInner>
+            <ClearLabel>
+              Actions cleared at {clearTs.format('HH:mm:ss')}
+            </ClearLabel>
+            {actions.map((action, i) => (
+              <Action
+                key={i}
+                action={action}
+                showActionTimes={showActionTimes}
+              />
+            ))}
+          </ListInner>
+        </ScrollingList>
+      </Wrapper>
+    )
+  }
+}
 
 Actions.propTypes = {
   clearTs: PropTypes.any.isRequired,

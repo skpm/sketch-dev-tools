@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 
 import { ADD_ACTION } from '../../../../shared-actions'
 
+const LISTEN_TO_ACTIONS = 'actions/LISTEN_TO_ACTIONS'
 const CLEAR_ACTIONS = 'actions/CLEAR_ACTIONS'
 
 const initialState = {
@@ -10,6 +11,13 @@ const initialState = {
 }
 
 const handlers = {}
+
+export const listenToActions = ({ enabled }) => ({
+  type: LISTEN_TO_ACTIONS,
+  meta: {
+    sketch: ['listenToActions', enabled],
+  },
+})
 
 export const addAction = ({ name, context }) => ({
   type: ADD_ACTION,

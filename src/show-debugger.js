@@ -1,6 +1,6 @@
 /* globals AppController, NSWorkspace, MSTheme */
 /* eslint-disable global-require */
-import Settings from 'sketch/settings' // eslint-disable-line
+import Settings from 'sketch/settings'
 import BrowserWindow from 'sketch-module-web-view'
 import { getWebview } from 'sketch-module-web-view/remote'
 import { prepareValue } from 'sketch-utils'
@@ -16,6 +16,12 @@ import {
 } from '../shared-actions'
 import { identifier } from '../debugger'
 import { runScript, clearScriptsCache, runCommand } from './run-script'
+
+function listenToActions(enabled) {
+  AppController.sharedInstance()
+    .pluginManager()
+    .setWilcardsEnabled(enabled)
+}
 
 export default function() {
   const existingWebview = getWebview(identifier)
@@ -65,17 +71,14 @@ export default function() {
 
   browserWindow.once('ready-to-show', () => {
     browserWindow.show()
-
-    // enabled listening to all the actions
-    AppController.sharedInstance()
-      .pluginManager()
-      .setWilcardsEnabled(true)
   })
 
   browserWindow.on('closed', () => {
-    AppController.sharedInstance()
-      .pluginManager()
-      .setWilcardsEnabled(false)
+    listenToActions(false)
+  })
+
+  browserWindow.webContents.on('listenToActions', enabled => {
+    listenToActions(enabled)
   })
 
   browserWindow.webContents.on('openFile', file => {
