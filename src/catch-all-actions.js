@@ -31,17 +31,37 @@ export function onLogFinish(context) {
     value = {
       value: {
         payload: {
-          value: [actionContext.stringValue],
+          value: [
+            {
+              value: String(actionContext.stringValue),
+              type: 'String',
+              primitive: 'String',
+            },
+          ],
         },
       },
     }
   }
 
   if (commandTriggeringTheLog !== ourCommand) {
+    let values = value.value.payload.value
+    if (
+      actionContext.payload.length === 1 &&
+      actionContext.payload[0] == NSNull.null() && // eslint-disable-line
+      String(actionContext.stringValue) !== '<null>'
+    ) {
+      values = [
+        {
+          value: String(actionContext.stringValue),
+          type: 'String',
+          primitive: 'String',
+        },
+      ]
+    }
     const payload = {
       ts: Date.now(),
       type: String(actionContext.level),
-      values: value.value.payload.value,
+      values,
       stack: [
         {
           file: commandTriggeringTheLog,
