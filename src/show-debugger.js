@@ -129,20 +129,23 @@ export default function() {
       .catch(console.error)
   })
 
-  browserWindow.webContents.on('onRunScript', (script, runId) => {
-    const result = runScript(script)
-    browserWindow.webContents
-      .executeJavaScript(
-        `sketchBridge(${JSON.stringify({
-          name: SET_SCRIPT_RESULT,
-          payload: {
-            result: prepareValue(result),
-            id: runId,
-          },
-        })})`
-      )
-      .catch(console.error)
-  })
+  browserWindow.webContents.on(
+    'onRunScript',
+    (script, runId, shouldCompile = true) => {
+      const result = runScript(script, shouldCompile)
+      browserWindow.webContents
+        .executeJavaScript(
+          `sketchBridge(${JSON.stringify({
+            name: SET_SCRIPT_RESULT,
+            payload: {
+              result: prepareValue(result),
+              id: runId,
+            },
+          })})`
+        )
+        .catch(console.error)
+    }
+  )
 
   browserWindow.webContents.on('onRunCommand', (command, runId) => {
     runCommand(command)

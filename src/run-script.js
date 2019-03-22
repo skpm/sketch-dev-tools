@@ -26,43 +26,52 @@ export function runCommand(command) {
   })
 }
 
-export function runScript(rawScript) {
-  // BCDefaultsSetValueForKey([inputField string], ScriptEditorLastRunKey);
-  // use a hash of the script to avoid rebundling every time
-  const hash = NSString.stringWithString(rawScript).hash()
-  const pathToRawFile = `${SCRIPTS_PATH}/${hash}.js`
-  const pathToBundledFile = `${SCRIPTS_PATH}/Contents/Sketch/${hash}.js`
+function executeScript(script) {
+  const pluginScript = MSPluginScript.alloc().initWithString_filename(
+    script,
+    `test.js`
+  )
 
+  const command = MSPluginCommand.alloc().initWithScript_identifier_name_runHandler_scope(
+    pluginScript,
+    'com.bohemiancoding.sketch.runscriptidentifier',
+    'test',
+    'onRun',
+    'document'
+  )
+
+  AppController.sharedInstance().runPluginCommand_fromMenu_context(
+    command,
+    true,
+    {}
+  )
+}
+
+export function runScript(rawScript, compile) {
+  // BCDefaultsSetValueForKey([inputField string], ScriptEditorLastRunKey);
+  let script
   try {
-    if (!fs.existsSync(pathToBundledFile)) {
-      fs.writeFileSync(
-        pathToRawFile,
-        `import sketch from 'sketch'\n\nexport default function () {\n${rawScript}\n}\n`,
-        'utf8'
-      )
-      execSync(`node ./build-script.js ${hash}.js`, { cwd: PATH_TO_BUNDLE })
+    if (compile) {
+      // use a hash of the script to avoid rebundling every time
+      const hash = NSString.stringWithString(rawScript).hash()
+      const pathToRawFile = `${SCRIPTS_PATH}/${hash}.js`
+      const pathToBundledFile = `${SCRIPTS_PATH}/Contents/Sketch/${hash}.js`
+
+      if (!fs.existsSync(pathToBundledFile)) {
+        fs.writeFileSync(
+          pathToRawFile,
+          `const sketch = require('sketch')\n\nexport default function (context) {\n${rawScript}\n}\n`,
+          'utf8'
+        )
+        execSync(`node ./build-script.js ${hash}.js`, { cwd: PATH_TO_BUNDLE })
+      }
+
+      script = fs.readFileSync(pathToBundledFile, 'utf8')
+    } else {
+      script = `const sketch = require('sketch')\n\nvar onRun = function (context) {\n${rawScript}\n}\n`
     }
 
-    const bundledScript = fs.readFileSync(pathToBundledFile, 'utf8')
-
-    const pluginScript = MSPluginScript.alloc().initWithString_filename(
-      bundledScript,
-      'script.js'
-    )
-
-    const command = MSPluginCommand.alloc().initWithScript_identifier_name_runHandler_scope(
-      pluginScript,
-      'com.bohemiancoding.sketch.runscriptidentifier',
-      'test',
-      'onRun',
-      'document'
-    )
-
-    AppController.sharedInstance().runPluginCommand_fromMenu_context(
-      command,
-      true,
-      {}
-    )
+    executeScript(script)
   } catch (err) {
     return err
   }
