@@ -67,10 +67,10 @@ export default class ElementTreeItem extends Component {
           if (e.isDefaultPrevented() || this.props.element.id === '?') {
             return
           }
-          this.setState({
-            quickLook: !this.state.quickLook,
+          this.setState(state => ({
+            quickLook: !state.quickLook,
             expanded: true,
-          })
+          }))
         }}
         hasInfo={this.props.element.id !== '?'}
       >
@@ -90,7 +90,9 @@ export default class ElementTreeItem extends Component {
         <TreeElement expanded={this.state.expanded}>
           <OffsetButtonToggle
             expanded={this.state.expanded}
-            onClick={() => this.setState({ expanded: !this.state.expanded })}
+            onClick={() =>
+              this.setState(state => ({ expanded: !state.expanded }))
+            }
           >
             &gt;
           </OffsetButtonToggle>
