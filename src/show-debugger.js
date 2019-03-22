@@ -33,10 +33,11 @@ export default function() {
     return
   }
 
+  const bounds = Settings.settingForKey('bounds') || { width: 830, height: 400 }
+
   const browserWindow = new BrowserWindow({
     identifier,
-    width: 830,
-    height: 400,
+    ...bounds,
     minWidth: 700,
     minHeight: 300,
     minimizable: false,
@@ -72,6 +73,13 @@ export default function() {
   browserWindow.once('ready-to-show', () => {
     browserWindow.show()
   })
+
+  function storePosition() {
+    Settings.setSettingForKey('bounds', browserWindow.getBounds())
+  }
+
+  browserWindow.on('moved', storePosition)
+  browserWindow.on('resize', storePosition)
 
   browserWindow.on('closed', () => {
     listenToActions(false)
