@@ -8,6 +8,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript'
 // import 'codemirror/addon/lint/lint'
 
+import { updatePlaygrounEditorWidth } from '../../redux/ducks/settings'
 import {
   setScriptValue,
   runScript,
@@ -17,6 +18,8 @@ import { Wrapper, TopBar, ButtonFilter } from '../list-element'
 import { Dumb as LogList } from '../console/log-list'
 
 const mapStateToProps = state => ({
+  updatePlaygrounEditorWidth: state.settings.updatePlaygrounEditorWidth,
+  editorWidth: state.settings.playgroundEditorWidth,
   currentScript: state.playground.currentScript,
   loading: state.playground.loading,
   result: state.playground.result,
@@ -224,6 +227,7 @@ class Playground extends React.Component {
     this.onRunScript = this.onRunScript.bind(this)
     this.onScriptValueChange = this.onScriptValueChange.bind(this)
     this.commandRListener = this.commandRListener.bind(this)
+    this.onEditorWidthChange = this.onEditorWidthChange.bind(this)
   }
 
   componentDidMount() {
@@ -250,6 +254,10 @@ class Playground extends React.Component {
     this.props.dispatch(setScriptValue(value))
   }
 
+  onEditorWidthChange(size) {
+    this.props.dispatch(updatePlaygrounEditorWidth(size))
+  }
+
   commandRListener(event) {
     if (event.key === 'r' && event.metaKey) {
       this.onRunScript()
@@ -257,7 +265,7 @@ class Playground extends React.Component {
   }
 
   render() {
-    const { currentScript, loading, result, logs } = this.props
+    const { currentScript, loading, result, logs, editorWidth } = this.props
 
     return (
       <Wrapper>
@@ -266,7 +274,11 @@ class Playground extends React.Component {
             ▶︎
           </ButtonFilter>
         </TopBar>
-        <EditorWrapper defaultSize={300} primary="second">
+        <EditorWrapper
+          defaultSize={editorWidth}
+          onChange={this.onEditorWidthChange}
+          primary="second"
+        >
           <CodeMirror
             value={currentScript}
             options={codeMirrorOptions}
@@ -310,6 +322,7 @@ class Playground extends React.Component {
 }
 
 Playground.propTypes = {
+  editorWidth: PropTypes.number.isRequired,
   currentScript: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,

@@ -64,6 +64,10 @@ export default function() {
       typeof Settings.settingForKey('sourcemaps') !== 'undefined'
         ? Settings.settingForKey('sourcemaps')
         : true,
+    playgroundEditorWidth:
+      typeof Settings.settingForKey('playgroundEditorWidth') !== 'undefined'
+        ? Settings.settingForKey('playgroundEditorWidth')
+        : 300,
   }
 
   browserWindow.webContents.insertJS(
