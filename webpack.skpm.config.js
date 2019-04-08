@@ -1,5 +1,4 @@
 /* eslint-disable no-not-accumulator-reassign/no-not-accumulator-reassign */
-const webpack = require('webpack')
 
 module.exports = config => {
   config.resolve.extensions = ['.sketch.js', '.js', '.jsx']
@@ -29,12 +28,4 @@ module.exports = config => {
       },
     ],
   })
-
-  config.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
-    })
-  )
 }

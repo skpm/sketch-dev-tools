@@ -8,6 +8,7 @@ import {
   updateAlwaysOnTop,
   updateShowTimestamps,
   updateSourcemaps,
+  updateNativeElements,
 } from '../../redux/ducks/settings'
 
 const SettingRow = styled.div`
@@ -149,6 +150,25 @@ const Settings = ({ settings, dispatch }) => (
           </label>
         </CheckBoxWrapper>
       </SettingRow>
+      <SettingRow>
+        <Note>
+          Show the Sketch Obj-C internal objects instead of the JS API objects.
+        </Note>
+        <CheckBoxWrapper>
+          <label htmlFor="native_elements">
+            <CheckBox
+              type="checkbox"
+              name="native_elements"
+              checked={settings.nativeElements}
+              id="native_elements"
+              onChange={e =>
+                dispatch(updateNativeElements(e.currentTarget.checked))
+              }
+            />
+            Show Internal Objects
+          </label>
+        </CheckBoxWrapper>
+      </SettingRow>
     </List>
   </Wrapper>
 )
@@ -159,6 +179,7 @@ Settings.propTypes = {
     alwaysOnTop: PropTypes.bool,
     theme: PropTypes.string,
     showTimestamps: PropTypes.bool,
+    nativeElements: PropTypes.bool,
   }),
   dispatch: PropTypes.func,
 }

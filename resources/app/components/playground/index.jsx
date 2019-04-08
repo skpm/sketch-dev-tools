@@ -18,7 +18,6 @@ import { Wrapper, TopBar, ButtonFilter } from '../list-element'
 import { Dumb as LogList } from '../console/log-list'
 
 const mapStateToProps = state => ({
-  updatePlaygrounEditorWidth: state.settings.updatePlaygrounEditorWidth,
   editorWidth: state.settings.playgroundEditorWidth,
   currentScript: state.playground.currentScript,
   loading: state.playground.loading,

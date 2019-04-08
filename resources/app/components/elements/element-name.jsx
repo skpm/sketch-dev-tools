@@ -23,8 +23,6 @@ export const CompleteElementName = ({ element, hideName }) => (
 
 CompleteElementName.propTypes = {
   element: PropTypes.shape({
-    id: PropTypes.string,
-    children: PropTypes.array,
     class: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,

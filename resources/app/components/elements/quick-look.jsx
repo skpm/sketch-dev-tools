@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import styled from 'react-emotion'
-import {
-  fetchLayerMetadata,
-  fetchPageMetadata,
-} from '../../redux/ducks/elements'
 import LogObject from '../value/object'
 import { CompleteElementName } from './element-name'
 
@@ -25,15 +20,12 @@ const Loading = styled.div`
 `
 
 const Wrapper = styled.div`
-  position: fixed;
-  right: 0;
-  top: 30px;
+  position: relative;
   padding: 8px 8px 40px 8px;
   background: ${props => props.theme.darkBackground};
   border-left: 1px solid ${props => props.theme.light};
-  width: 30%;
-  max-width: 95%;
-  height: calc(100% - 30px);
+  width: 100%;
+  height: 100%;
   overflow: auto;
   color: ${props => props.theme.heavyText};
   text-align: left;
@@ -52,51 +44,42 @@ const Wrapper = styled.div`
   }
 `
 
-// const Overlay = styled.div`
-//   position: fixed;
-//   width: 100vw;
-//   height: calc(100vh - 30px);
-//   cursor: auto;
-//   top: 30px;
-//   left: 0;
-//   z-index: 8;
-// `
-
 class QuickLook extends Component {
-  componentDidMount() {
+  shouldComponentUpdate(nextProps) {
+    return (
+      !nextProps.element ||
+      (nextProps.element && !this.props.element) ||
+      nextProps.element.id !== this.props.element.id ||
+      nextProps.element.meta !== this.props.element.meta
+    )
+  }
+
+  componentDidUpdate() {
+    if (!this.props.element) {
+      return
+    }
     if (!this.props.element.meta) {
-      if (this.props.element.fromPage) {
-        this.props.dispatch(
-          fetchLayerMetadata(
-            this.props.element.id,
-            this.props.element.fromPage,
-            this.props.element.fromDoc
-          )
-        )
-      } else {
-        this.props.dispatch(
-          fetchPageMetadata(this.props.element.id, this.props.element.fromDoc)
-        )
-      }
+      this.props.onFetchMetadata(this.props.element)
     }
   }
 
   render() {
     const { element } = this.props
+    if (!element) {
+      return <Wrapper onClick={e => e.preventDefault()} />
+    }
     return (
-      <div>
-        <Wrapper onClick={e => e.preventDefault()}>
-          {!element.meta ? (
-            <Loading>Loading...</Loading>
-          ) : (
-            <LogObject
-              prefix={<CompleteElementName element={element} />}
-              object={element.meta}
-              opened
-            />
-          )}
-        </Wrapper>
-      </div>
+      <Wrapper onClick={e => e.preventDefault()}>
+        {!element.meta ? (
+          <Loading>Loading...</Loading>
+        ) : (
+          <LogObject
+            prefix={<CompleteElementName element={element} />}
+            object={element.meta}
+            opened
+          />
+        )}
+      </Wrapper>
     )
   }
 }
@@ -110,8 +93,8 @@ QuickLook.propTypes = {
     meta: PropTypes.objectOf(PropTypes.any),
     fromPage: PropTypes.string,
     fromDoc: PropTypes.string,
-  }).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  }),
+  onFetchMetadata: PropTypes.func.isRequired,
 }
 
-export default connect()(QuickLook)
+export default QuickLook

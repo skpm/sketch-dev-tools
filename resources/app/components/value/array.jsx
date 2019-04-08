@@ -16,15 +16,17 @@ export default class LogArray extends Component {
     this.state = {
       collapsed: true,
     }
+    this.onToggle = this.onToggle.bind(this)
+  }
+
+  onToggle() {
+    this.setState(state => ({ collapsed: !state.collapsed }))
   }
 
   render() {
     return (
       <span>
-        <ButtonToggle
-          onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-          expanded={!this.state.collapsed}
-        >
+        <ButtonToggle onClick={this.onToggle} expanded={!this.state.collapsed}>
           &gt;
         </ButtonToggle>
         {this.props.logKey && (

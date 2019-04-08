@@ -68,6 +68,11 @@ export default function() {
       typeof Settings.settingForKey('playgroundEditorWidth') !== 'undefined'
         ? Settings.settingForKey('playgroundEditorWidth')
         : 300,
+    quickLookWidth:
+      typeof Settings.settingForKey('quickLookWidth') !== 'undefined'
+        ? Settings.settingForKey('quickLookWidth')
+        : 300,
+    nativeElements: Settings.settingForKey('nativeElements') || false,
   }
 
   browserWindow.webContents.insertJS(
@@ -98,7 +103,7 @@ export default function() {
   })
 
   browserWindow.webContents.on('getSketchState', () => {
-    const state = getSketchState()
+    const state = getSketchState({ native: settings.nativeElements })
 
     browserWindow.webContents
       .executeJavaScript(
@@ -108,6 +113,7 @@ export default function() {
   })
 
   browserWindow.webContents.on('setSetting', (key, value) => {
+    settings[key] = value
     Settings.setSettingForKey(key, value)
 
     if (String(key) === 'alwaysOnTop') {
@@ -116,7 +122,9 @@ export default function() {
   })
 
   browserWindow.webContents.on('getPageMetadata', (pageId, docId) => {
-    const state = getPageMetadata(pageId, docId)
+    const state = getPageMetadata(pageId, docId, {
+      native: settings.nativeElements,
+    })
 
     browserWindow.webContents
       .executeJavaScript(
@@ -129,7 +137,9 @@ export default function() {
   })
 
   browserWindow.webContents.on('getLayerMetadata', (layerId, pageId, docId) => {
-    const state = getLayerMetadata(layerId, pageId, docId)
+    const state = getLayerMetadata(layerId, pageId, docId, {
+      native: settings.nativeElements,
+    })
 
     browserWindow.webContents
       .executeJavaScript(
