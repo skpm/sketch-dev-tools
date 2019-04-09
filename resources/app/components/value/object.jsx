@@ -16,15 +16,17 @@ export default class LogObject extends Component {
     this.state = {
       collapsed: !props.opened,
     }
+    this.onToggle = this.onToggle.bind(this)
+  }
+
+  onToggle() {
+    this.setState(state => ({ collapsed: !state.collapsed }))
   }
 
   render() {
     return (
       <span>
-        <ButtonToggle
-          onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-          expanded={!this.state.collapsed}
-        >
+        <ButtonToggle onClick={this.onToggle} expanded={!this.state.collapsed}>
           &gt;
         </ButtonToggle>
         {this.props.logKey && (
@@ -64,6 +66,6 @@ LogObject.propTypes = {
   opened: PropTypes.bool,
   search: PropTypes.string,
   logKey: PropTypes.string,
-  prefix: PropTypes.string,
+  prefix: PropTypes.node,
   object: PropTypes.objectOf(PropTypes.any).isRequired,
 }

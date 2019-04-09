@@ -33,10 +33,11 @@ export default function() {
     return
   }
 
+  const bounds = Settings.settingForKey('bounds') || { width: 830, height: 400 }
+
   const browserWindow = new BrowserWindow({
     identifier,
-    width: 830,
-    height: 400,
+    ...bounds,
     minWidth: 700,
     minHeight: 300,
     minimizable: false,
@@ -63,6 +64,15 @@ export default function() {
       typeof Settings.settingForKey('sourcemaps') !== 'undefined'
         ? Settings.settingForKey('sourcemaps')
         : true,
+    playgroundEditorWidth:
+      typeof Settings.settingForKey('playgroundEditorWidth') !== 'undefined'
+        ? Settings.settingForKey('playgroundEditorWidth')
+        : 300,
+    quickLookWidth:
+      typeof Settings.settingForKey('quickLookWidth') !== 'undefined'
+        ? Settings.settingForKey('quickLookWidth')
+        : 300,
+    nativeElements: Settings.settingForKey('nativeElements') || false,
   }
 
   browserWindow.webContents.insertJS(
@@ -72,6 +82,13 @@ export default function() {
   browserWindow.once('ready-to-show', () => {
     browserWindow.show()
   })
+
+  function storePosition() {
+    Settings.setSettingForKey('bounds', browserWindow.getBounds())
+  }
+
+  browserWindow.on('moved', storePosition)
+  browserWindow.on('resize', storePosition)
 
   browserWindow.on('closed', () => {
     listenToActions(false)
@@ -86,7 +103,7 @@ export default function() {
   })
 
   browserWindow.webContents.on('getSketchState', () => {
-    const state = getSketchState()
+    const state = getSketchState({ native: settings.nativeElements })
 
     browserWindow.webContents
       .executeJavaScript(
@@ -96,6 +113,7 @@ export default function() {
   })
 
   browserWindow.webContents.on('setSetting', (key, value) => {
+    settings[key] = value
     Settings.setSettingForKey(key, value)
 
     if (String(key) === 'alwaysOnTop') {
@@ -104,7 +122,9 @@ export default function() {
   })
 
   browserWindow.webContents.on('getPageMetadata', (pageId, docId) => {
-    const state = getPageMetadata(pageId, docId)
+    const state = getPageMetadata(pageId, docId, {
+      native: settings.nativeElements,
+    })
 
     browserWindow.webContents
       .executeJavaScript(
@@ -117,7 +137,9 @@ export default function() {
   })
 
   browserWindow.webContents.on('getLayerMetadata', (layerId, pageId, docId) => {
-    const state = getLayerMetadata(layerId, pageId, docId)
+    const state = getLayerMetadata(layerId, pageId, docId, {
+      native: settings.nativeElements,
+    })
 
     browserWindow.webContents
       .executeJavaScript(
@@ -129,20 +151,23 @@ export default function() {
       .catch(console.error)
   })
 
-  browserWindow.webContents.on('onRunScript', (script, runId) => {
-    const result = runScript(script)
-    browserWindow.webContents
-      .executeJavaScript(
-        `sketchBridge(${JSON.stringify({
-          name: SET_SCRIPT_RESULT,
-          payload: {
-            result: prepareValue(result),
-            id: runId,
-          },
-        })})`
-      )
-      .catch(console.error)
-  })
+  browserWindow.webContents.on(
+    'onRunScript',
+    (script, runId, shouldCompile = true) => {
+      const result = runScript(script, shouldCompile)
+      browserWindow.webContents
+        .executeJavaScript(
+          `sketchBridge(${JSON.stringify({
+            name: SET_SCRIPT_RESULT,
+            payload: {
+              result: prepareValue(result),
+              id: runId,
+            },
+          })})`
+        )
+        .catch(console.error)
+    }
+  )
 
   browserWindow.webContents.on('onRunCommand', (command, runId) => {
     runCommand(command)

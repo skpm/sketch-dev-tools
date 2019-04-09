@@ -79,6 +79,7 @@ handlers[SET_PAGE_METADATA] = (state, { payload }) => ({
           return {
             ...page,
             meta: payload.state.meta,
+            hasChildren: payload.state.children.length > 0,
             children: payload.state.children.map(child => {
               const existingChild = page.children.find(y => y.id === child.id)
               if (existingChild) {
@@ -110,7 +111,7 @@ export const setLayerMetadata = ({ state, pageId, layerId, docId }) => ({
   },
 })
 
-function findLayerWithId(layerId, fn, layer) {
+export function findLayerWithId(layerId, fn, layer) {
   if (layer.id === layerId) {
     return fn(layer)
   }
@@ -143,7 +144,8 @@ handlers[SET_LAYER_METADATA] = (state, { payload }) => ({
                 return {
                   ...layer,
                   meta: payload.state.meta,
-                  children: payload.state.map(child => {
+                  hasChildren: payload.state.children.length > 0,
+                  children: payload.state.children.map(child => {
                     const existingChild = layer.children.find(
                       x => child.id === x.id
                     )

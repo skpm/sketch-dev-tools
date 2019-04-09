@@ -7,6 +7,9 @@ const initialState = window.initialSettings || {
   theme: 'light',
   showTimestamps: false,
   sourcemaps: true,
+  playgroundEditorWidth: 300,
+  quickLookWidth: 300,
+  nativeElements: false,
 }
 
 const handlers = {}
@@ -32,6 +35,11 @@ export const updateAlwaysOnTop = updateSettingAction('alwaysOnTop')
 export const updateTheme = updateSettingAction('theme')
 export const updateShowTimestamps = updateSettingAction('showTimestamps')
 export const updateSourcemaps = updateSettingAction('sourcemaps')
+export const updatePlaygrounEditorWidth = updateSettingAction(
+  'playgroundEditorWidth'
+)
+export const updateQuickLookWidth = updateSettingAction('quickLookWidth')
+export const updateNativeElements = updateSettingAction('nativeElements')
 
 export default function(state = initialState, action) {
   if (handlers[action.type]) {

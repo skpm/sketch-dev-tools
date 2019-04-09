@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
-import QuickLook from './quick-look'
 import { ButtonToggle } from '../value/log-element'
 import { CompleteElementName } from './element-name'
 
@@ -56,49 +55,66 @@ export default class ElementTreeItem extends Component {
     super()
     this.state = {
       expanded: false,
-      quickLook: false,
     }
+    this.onSelectElement = this.onSelectElement.bind(this)
+    this.onToggle = this.onToggle.bind(this)
   }
 
-  renderQuickLook(expanded) {
+  onSelectElement(e) {
+    if (e.isDefaultPrevented() || this.props.element.id === '?') {
+      return
+    }
+    if (!this.state.expanded) {
+      this.setState({
+        expanded: true,
+      })
+    }
+
+    this.props.onShowQuickLook(this.props.element)
+  }
+
+  onToggle() {
+    if (!this.props.element.children) {
+      this.props.onFetchMetadata(this.props.element)
+    }
+    this.setState(state => ({ expanded: !state.expanded }))
+  }
+
+  renderElementName(expanded) {
     return (
       <WrapElement
-        onClick={e => {
-          if (e.isDefaultPrevented() || this.props.element.id === '?') {
-            return
-          }
-          this.setState({
-            quickLook: !this.state.quickLook,
-            expanded: true,
-          })
-        }}
+        onClick={this.onSelectElement}
         hasInfo={this.props.element.id !== '?'}
       >
         &lt;
         <CompleteElementName element={this.props.element} />
         {expanded ? '>' : ' />'}{' '}
-        {this.state.quickLook && <QuickLook element={this.props.element} />}
       </WrapElement>
     )
   }
 
   renderElement() {
-    const { element } = this.props
+    const { element, onShowQuickLook, onFetchMetadata } = this.props
 
-    if (element && element.children && element.children.length > 0) {
+    if (element && element.hasChildren) {
       return (
         <TreeElement expanded={this.state.expanded}>
           <OffsetButtonToggle
             expanded={this.state.expanded}
-            onClick={() => this.setState({ expanded: !this.state.expanded })}
+            onClick={this.onToggle}
           >
             &gt;
           </OffsetButtonToggle>
           {this.state.expanded ? (
             <span>
-              {this.renderQuickLook(true)}
-              {element.children.map((e, i) => (
-                <ElementTreeItem key={element.id + i} element={e} />
+              {this.renderElementName(true)}
+              {(element.children || []).map((e, i) => (
+                <ElementTreeItem
+                  key={element.id + i}
+                  element={e}
+                  onShowQuickLook={onShowQuickLook}
+                  onFetchMetadata={onFetchMetadata}
+                />
               ))}
               <WrapElement>
                 &lt;/
@@ -107,13 +123,13 @@ export default class ElementTreeItem extends Component {
               </WrapElement>
             </span>
           ) : (
-            this.renderQuickLook(false)
+            this.renderElementName(false)
           )}
         </TreeElement>
       )
     }
 
-    return <TreeElement>{this.renderQuickLook(false)}</TreeElement>
+    return <TreeElement>{this.renderElementName(false)}</TreeElement>
   }
 
   render() {
@@ -128,4 +144,6 @@ ElementTreeItem.propTypes = {
     class: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,
+  onShowQuickLook: PropTypes.func.isRequired,
+  onFetchMetadata: PropTypes.func.isRequired,
 }

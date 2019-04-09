@@ -20,6 +20,11 @@ export default class LogError extends Component {
     this.state = {
       collapsed: !props.opened,
     }
+    this.onToggle = this.onToggle.bind(this)
+  }
+
+  onToggle() {
+    this.setState(state => ({ collapsed: !state.collapsed }))
   }
 
   render() {
@@ -27,10 +32,7 @@ export default class LogError extends Component {
     const { logKey, error } = this.props
     return (
       <span>
-        <ButtonToggle
-          onClick={() => this.setState({ collapsed: !collapsed })}
-          expanded={!collapsed}
-        >
+        <ButtonToggle onClick={this.onToggle} expanded={!collapsed}>
           &gt;
         </ButtonToggle>
         {logKey && (

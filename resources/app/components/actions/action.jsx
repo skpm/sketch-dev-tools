@@ -40,7 +40,9 @@ class Action extends Component {
         )}
         <span>
           <ButtonToggle
-            onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+            onClick={() =>
+              this.setState(state => ({ collapsed: !state.collapsed }))
+            }
             expanded={!this.state.collapsed}
           >
             &gt;
