@@ -100,13 +100,14 @@ export function onLogFinish(context) {
     values = JSON.parse(
       JSON.stringify(actionContext.payload[0].value, (key, value) => {
         const castedValue = util.toJSObject(value)
-        if (String(castedValue.primitive) === 'Mocha') {
+        if (castedValue && String(castedValue.primitive) === 'Mocha') {
           const nativeClass = NSClassFromString(castedValue.value)
           castedValue.value = introspectMochaObject(
             nativeClass.mocha(),
             options
           )
         } else if (
+          castedValue &&
           String(castedValue.primitive) === 'Error' &&
           castedValue.value.stack
         ) {
