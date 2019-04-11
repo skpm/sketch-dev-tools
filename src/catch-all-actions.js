@@ -108,9 +108,9 @@ export function onLogFinish(context) {
           )
         } else if (
           String(castedValue.primitive) === 'Error' &&
-          castedValue.value.stack &&
-          options.sourcemaps
+          castedValue.value.stack
         ) {
+          castedValue.value = castedValue.value.mutableCopy()
           castedValue.value.stack = prepareStackTrace(
             castedValue.value.stack,
             options
