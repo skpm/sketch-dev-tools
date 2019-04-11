@@ -1,4 +1,4 @@
-/* globals __command, NSClassFromString */
+/* globals __command, NSClassFromString, NSException */
 import util from 'util'
 import Settings from 'sketch/settings'
 import { prepareValue, prepareObject, prepareStackTrace } from 'sketch-utils'
@@ -120,6 +120,35 @@ export function onLogFinish(context) {
         return castedValue
       })
     )
+  } else if (
+    actionContext.payload[0] &&
+    actionContext.payload[0].isKindOfClass(NSException)
+  ) {
+    const exception = actionContext.payload[0]
+    const userInfo = exception.userInfo()
+    if (!userInfo.stack) {
+      // that's not a JS error so give up
+      values = [
+        {
+          value: String(actionContext.stringValue),
+          type: 'String',
+          primitive: 'String',
+        },
+      ]
+    } else {
+      values = [
+        {
+          value: {
+            message: String(exception.reason()),
+            name: String(exception.name()),
+            stack: prepareStackTrace(String(userInfo.stack), options),
+            userInfo: prepareObject(util.toObject(userInfo), options),
+          },
+          type: String(exception.class()),
+          primitive: 'Error',
+        },
+      ]
+    }
   } else if (actionContext.stringValue) {
     // weak support of previous version of Sketch
     values = [
