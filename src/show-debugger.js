@@ -191,3 +191,10 @@ export default function() {
     clearScriptsCache()
   })
 }
+
+export function onShutdown() {
+  const existingWebview = getWebview(identifier)
+  if (existingWebview) {
+    existingWebview.close()
+  }
+}

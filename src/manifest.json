@@ -1,7 +1,8 @@
 {
-  "compatibleVersion": 50,
+  "compatibleVersion": "50",
   "bundleVersion": 1,
   "icon": "icon.png",
+  "scope": "application",
   "commands": [
     {
       "name": "⚙️ DevTools",
@@ -9,7 +10,13 @@
       "icon": "icon.png",
       "identifier": "skpm.dev-tools.show-dev-tools",
       "script": "./show-debugger.js",
-      "shortcut": "cmd option j"
+      "shortcut": "cmd option j",
+      "handlers": {
+        "run": "onRun",
+        "actions": {
+          "Shutdown": "onShutdown"
+        }
+      }
     },
     {
       "name": "Catch all actions",
