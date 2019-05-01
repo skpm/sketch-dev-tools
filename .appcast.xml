@@ -2,6 +2,9 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
   <channel>
     <item>
+      <enclosure url="https://github.com/skpm/sketch-dev-tools/releases/download/v0.9.5/dev-tools.sketchplugin.zip" sparkle:version="0.9.5"/>
+    </item>
+    <item>
       <enclosure url="https://github.com/skpm/sketch-dev-tools/releases/download/v0.9.4/dev-tools.sketchplugin.zip" sparkle:version="0.9.4"/>
     </item>
     <item>
