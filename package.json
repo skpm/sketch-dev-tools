@@ -70,7 +70,7 @@
     "redux-logger": "^3.0.6"
   },
   "dependencies": {
-    "sketch-module-web-view": "^3.0.3",
+    "sketch-module-web-view": "^3.0.4",
     "sketch-utils": "^0.2.10"
   },
   "resources": [
