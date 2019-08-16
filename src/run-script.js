@@ -76,7 +76,9 @@ export function runScript(rawScript, compile) {
           `const sketch = require('sketch')\n\nexport default function (context) {\n${rawScript}\n}\n`,
           'utf8'
         )
-        execSync(`node ./build-script.js ${hash}.js`, { cwd: pathToBundle })
+        execSync(`node ./build-script.js "${pathToRawFile}"`, {
+          cwd: pathToBundle,
+        })
       }
 
       script = fs.readFileSync(pathToBundledFile, 'utf8')

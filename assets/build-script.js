@@ -1,14 +1,18 @@
 const webpack = require('webpack')
 const path = require('path')
-const generateWebpackConfig = require('@skpm/builder/lib/utils/webpackConfig')
-  .default
+const generateWebpackConfig = require('@skpm/builder').webpackConfig
 
 generateWebpackConfig(
   {},
   path.join(process.cwd(), './.scripts'),
   path.join(process.cwd(), './.scripts'),
   {}
-)(process.argv[2], [], ['onRun'])
+)({
+  isPluginCommand: true,
+  script: path.basename(process.argv[2]),
+  absolutePath: process.argv[2],
+  handlers: ['onRun'],
+})
   .then(webpackConfig => {
     const compiler = webpack(webpackConfig)
 

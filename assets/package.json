@@ -10,6 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@skpm/builder": "^0.5.16"
+    "@skpm/builder": "^0.7.2"
   }
 }
