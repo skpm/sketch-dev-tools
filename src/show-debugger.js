@@ -42,6 +42,7 @@ export default function() {
     minHeight: 300,
     minimizable: false,
     maximizable: false,
+    hidesOnDeactivate: false,
     alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
     fullscreenable: false,
     acceptFirstMouse: true,
