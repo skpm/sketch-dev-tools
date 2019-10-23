@@ -45,7 +45,7 @@ export default function() {
     hidesOnDeactivate: false,
     alwaysOnTop: Settings.settingForKey('alwaysOnTop') || false,
     fullscreenable: false,
-    acceptFirstMouse: true,
+    acceptsFirstMouse: true,
     title: 'Sketch DevTools',
     resizable: true,
     show: false,
