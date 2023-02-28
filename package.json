@@ -40,7 +40,7 @@
     "@skpm/fs": "^0.2.5",
     "babel-plugin-emotion": "^9.2.11",
     "codemirror": "^5.48.2",
-    "css-loader": "^1.0.0",
+    "css-loader": "^6.7.3",
     "dayjs": "^1.8.15",
     "emotion": "^9.2.12",
     "emotion-theming": "^9.2.9",
